@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/routing/app_routes.dart';
+import 'package:lms_admin_instructor/core/routing/router_generator.dart';
+import 'package:lms_admin_instructor/core/di/service_locator.dart';
+import 'package:lms_admin_instructor/core/theme/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await setupServiceLocator();
+
   runApp(const MyApp());
 }
 
@@ -9,10 +21,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'LMS',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return ScreenUtilInit(
+      designSize: const Size(390, 852),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp.router(
+          supportedLocales: const [Locale('en'), Locale('ar')],
+          locale: const Locale('en'),
+          debugShowCheckedModeBanner: false,
+          title: 'LMS Student',
+          theme: AppTheme.lightTheme,
+          routerConfig: RouterGenerator.goRouter,
+        );
+      },
     );
   }
 }
@@ -39,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: context.colorScheme.primary,
 
         title: Text(widget.title),
       ),
@@ -47,18 +69,24 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: .center,
           children: [
-            const Text('You have pushed the button this many times:'),
+            Text(context.tr("welcom_to_lms_admin_instructor")),
+            Text(context.tr('Hello')),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: context.textTheme.headlineMedium?.copyWith(
+                color: context.colorScheme.primary,
+              ),
             ),
+            Text('', style: TextStyle(color: context.colorScheme.primary)),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          context.go(AppRoutes.loginScreen);
+        },
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add, size: 24.w),
       ),
     );
   }
