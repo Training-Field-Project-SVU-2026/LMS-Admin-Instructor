@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_restponsive_size.dart';
 
@@ -34,15 +32,17 @@ class _CustomButtonState extends State<CustomButton> {
         fixedSize: Size(
           widget.w ??
               getResponsiveSize(
-                webSize: 550.w,
-                mobileSize: 200.w,
-                width: MediaQuery.of(context).size.width,
+                context: context,
+                webSize: 550,
+                tabletSize: 400,
+                mobileSize: 250,
               ),
           widget.h ??
               getResponsiveSize(
-                webSize: 60.h,
-                mobileSize: 50.h,
-                width: MediaQuery.of(context).size.width,
+                context: context,
+                webSize: 60,
+                tabletSize: 55,
+                mobileSize: 50,
               ),
         ),
         backgroundColor: widget.color ?? context.colorScheme.primary,
@@ -54,12 +54,6 @@ class _CustomButtonState extends State<CustomButton> {
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
-        // style: TextStyle(
-        //   fontFamily: "Inter",
-        //   fontSize: 24,
-        //   fontWeight: FontWeight.bold,
-        //   color: Colors.white,
-        // ),
       ),
     );
   }

@@ -16,87 +16,110 @@ class AppTheme {
   static const _textTertiary = Color(0xFF607D8B);
   static const _outline = Color(0xFFD1DDE1);
   static const _error = Color(0xFFD32F2F);
+  /** //TODO: عدلت على ال function دي عشان تبقى بتاخد ال context بدل ال width عشان اقدر استخدمها في اي مكان في التطبيق من غير ما احتاج ابعت ال width كل مرة
+  // static double getResponsiveSize(
+  //   double webSize,
+  //   double tabletSize,
+  //   double mobileSize,
+  // ) {
+  //   if (kIsWeb) return webSize.sp;
+  //   return ScreenUtil().screenWidth > 1024
+  //       ? webSize.sp
+  //       : ScreenUtil().screenWidth >= 600
+  //       ? tabletSize.sp
+  //       : mobileSize.sp;
+  // }*/
+  static double getResponsiveSize(
+    double webSize,
+    double tabletSize,
+    double mobileSize,
+  ) {
+    final width = ScreenUtil().screenWidth;
 
-  static double getResponsiveSize(double webSize, double mobileSize) {
-    if (kIsWeb) return webSize.sp;
-    return ScreenUtil().screenWidth > 600 ? webSize.sp : mobileSize.sp;
+    if (width >= 1024) {
+      return webSize;
+    } else if (width >= 600) {
+      return tabletSize;
+    } else {
+      return mobileSize;
+    }
   }
 
   static TextTheme _buildTextTheme(ColorScheme colorScheme) {
     const base = TextStyle(fontFamily: 'Inter');
     return TextTheme(
       displayLarge: base.copyWith(
-        fontSize: getResponsiveSize(48, 36),
+        fontSize: getResponsiveSize(48, 40, 36),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       displayMedium: base.copyWith(
-        fontSize: getResponsiveSize(40, 32),
+        fontSize: getResponsiveSize(40, 36, 32),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       displaySmall: base.copyWith(
-        fontSize: getResponsiveSize(36, 28),
+        fontSize: getResponsiveSize(36, 32, 28),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineLarge: base.copyWith(
-        fontSize: getResponsiveSize(32, 24),
+        fontSize: getResponsiveSize(32, 38, 24),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       headlineMedium: base.copyWith(
-        fontSize: getResponsiveSize(28, 22),
+        fontSize: getResponsiveSize(28, 26, 22),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineSmall: base.copyWith(
-        fontSize: getResponsiveSize(24, 20),
+        fontSize: getResponsiveSize(24, 22, 20),
         fontWeight: FontWeight.w500,
         color: colorScheme.onSurface,
       ),
       titleLarge: base.copyWith(
-        fontSize: getResponsiveSize(38, 22),
+        fontSize: getResponsiveSize(38, 26, 22),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       titleMedium: base.copyWith(
-        fontSize: getResponsiveSize(34, 18),
+        fontSize: getResponsiveSize(34, 20, 18),
         fontWeight: FontWeight.w500,
         color: colorScheme.onSurface,
       ),
       titleSmall: base.copyWith(
-        fontSize: getResponsiveSize(20, 14),
+        fontSize: getResponsiveSize(20, 16, 14),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       bodyLarge: base.copyWith(
-        fontSize: getResponsiveSize(26, 18),
+        fontSize: getResponsiveSize(26, 26, 18),
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurface,
       ),
       bodyMedium: base.copyWith(
-        fontSize: getResponsiveSize(24, 16),
+        fontSize: getResponsiveSize(24, 24, 16),
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurfaceVariant,
       ),
       bodySmall: base.copyWith(
-        fontSize: getResponsiveSize(16, 14),
+        fontSize: getResponsiveSize(16, 16, 14),
         fontWeight: FontWeight.normal,
         color: _textTertiary,
       ),
       labelLarge: base.copyWith(
-        fontSize: getResponsiveSize(24, 18),
+        fontSize: getResponsiveSize(24, 24, 18),
         fontWeight: FontWeight.w500,
         color: colorScheme.onPrimary,
       ),
       labelMedium: base.copyWith(
-        fontSize: getResponsiveSize(20, 14),
+        fontSize: getResponsiveSize(20, 20, 14),
         fontWeight: FontWeight.w500,
         color: colorScheme.onSurfaceVariant,
       ),
       labelSmall: base.copyWith(
-        fontSize: getResponsiveSize(14, 12),
+        fontSize: getResponsiveSize(14, 14, 12),
         fontWeight: FontWeight.bold,
         color: colorScheme.primary,
       ),
@@ -151,7 +174,10 @@ class AppTheme {
         fillColor: colorScheme.surface,
         hintStyle: TextStyle(color: _textTertiary),
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: colorScheme.outline),
@@ -177,7 +203,7 @@ class AppTheme {
           disabledForegroundColor: const Color(0xFF78909C),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           textStyle: TextStyle(
-            fontSize: getResponsiveSize(24, 18),
+            fontSize: getResponsiveSize(24, 24, 18),
             fontWeight: FontWeight.w500,
             fontFamily: 'Inter',
           ),

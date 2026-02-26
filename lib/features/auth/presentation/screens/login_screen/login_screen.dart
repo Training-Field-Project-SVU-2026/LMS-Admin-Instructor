@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-<<<<<<< HEAD
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/screens/widgets/custom_viewer.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/screens/widgets/custon_Text_form_field.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
-=======
-import 'package:lms_admin_instructor/core/routing/app_routes.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
->>>>>>> 56a87a2ff17227bfaeeedbb19dec4bdcfd6e5708
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,7 +48,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-<<<<<<< HEAD
                 // TextFormField(
                 //   controller: _emailController,
                 //   decoration: const InputDecoration(labelText: 'Email'),
@@ -99,55 +95,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 // ),
                 CustomButton(
                   txt: 'Taha',
-                  onPressed: () {},
-                  color: context.colorScheme.onSecondary,
-                  // h: 120,
-=======
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Please enter email';
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Please enter password';
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state is AuthLoading) {
-                      return const CircularProgressIndicator();
-                    }
-                    return ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                            LoginEvent(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Login'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CustomViewer()),
                     );
                   },
+                  color: context.colorScheme.secondary,
+                  // h: 120,
                 ),
-                TextButton(
-                  onPressed: () => context.push(AppRoutes.registerScreen),
-                  child: const Text('Don\'t have an account? Register'),
->>>>>>> 56a87a2ff17227bfaeeedbb19dec4bdcfd6e5708
+                SizedBox(height: 20),
+                CustomTextFormField(
+                  txt: "taha",
+                  hint: "TAha@mail.com",
+                  controller: _emailController,
                 ),
               ],
             ),
