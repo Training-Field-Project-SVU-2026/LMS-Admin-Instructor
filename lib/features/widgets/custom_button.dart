@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_restponsive_size.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
 class CustomButton extends StatefulWidget {
   final String txt;

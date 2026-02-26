@@ -2,46 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/screens/widgets/instructor.dart';
+import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 
 // ignore: must_be_immutable
 class CustomListView extends StatelessWidget {
   CustomListView({super.key});
   List<Instructor> instructordata = [
     Instructor(
-      name: "Abdallah ",
+      name: "Abdallah ALQiran",
       bio: "Flutter",
       date: "12 Jan 2023",
-      email: "Abdallah.Qiran@gmail.com",
+      email: "Abdallah.ALQiran@gmail.com",
       image: '',
       action: "Active",
     ),
     Instructor(
-      name: "Taha",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "taha.saber@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Mayar ",
-      bio: "Flutter",
-      date: "5 Mar 2022",
-      email: "Mayar@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Abdallah ",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "Abdallah.Qiran@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Taha",
+      name: "Taha Saber",
       bio: "Flutter",
       date: "12 Jan 2023",
       email: "taha.saber@gmail.com",
@@ -49,10 +25,10 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Mayar ",
+      name: "Mayar abdelrah ",
       bio: "Flutter",
       date: "5 Mar 2022",
-      email: "Mayar@gmail.com",
+      email: "Mayar abdelrah@gmail.com",
       image: '',
       action: "Active",
     ),
@@ -65,7 +41,7 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Taha",
+      name: "Taha Saber",
       bio: "Flutter",
       date: "12 Jan 2023",
       email: "taha.saber@gmail.com",
@@ -73,10 +49,10 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Mayar ",
+      name: "Mayar abdelrah ",
       bio: "Flutter",
       date: "5 Mar 2022",
-      email: "Mayar@gmail.com",
+      email: "Mayar abdelrah@gmail.com",
       image: '',
       action: "Active",
     ),
@@ -89,7 +65,7 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Taha",
+      name: "Taha Saber",
       bio: "Flutter",
       date: "12 Jan 2023",
       email: "taha.saber@gmail.com",
@@ -97,10 +73,10 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Mayar ",
+      name: "Mayar abdelrah ",
       bio: "Flutter",
       date: "5 Mar 2022",
-      email: "Mayar@gmail.com",
+      email: "Mayar abdelrah@gmail.com",
       image: '',
       action: "Active",
     ),
@@ -113,7 +89,7 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Taha",
+      name: "Taha Saber",
       bio: "Flutter",
       date: "12 Jan 2023",
       email: "taha.saber@gmail.com",
@@ -121,10 +97,10 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Mayar ",
+      name: "Mayar abdelrah ",
       bio: "Flutter",
       date: "5 Mar 2022",
-      email: "Mayar@gmail.com",
+      email: "Mayar abdelrah@gmail.com",
       image: '',
       action: "Active",
     ),
@@ -137,7 +113,7 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Taha",
+      name: "Taha Saber",
       bio: "Flutter",
       date: "12 Jan 2023",
       email: "taha.saber@gmail.com",
@@ -145,10 +121,34 @@ class CustomListView extends StatelessWidget {
       action: "Active",
     ),
     Instructor(
-      name: "Mayar ",
+      name: "Mayar abdelrah ",
       bio: "Flutter",
       date: "5 Mar 2022",
-      email: "Mayar@gmail.com",
+      email: "Mayar abdelrah@gmail.com",
+      image: '',
+      action: "Active",
+    ),
+    Instructor(
+      name: "Abdallah ",
+      bio: "Flutter",
+      date: "12 Jan 2023",
+      email: "Abdallah.Qiran@gmail.com",
+      image: '',
+      action: "Active",
+    ),
+    Instructor(
+      name: "Taha Saber",
+      bio: "Flutter",
+      date: "12 Jan 2023",
+      email: "taha.saber@gmail.com",
+      image: '',
+      action: "Active",
+    ),
+    Instructor(
+      name: "Mayar abdelrah ",
+      bio: "Flutter",
+      date: "5 Mar 2022",
+      email: "Mayar abdelrah@gmail.com",
       image: '',
       action: "Active",
     ),

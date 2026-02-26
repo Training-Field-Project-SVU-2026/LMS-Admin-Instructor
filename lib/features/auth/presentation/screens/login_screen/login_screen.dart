@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/screens/widgets/custom_viewer.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/screens/widgets/custon_Text_form_field.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_viewer.dart';
+import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20),
                 CustomTextFormField(
                   txt: "taha",
-                  hint: "TAha@mail.com",
+                  hint: "Taha@mail.com",
                   controller: _emailController,
                 ),
               ],

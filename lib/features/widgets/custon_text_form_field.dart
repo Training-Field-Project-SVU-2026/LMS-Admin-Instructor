@@ -1,10 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_restponsive_size.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String txt;
@@ -15,7 +13,7 @@ class CustomTextFormField extends StatefulWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final TextEditingController controller;
-  CustomTextFormField({
+  const CustomTextFormField({
     Key? key,
     required this.txt,
     required this.hint,
@@ -71,22 +69,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           labelText: widget.txt,
           labelStyle: TextStyle(color: widget.color ?? Colors.grey),
           hintText: widget.hint,
-          hintStyle: context.textTheme.labelMedium?.copyWith(
-            color: context.colorScheme.primary,
-          ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
         ),
         cursorHeight: 30.h,
         cursorColor: context.colorScheme.primary,

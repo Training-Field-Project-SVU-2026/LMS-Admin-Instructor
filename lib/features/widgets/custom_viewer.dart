@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_restponsive_size.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/screens/widgets/customl_istview.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/widgets/customl_istview.dart';
 
+// ignore: must_be_immutable
 class CustomViewer extends StatefulWidget {
   int num1 = 1;
   int num2 = 5;
