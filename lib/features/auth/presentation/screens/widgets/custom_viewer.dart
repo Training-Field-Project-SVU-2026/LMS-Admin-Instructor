@@ -6,7 +6,10 @@ import 'package:lms_admin_instructor/core/utils/get_restponsive_size.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/widgets/customl_istview.dart';
 
 class CustomViewer extends StatefulWidget {
-  const CustomViewer({super.key});
+  int num1 = 1;
+  int num2 = 5;
+  int num3 = 124;
+  CustomViewer({super.key});
 
   @override
   State<CustomViewer> createState() => _CustomViewerState();
@@ -20,10 +23,6 @@ class _CustomViewerState extends State<CustomViewer> {
     "email",
     "Actions",
   ];
-  int num1 = 1;
-  int num2 = 5;
-  int num3 = 124;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +91,7 @@ class _CustomViewerState extends State<CustomViewer> {
                   children: [
                     /// Left Text
                     Text(
-                      "Showing $num1 to $num2 of $num3 results",
+                      "Showing ${widget.num1} to ${widget.num2} of ${widget.num3} results",
                       style: context.textTheme.bodyMedium,
                     ),
                     Row(
