@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/customl_istview.dart';
@@ -16,6 +17,29 @@ class CustomViewer extends StatefulWidget {
 }
 
 class _CustomViewerState extends State<CustomViewer> {
+  final ScrollController _horizontalController = ScrollController();
+  late LinkedScrollControllerGroup _controllersGroup;
+  late ScrollController _headerController;
+  late ScrollController _listController;
+  late ScrollController _footerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllersGroup = LinkedScrollControllerGroup();
+    _headerController = _controllersGroup.addAndGet(); // الكنترولر الأول
+    _listController = _controllersGroup.addAndGet(); // الكنترولر التاني
+    _footerController = _controllersGroup.addAndGet();
+  }
+
+  @override
+  void dispose() {
+    _headerController.dispose();
+    _listController.dispose();
+    _footerController.dispose();
+    super.dispose();
+  }
+
   List<String> instructorInfo = [
     "Instructor Name",
     "BIO",
@@ -23,6 +47,7 @@ class _CustomViewerState extends State<CustomViewer> {
     "email",
     "Actions",
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,15 +58,15 @@ class _CustomViewerState extends State<CustomViewer> {
           width: getResponsiveSize(
             context: context,
             webSize: 1104,
-            tabletSize: 700,
-            mobileSize: 350,
+            tabletSize: 800,
+            mobileSize: 650,
           ),
           // 1104.w,
           height: getResponsiveSize(
             context: context,
             webSize: 949,
-            tabletSize: 400,
-            mobileSize: 250,
+            tabletSize: 600,
+            mobileSize: 550,
           ),
           // 949.h,
           decoration: BoxDecoration(
@@ -51,82 +76,101 @@ class _CustomViewerState extends State<CustomViewer> {
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10.r, horizontal: 20.r),
-                decoration: BoxDecoration(
-                  color: Color(0xFFD1DDE1),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.r),
-                    topRight: Radius.circular(16.r),
-                  ),
-                ),
+              SingleChildScrollView(
+                controller: _headerController, // ربط الكنترولر هنا
+                scrollDirection: Axis.horizontal, // خليه أفقي
                 child: Container(
-                  width: double.infinity,
+                  width: getResponsiveSize(
+                    // لازم نفس العرض اللي تحت
+                    context: context,
+                    webSize: 1104,
+                    tabletSize: 800,
+                    mobileSize: 650,
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10.r,
+                    horizontal: 20.r,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFD1DDE1),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16.r),
+                      topRight: Radius.circular(16.r),
+                    ),
+                  ),
                   child: Row(
                     children: List.generate(
                       instructorInfo.length,
                       (index) => Expanded(
-                        child: Center(
-                          child: Text(
-                            instructorInfo[index],
-                            textAlign: TextAlign.center,
-                            style: context.textTheme.bodyMedium!.copyWith(
-                              color: context.colorScheme.primary,
-                            ),
-                          ),
-                        ),
+                        child: Center(child: Text(instructorInfo[index])),
                       ),
                     ),
                   ),
                 ),
               ),
-              Expanded(child: CustomListView()),
+              Expanded(child: CustomListView(controller: _listController)),
               const Divider(color: Color(0xff94A3B8)),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.r),
                 width: double.infinity,
                 height: 80.h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    /// Left Text
-                    Text(
-                      "Showing ${widget.num1} to ${widget.num2} of ${widget.num3} results",
-                      style: context.textTheme.bodyMedium,
-                    ),
-                    Row(
-                      children: [
-                        OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text("Previous"),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      controller: _footerController,
+                      scrollDirection: Axis.horizontal,
+                      child: ConstrainedBox(
+                        // التريك هنا: بنقول للكونتينر اللي جوه السكرول "أقل عرض ليك هو عرض الشاشة"
+                        constraints: BoxConstraints(
+                          minWidth: constraints.maxWidth,
                         ),
+                        child: Row(
+                          // دلوقتي الـ spaceBetween هتشتغل في الويب عادي
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Showing ${widget.num1} to ${widget.num2} of ${widget.num3} results",
+                              style: context.textTheme.bodyMedium,
+                            ),
 
-                        const SizedBox(width: 8),
-                        OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
+                            // الـ Buttons
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                OutlinedButton(
+                                  onPressed: () {},
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Text("Previous"),
+                                ),
+                                const SizedBox(width: 8),
+                                OutlinedButton(
+                                  onPressed: () {},
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Text("Next"),
+                                ),
+                              ],
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text("Next"),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

@@ -110,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hint: "Taha@mail.com",
                   controller: _emailController,
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),

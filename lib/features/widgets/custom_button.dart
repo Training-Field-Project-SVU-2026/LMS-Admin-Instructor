@@ -47,6 +47,7 @@ class _CustomButtonState extends State<CustomButton> {
         ),
         backgroundColor: widget.color ?? context.colorScheme.primary,
       ),
+
       onPressed: widget.onPressed,
       child: Text(
         widget.txt,

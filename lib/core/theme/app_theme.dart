@@ -16,19 +16,7 @@ class AppTheme {
   static const _textTertiary = Color(0xFF607D8B);
   static const _outline = Color(0xFFD1DDE1);
   static const _error = Color(0xFFD32F2F);
-  /** //TODO: عدلت على ال function دي عشان تبقى بتاخد ال context بدل ال width عشان اقدر استخدمها في اي مكان في التطبيق من غير ما احتاج ابعت ال width كل مرة
-  // static double getResponsiveSize(
-  //   double webSize,
-  //   double tabletSize,
-  //   double mobileSize,
-  // ) {
-  //   if (kIsWeb) return webSize.sp;
-  //   return ScreenUtil().screenWidth > 1024
-  //       ? webSize.sp
-  //       : ScreenUtil().screenWidth >= 600
-  //       ? tabletSize.sp
-  //       : mobileSize.sp;
-  // }*/
+
   static double getResponsiveSize(
     double webSize,
     double tabletSize,

@@ -1,12 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 
 // ignore: must_be_immutable
 class CustomListView extends StatelessWidget {
-  CustomListView({super.key});
+  final ScrollController controller;
+  CustomListView({Key? key, required this.controller}) : super(key: key);
   List<Instructor> instructordata = [
     Instructor(
       name: "Abdallah ALQiran",
@@ -158,75 +161,82 @@ class CustomListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ListView.builder(
-        itemCount: instructordata.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.h),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CircleAvatar(child: Icon(Icons.person)),
-                      SizedBox(width: 8.w),
-                      Text(
-                        instructordata[index].name,
-                        style: context.textTheme.labelMedium,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+      child: SingleChildScrollView(
+        controller: controller,
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: getResponsiveSize(
+            context: context,
+            webSize: 1104,
+            tabletSize: 800,
+            mobileSize: 650,
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemCount: instructordata.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          const CircleAvatar(child: Icon(Icons.person)),
+                          SizedBox(width: 8.w),
+
+                          Expanded(
+                            child: Text(
+                              instructordata[index].name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      instructordata[index].bio,
-                      style: context.textTheme.labelMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      instructordata[index].date,
-                      style: context.textTheme.labelMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      instructordata[index].email,
-                      style: context.textTheme.labelMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          instructordata[index].bio,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      onPressed: () {},
-                      child: Icon(Icons.reply),
                     ),
-                  ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          instructordata[index].date,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          instructordata[index].email,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Icon(Icons.reply),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
       ),
     );
   }
