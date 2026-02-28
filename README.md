@@ -1,3 +1,3 @@
 # lms_admin_instructor
 
-This is repo for Trainig filed
+This is repo for Training filed
