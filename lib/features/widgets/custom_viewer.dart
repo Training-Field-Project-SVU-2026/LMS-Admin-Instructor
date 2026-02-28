@@ -17,7 +17,6 @@ class CustomViewer extends StatefulWidget {
 }
 
 class _CustomViewerState extends State<CustomViewer> {
-  final ScrollController _horizontalController = ScrollController();
   late LinkedScrollControllerGroup _controllersGroup;
   late ScrollController _headerController;
   late ScrollController _listController;
@@ -27,8 +26,8 @@ class _CustomViewerState extends State<CustomViewer> {
   void initState() {
     super.initState();
     _controllersGroup = LinkedScrollControllerGroup();
-    _headerController = _controllersGroup.addAndGet(); // الكنترولر الأول
-    _listController = _controllersGroup.addAndGet(); // الكنترولر التاني
+    _headerController = _controllersGroup.addAndGet();
+    _listController = _controllersGroup.addAndGet();
     _footerController = _controllersGroup.addAndGet();
   }
 
@@ -73,15 +72,14 @@ class _CustomViewerState extends State<CustomViewer> {
             borderRadius: BorderRadius.circular(16.r),
             border: Border.all(width: 1, color: Color(0xff94A3B8)),
           ),
+          clipBehavior: Clip.antiAlias,
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SingleChildScrollView(
-                controller: _headerController, // ربط الكنترولر هنا
-                scrollDirection: Axis.horizontal, // خليه أفقي
+                controller: _headerController,
+                scrollDirection: Axis.horizontal,
                 child: Container(
                   width: getResponsiveSize(
-                    // لازم نفس العرض اللي تحت
                     context: context,
                     webSize: 1104,
                     tabletSize: 800,
@@ -98,6 +96,7 @@ class _CustomViewerState extends State<CustomViewer> {
                       topRight: Radius.circular(16.r),
                     ),
                   ),
+                  clipBehavior: Clip.antiAlias,
                   child: Row(
                     children: List.generate(
                       instructorInfo.length,
@@ -125,7 +124,6 @@ class _CustomViewerState extends State<CustomViewer> {
                           minWidth: constraints.maxWidth,
                         ),
                         child: Row(
-                          // دلوقتي الـ spaceBetween هتشتغل في الويب عادي
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
@@ -133,7 +131,6 @@ class _CustomViewerState extends State<CustomViewer> {
                               style: context.textTheme.bodyMedium,
                             ),
 
-                            // الـ Buttons
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
