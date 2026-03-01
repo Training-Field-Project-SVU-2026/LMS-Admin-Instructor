@@ -1,16 +1,28 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-class Instructor {
-  final String image;
+
+
+class User{
+}
+
+class Student extends User{
   final String name;
-  final String bio;
+  final String joinDate;
+  final String email;
+  final Function()? action;
+Student({required this.name, required this.joinDate, required this.email, this.action});
+}
+
+class Instructor extends User{
+  final String? image;
+  final String name;
+  final String? bio;
   final String date;
   final String email;
-  final String action;
+  final Function()? action;
 
   Instructor({
-    required this.image,
+    this.image,
     required this.name,
-    required this.bio,
+    this.bio,
     required this.date,
     required this.email,
     required this.action,

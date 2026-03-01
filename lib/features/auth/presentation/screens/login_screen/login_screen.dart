@@ -7,6 +7,7 @@ import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.d
 import 'package:lms_admin_instructor/features/widgets/custom_viewer.dart';
 import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
+import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +20,105 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final userData = [
+    Instructor(
+      name: "Taha",
+      date: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Instructor(
+      name: "Taha",
+      date: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Instructor(
+      name: "Taha",
+      date: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Instructor(
+      name: "Taha",
+      date: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Instructor(
+      name: "Taha",
+      date: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+    Student(
+      name: "Taha El-Student",
+      joinDate: "2022-01-01",
+      email: "[EMAIL_ADDRESS]",
+      action: () {},
+    ),
+  ];
 
   @override
   void dispose() {
@@ -98,7 +198,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CustomViewer()),
+                      MaterialPageRoute(
+                        builder: (context) => CustomViewer(
+                          userData: userData,
+                          instructorInfo: [
+                            "Instructor Name",
+                            "Join Date",
+                            "email",
+                            "Actions",
+                          ],
+                        ),
+                      ),
                     );
                   },
                   color: context.colorScheme.secondary,

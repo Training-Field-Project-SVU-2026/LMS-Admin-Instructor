@@ -4,13 +4,16 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/customl_istview.dart';
+import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 
-// ignore: must_be_immutable
 class CustomViewer extends StatefulWidget {
-  int num1 = 1;
-  int num2 = 5;
-  int num3 = 124;
-  CustomViewer({super.key});
+  final int num1;
+  final int num2;
+  final int num3;
+  final List<String> instructorInfo;
+  // TODO This will come from the Cubit
+  final List<User> userData;
+  const CustomViewer({super.key, this.num1 = 1, this.num2 = 5, this.num3 = 124, required this.instructorInfo, required this.userData});
 
   @override
   State<CustomViewer> createState() => _CustomViewerState();
@@ -38,14 +41,6 @@ class _CustomViewerState extends State<CustomViewer> {
     _footerController.dispose();
     super.dispose();
   }
-
-  List<String> instructorInfo = [
-    "Instructor Name",
-    "BIO",
-    "Join Date",
-    "email",
-    "Actions",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -99,15 +94,20 @@ class _CustomViewerState extends State<CustomViewer> {
                   clipBehavior: Clip.antiAlias,
                   child: Row(
                     children: List.generate(
-                      instructorInfo.length,
+                      widget.instructorInfo.length,
                       (index) => Expanded(
-                        child: Center(child: Text(instructorInfo[index])),
+                        child: Center(
+                          child: Text(
+                            widget.instructorInfo[index],
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              Expanded(child: CustomListView(controller: _listController)),
+              Expanded(child: CustomListView(controller: _listController, userData: widget.userData)),
               const Divider(color: Color(0xff94A3B8)),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.r),
@@ -177,3 +177,4 @@ class _CustomViewerState extends State<CustomViewer> {
     );
   }
 }
+

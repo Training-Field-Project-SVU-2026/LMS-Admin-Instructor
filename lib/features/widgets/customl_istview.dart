@@ -8,153 +8,8 @@ import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 // ignore: must_be_immutable
 class CustomListView extends StatelessWidget {
   final ScrollController controller;
-  CustomListView({Key? key, required this.controller}) : super(key: key);
-  List<Instructor> instructordata = [
-    Instructor(
-      name: "Abdallah ALQiran",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "Abdallah.ALQiran@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Taha Saber",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "taha.saber@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Mayar abdelrah ",
-      bio: "Flutter",
-      date: "5 Mar 2022",
-      email: "Mayar abdelrah@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Abdallah ",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "Abdallah.Qiran@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Taha Saber",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "taha.saber@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Mayar abdelrah ",
-      bio: "Flutter",
-      date: "5 Mar 2022",
-      email: "Mayar abdelrah@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Abdallah ",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "Abdallah.Qiran@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Taha Saber",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "taha.saber@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Mayar abdelrah ",
-      bio: "Flutter",
-      date: "5 Mar 2022",
-      email: "Mayar abdelrah@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Abdallah ",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "Abdallah.Qiran@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Taha Saber",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "taha.saber@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Mayar abdelrah ",
-      bio: "Flutter",
-      date: "5 Mar 2022",
-      email: "Mayar abdelrah@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Abdallah ",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "Abdallah.Qiran@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Taha Saber",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "taha.saber@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Mayar abdelrah ",
-      bio: "Flutter",
-      date: "5 Mar 2022",
-      email: "Mayar abdelrah@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Abdallah ",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "Abdallah.Qiran@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Taha Saber",
-      bio: "Flutter",
-      date: "12 Jan 2023",
-      email: "taha.saber@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-    Instructor(
-      name: "Mayar abdelrah ",
-      bio: "Flutter",
-      date: "5 Mar 2022",
-      email: "Mayar abdelrah@gmail.com",
-      image: '',
-      action: "Active",
-    ),
-  ];
+  final List<User> userData;
+  CustomListView({super.key, required this.controller, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +28,7 @@ class CustomListView extends StatelessWidget {
           child: ListView.builder(
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
-            itemCount: instructordata.length,
+            itemCount: userData.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -187,7 +42,9 @@ class CustomListView extends StatelessWidget {
 
                           Expanded(
                             child: Text(
-                              instructordata[index].name,
+                              (userData[index] is Instructor)
+                                  ? (userData[index] as Instructor).name
+                                  : (userData[index] as Student).name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -198,7 +55,9 @@ class CustomListView extends StatelessWidget {
                     Expanded(
                       child: Center(
                         child: Text(
-                          instructordata[index].bio,
+                          (userData[index] is Instructor)
+                              ? (userData[index] as Instructor).date
+                              : (userData[index] as Student).joinDate,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -207,16 +66,9 @@ class CustomListView extends StatelessWidget {
                     Expanded(
                       child: Center(
                         child: Text(
-                          instructordata[index].date,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          instructordata[index].email,
+                          (userData[index] is Instructor)
+                              ? (userData[index] as Instructor).email
+                              : (userData[index] as Student).email,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -225,7 +77,13 @@ class CustomListView extends StatelessWidget {
                     Expanded(
                       child: Center(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (userData[index] is Instructor) {
+                              (userData[index] as Instructor).action!();
+                            } else {
+                              (userData[index] as Student).action!();
+                            }
+                          },
                           child: const Icon(Icons.reply),
                         ),
                       ),
