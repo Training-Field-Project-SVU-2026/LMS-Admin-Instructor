@@ -26,32 +26,32 @@ class AppTheme {
     const base = TextStyle(fontFamily: 'Inter');
     return TextTheme(
       displayLarge: base.copyWith(
-        fontSize: getResponsiveSize(32, 28),
+        fontSize: getResponsiveSize(30, 28),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       displayMedium: base.copyWith(
-        fontSize: getResponsiveSize(28, 24),
+        fontSize: getResponsiveSize(26, 24),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       displaySmall: base.copyWith(
-        fontSize: getResponsiveSize(24, 20),
+        fontSize: getResponsiveSize(22, 20),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineLarge: base.copyWith(
-        fontSize: getResponsiveSize(22, 18),
+        fontSize: getResponsiveSize(20, 18),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       headlineMedium: base.copyWith(
-        fontSize: getResponsiveSize(20, 16),
+        fontSize: getResponsiveSize(18, 16),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineSmall: base.copyWith(
-        fontSize: getResponsiveSize(18, 14),
+        fontSize: getResponsiveSize(16, 14),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
