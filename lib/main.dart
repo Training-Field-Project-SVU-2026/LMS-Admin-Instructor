@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/router_generator.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lms_admin_instructor/core/theme/app_theme.dart';
 
 void main() async {
@@ -17,22 +19,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: ((MediaQuery.of(context).size.width) > 600)
-          ? Size(1440, 1024)
-          : Size(390, 852),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return MaterialApp.router(
-          supportedLocales: const [Locale('en'), Locale('ar')],
-          locale: const Locale('en'),
-          debugShowCheckedModeBanner: false,
-          title: 'LMS Student',
-          theme: AppTheme.lightTheme,
-          routerConfig: RouterGenerator.goRouter,
-        );
-      },
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: ScreenUtilInit(
+        designSize: const Size(390, 852),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp.router(
+            supportedLocales: const [Locale('en'), Locale('ar')],
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            locale: const Locale('en'),
+            debugShowCheckedModeBanner: false,
+            title: 'LMS Dashboard',
+            theme: AppTheme.lightTheme,
+            routerConfig: RouterGenerator.goRouter,
+          );
+        },
+      ),
     );
   }
 }

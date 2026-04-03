@@ -17,98 +17,87 @@ class AppTheme {
   static const _outline = Color(0xFFD1DDE1);
   static const _error = Color(0xFFD32F2F);
 
-  static double getResponsiveSize(
-    double webSize,
-    double tabletSize,
-    double mobileSize,
-  ) {
-    final width = ScreenUtil().screenWidth;
-
-    if (width >= 1024) {
-      return webSize;
-    } else if (width >= 600) {
-      return tabletSize;
-    } else {
-      return mobileSize;
-    }
+  static double getResponsiveSize(double webSize, double mobileSize) {
+    if (kIsWeb) return webSize.sp;
+    return ScreenUtil().screenWidth > 600 ? webSize.sp : mobileSize.sp;
   }
 
   static TextTheme _buildTextTheme(ColorScheme colorScheme) {
     const base = TextStyle(fontFamily: 'Inter');
     return TextTheme(
       displayLarge: base.copyWith(
-        fontSize: getResponsiveSize(48, 40, 36),
+        fontSize: getResponsiveSize(32, 28),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       displayMedium: base.copyWith(
-        fontSize: getResponsiveSize(40, 36, 32),
-        fontWeight: FontWeight.w600,
+        fontSize: getResponsiveSize(28, 24),
+        fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       displaySmall: base.copyWith(
-        fontSize: getResponsiveSize(36, 32, 28),
+        fontSize: getResponsiveSize(24, 20),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineLarge: base.copyWith(
-        fontSize: getResponsiveSize(32, 38, 24),
+        fontSize: getResponsiveSize(22, 18),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       headlineMedium: base.copyWith(
-        fontSize: getResponsiveSize(28, 26, 22),
+        fontSize: getResponsiveSize(20, 16),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineSmall: base.copyWith(
-        fontSize: getResponsiveSize(24, 22, 20),
-        fontWeight: FontWeight.w500,
+        fontSize: getResponsiveSize(18, 14),
+        fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       titleLarge: base.copyWith(
-        fontSize: getResponsiveSize(38, 26, 22),
+        fontSize: getResponsiveSize(18, 16),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       titleMedium: base.copyWith(
-        fontSize: getResponsiveSize(34, 20, 18),
-        fontWeight: FontWeight.w500,
+        fontSize: getResponsiveSize(16, 14),
+        fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       titleSmall: base.copyWith(
-        fontSize: getResponsiveSize(20, 16, 14),
+        fontSize: getResponsiveSize(14, 12),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       bodyLarge: base.copyWith(
-        fontSize: getResponsiveSize(26, 26, 18),
+        fontSize: getResponsiveSize(16, 14),
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurface,
       ),
       bodyMedium: base.copyWith(
-        fontSize: getResponsiveSize(24, 24, 16),
+        fontSize: getResponsiveSize(14, 12),
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurfaceVariant,
       ),
       bodySmall: base.copyWith(
-        fontSize: getResponsiveSize(16, 16, 14),
+        fontSize: getResponsiveSize(12, 11),
         fontWeight: FontWeight.normal,
         color: _textTertiary,
       ),
       labelLarge: base.copyWith(
-        fontSize: getResponsiveSize(24, 24, 18),
+        fontSize: getResponsiveSize(14, 12),
         fontWeight: FontWeight.w500,
         color: colorScheme.onPrimary,
       ),
       labelMedium: base.copyWith(
-        fontSize: getResponsiveSize(20, 20, 14),
+        fontSize: getResponsiveSize(12, 11),
         fontWeight: FontWeight.w500,
         color: colorScheme.onSurfaceVariant,
       ),
       labelSmall: base.copyWith(
-        fontSize: getResponsiveSize(14, 14, 12),
-        fontWeight: FontWeight.bold,
+        fontSize: getResponsiveSize(11, 10),
+        fontWeight: FontWeight.w500,
         color: colorScheme.primary,
       ),
     );
@@ -191,12 +180,27 @@ class AppTheme {
           disabledForegroundColor: const Color(0xFF78909C),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           textStyle: TextStyle(
-            fontSize: getResponsiveSize(24, 24, 18),
+            fontSize: getResponsiveSize(16, 14),
             fontWeight: FontWeight.w500,
             fontFamily: 'Inter',
           ),
         ),
       ),
+      // outlined theme
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          side: BorderSide(color: colorScheme.primary),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          textStyle: TextStyle(
+            fontSize: getResponsiveSize(16, 14),
+            fontWeight: FontWeight.w500,
+            fontFamily: 'Inter',
+          ),
+        ),
+      ),
+
       extensions: [
         CustomColors(
           primaryHover: const Color(0xFF084C61),

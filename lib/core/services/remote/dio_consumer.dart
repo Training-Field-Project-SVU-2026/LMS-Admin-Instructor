@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:lms_admin_instructor/core/errors/exceptions.dart';
 import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
@@ -23,11 +26,12 @@ class DioConsumer extends ApiConsumer {
   }
 
   @override
-  Future delete(
+  Future<Either<String, T>> delete<T>(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     bool isFromData = false,
+    T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.delete(
@@ -35,17 +39,18 @@ class DioConsumer extends ApiConsumer {
         data: isFromData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
-      return response.data;
+      return _handleResponse(response, fromJson);
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      return Left(DioExceptionHandler.handleException(e));
     }
   }
 
   @override
-  Future get(
+  Future<Either<String, T>> get<T>(
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
+    T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.get(
@@ -53,18 +58,19 @@ class DioConsumer extends ApiConsumer {
         data: data,
         queryParameters: queryParameters,
       );
-      return response.data;
+      return _handleResponse(response, fromJson);
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      return Left(DioExceptionHandler.handleException(e));
     }
   }
 
   @override
-  Future patch(
+  Future<Either<String, T>> patch<T>(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     bool isFromData = false,
+    T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.patch(
@@ -72,18 +78,39 @@ class DioConsumer extends ApiConsumer {
         data: isFromData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
-      return response.data;
+      return _handleResponse(response, fromJson);
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      return Left(DioExceptionHandler.handleException(e));
     }
   }
 
   @override
-  Future post(
+  Future<Either<String, T>> put<T>(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     bool isFromData = false,
+    T Function(Map<String, dynamic>)? fromJson,
+  }) async {
+    try {
+      final response = await dio.put(
+        path,
+        data: isFromData ? FormData.fromMap(data) : data,
+        queryParameters: queryParameters,
+      );
+      return _handleResponse(response, fromJson);
+    } on DioException catch (e) {
+      return Left(DioExceptionHandler.handleException(e));
+    }
+  }
+
+  @override
+  Future<Either<String, T>> post<T>(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    bool isFromData = false,
+    T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.post(
@@ -91,9 +118,37 @@ class DioConsumer extends ApiConsumer {
         data: isFromData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
-      return response.data;
+      return _handleResponse(response, fromJson);
     } on DioException catch (e) {
-      handleDioExceptions(e);
+      return Left(DioExceptionHandler.handleException(e));
+    }
+  }
+
+  Either<String, T> _handleResponse<T>(
+    Response response,
+    T Function(Map<String, dynamic>)? fromJson,
+  ) {
+    log("The Response: $response");
+    try {
+      final responseData = response.data;
+      if (responseData is Map<String, dynamic>) {
+        final bool success = responseData['success'] ?? false;
+        final int status = responseData['status'] ?? response.statusCode ?? 0;
+        final String message = responseData['message'] ?? 'Unknown error';
+
+        if (success && (status == 200 || status == 201)) {
+          if (fromJson != null) {
+            return Right(fromJson(responseData));
+          } else {
+            return Right(responseData as T);
+          }
+        } else {
+          return Left(message);
+        }
+      }
+      return Left('Unexpected response format');
+    } catch (e) {
+      return Left('Error parsing response: ${e.toString()}');
     }
   }
 }

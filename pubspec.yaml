@@ -26,8 +26,17 @@ dependencies:
   flutter_screenutil: ^5.9.3
 
   get_it: ^9.2.1
+  cached_network_image: ^3.4.1
+  dartz: ^0.10.1
+  flutter_svg: ^2.2.4
+  provider: ^6.1.5+1
 
   linked_scroll_controller: ^0.2.0
+
+  json_serializable: ^6.13.1
+
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +50,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - lib/core/localization/l10n/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

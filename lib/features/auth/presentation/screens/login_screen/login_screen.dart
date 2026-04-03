@@ -130,7 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(
+        title: Text('Login', style: context.textTheme.labelMedium),
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
@@ -193,9 +195,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 //   onPressed: () => context.push(AppRoutes.registerScreen),
                 //   child: const Text('Don\'t have an account? Register'),
                 // ),
-                CustomButton(
-                  txt: 'Taha',
-                  onPressed: () {
+                CustomPrimaryButton(
+                  text: 'Taha',
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(

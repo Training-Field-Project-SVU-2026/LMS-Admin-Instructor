@@ -1,59 +1,80 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
-class CustomButton extends StatefulWidget {
-  final String txt;
-  final Function() onPressed;
-  final double? w;
-  final double? h;
-  final Color? color;
-  CustomButton({
-    Key? key,
-    required this.txt,
-    required this.onPressed,
-    this.w,
-    this.h,
+class CustomPrimaryButton extends StatelessWidget {
+  final String text;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final VoidCallback? onTap;
+  final double? width;
+  final double? height;
+  final double? iconPadding;
+  final double? iconSize;
+  final TextStyle? textStyle;
+  final ButtonStyle?
+  style; 
+  final Color?
+  color; 
+
+  const CustomPrimaryButton({
+    super.key,
+    required this.text,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.onTap,
+    this.width,
+    this.height,
+    this.iconPadding,
+    this.iconSize,
+    this.textStyle,
+    this.style,
     this.color,
-  }) : super(key: key);
+  });
 
-  @override
-  State<CustomButton> createState() => _CustomButtonState();
-}
-
-class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        fixedSize: Size(
-          widget.w ??
-              getResponsiveSize(
-                context: context,
-                webSize: 550,
-                tabletSize: 400,
-                mobileSize: 250,
-              ),
-          widget.h ??
-              getResponsiveSize(
-                context: context,
-                webSize: 60,
-                tabletSize: 55,
-                mobileSize: 50,
-              ),
-        ),
-        backgroundColor: widget.color ?? context.colorScheme.primary,
-      ),
+    final Color defaultColor =
+        textStyle?.color ??
+        style?.foregroundColor?.resolve({}) ??
+        context.colorScheme.onPrimary;
 
-      onPressed: widget.onPressed,
-      child: Text(
-        widget.txt,
-        style: context.textTheme.labelLarge?.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
+    return SizedBox(
+      width: width?.w ?? 278.w,
+      height: height?.h ?? 50.h,
+      child: ElevatedButton(
+        onPressed: onTap,
+
+        style:
+            style, 
+        child: IconTheme(
+          data: IconThemeData(color: defaultColor, size: iconSize?.w ?? 20.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              
+              if (prefixIcon != null) ...[
+                prefixIcon!,
+                SizedBox(width: iconPadding?.w ?? 8.w),
+              ],
+
+              Flexible(
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  style: (textStyle ?? context.textTheme.labelLarge)?.copyWith(
+                    color: defaultColor,
+                  ),
+                ),
+              ),
+
+              
+              if (suffixIcon != null) ...[
+                SizedBox(width: iconPadding?.w ?? 8.w),
+                suffixIcon!,
+              ],
+            ],
+          ),
         ),
       ),
     );
