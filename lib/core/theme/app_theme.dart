@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +20,9 @@ class AppTheme {
   static const _error = Color(0xFFD32F2F);
 
   static double getResponsiveSize(double webSize, double mobileSize) {
-    log(
-      "${ScreenUtil().screenWidth.toString()} and ${ScreenUtil().screenWidth > 600 ? 'web' : 'mobile'}",
-    );
+    // log(
+    //   "${ScreenUtil().screenWidth.toString()} and ${ScreenUtil().screenWidth > 600 ? 'web' : 'mobile'}",
+    // );
     return ScreenUtil().screenWidth > 1024 ? webSize.sp : mobileSize.sp;
   }
 

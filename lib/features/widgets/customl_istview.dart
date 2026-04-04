@@ -55,6 +55,17 @@ class CustomListView extends StatelessWidget {
                       child: Center(
                         child: Text(
                           (userData[index] is Instructor)
+                              ? (userData[index] as Instructor).bio
+                              : (userData[index] as Student).bio,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          (userData[index] is Instructor)
                               ? (userData[index] as Instructor).date
                               : (userData[index] as Student).joinDate,
                           maxLines: 1,
@@ -62,6 +73,7 @@ class CustomListView extends StatelessWidget {
                         ),
                       ),
                     ),
+
                     Expanded(
                       child: Center(
                         child: Text(

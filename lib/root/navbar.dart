@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/features/home/ttt.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/screens/admin_insructor_screen.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -14,8 +15,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const Ttt(),
-    const Ttt(),
-    const Ttt(),
+    const AdminInsructorScreen(),
     const Ttt(),
     const Ttt(),
     const Ttt(),
@@ -249,14 +249,6 @@ class NavItem extends StatelessWidget {
                         : context.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontWeight: FontWeight.w500,
                   ),
-
-                  // TextStyle(
-                  //   color: isSelected
-                  //       ? context.colorScheme.onSurface.withValues(alpha: 0.8)
-                  //       : context.colorScheme.onSurface.withValues(alpha: 0.5),
-                  //   fontWeight: FontWeight.w500,
-                  //   fontSize: 15,
-                  // ),
                 ),
               ],
             ),
