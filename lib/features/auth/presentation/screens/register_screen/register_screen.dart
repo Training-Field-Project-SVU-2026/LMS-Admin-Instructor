@@ -23,7 +23,7 @@ class RegisterScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
-            if (isTablet(context) || isDesktop(context))
+            if (isDesktop(context))
               const Expanded(flex: 1, child: RegisterLeftSide()),
             const Expanded(flex: 1, child: RegisterRightSide()),
           ],
