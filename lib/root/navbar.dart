@@ -73,11 +73,9 @@ class NavigationBarWidget extends StatelessWidget {
             ),
           ),
           Divider(
-            color: context.colorScheme.onSurface,
+            color: context.colorScheme.onSurface.withValues(alpha: 0.3),
             height: 1,
             thickness: 1,
-            indent: 24,
-            endIndent: 24,
           ),
           SizedBox(height: 24.h),
           Padding(
@@ -127,11 +125,15 @@ class NavigationBarWidget extends StatelessWidget {
             ),
           ),
           Spacer(),
+          Divider(
+            color: context.colorScheme.onSurface.withValues(alpha: 0.3),
+            height: 1,
+            thickness: 1,
+          ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                Divider(color: Colors.white24, height: 1, thickness: 1),
                 SizedBox(height: 16.h),
                 NavItem(
                   icon: Icons.settings_outlined,
@@ -140,26 +142,24 @@ class NavigationBarWidget extends StatelessWidget {
                   isSelected: selectedIndex == 5,
                   onTap: () => onItemTap(5),
                 ),
-                SizedBox(height: 16.h),
                 Container(
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
+                    color: context.colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white.withOpacity(0.1)),
                   ),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 20,
-                        backgroundColor: Color(0xFF3B82F6),
+                        backgroundColor: context.colorScheme.primary,
                         child: Icon(
                           Icons.person,
-                          color: Colors.white,
+                          color: context.colorScheme.onPrimary,
                           size: 22,
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: 5.w),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,17 +167,20 @@ class NavigationBarWidget extends StatelessWidget {
                             Text(
                               'Admin User',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: context.colorScheme.onSurface,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
                               ),
                             ),
-                            SizedBox(height: 4.h),
+                            SizedBox(height: 1.h),
                             Text(
                               'admin@lms.com',
                               style: TextStyle(
-                                color: Color(0xFF94A3B8),
-                                fontSize: 11,
+                                color: context.colorScheme.onSurface.withValues(
+                                  alpha: 0.5,
+                                ),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
