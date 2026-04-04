@@ -10,7 +10,7 @@ import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_p
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.forgotPasswordScreen,
+    initialLocation: AppRoutes.loginScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,

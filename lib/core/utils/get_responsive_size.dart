@@ -1,17 +1,3 @@
-// double getResponsiveSize({
-//   required double webSize,
-//   required double tabletSize,
-//   required double mobileSize,
-//   required double width,
-// }) {
-//   if (width > 1024) {
-//     return webSize; // Web / Desktop
-//   } else if (width >= 600) {
-//     return tabletSize; // Tablet
-//   } else {
-//     return mobileSize; // Mobile
-//   }
-// }
 import 'package:flutter/widgets.dart';
 
 double getResponsiveSize({
@@ -29,4 +15,17 @@ double getResponsiveSize({
   } else {
     return mobileSize; // Mobile
   }
+}
+
+bool isTablet(BuildContext context) {
+  return MediaQuery.of(context).size.width >= 600 &&
+      MediaQuery.of(context).size.width < 1024;
+}
+
+bool isDesktop(BuildContext context) {
+  return MediaQuery.of(context).size.width >= 1024;
+}
+
+bool isMobile(BuildContext context) {
+  return MediaQuery.of(context).size.width < 600;
 }

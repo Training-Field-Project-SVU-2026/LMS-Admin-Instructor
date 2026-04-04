@@ -1,4 +1,17 @@
 {
   "Hello": "Hello",
-  "welcom_to_lms_admin_instructor": "Welcom to LMS Student"
+  "welcom_to_lms_admin_instructor": "Welcom to LMS Student",
+  "welcome_back": "Welcome back",
+  "sign_in_subtitle": "Sign in to your account and continue your journey.",
+  "email_address": "Email Address",
+  "email_hint": "name@example.com",
+  "password": "Password",
+  "password_hint": "Enter your password",
+  "forgot_password": "Forgot Password?",
+  "sign_in_to_dashboard": "Sign in to Dashboard",
+  "signing_in": "Signing in...",
+  "dont_have_account": "Don't have an account? ",
+  "sign_up": "Sign Up",
+  "verify_email_message": "Please verify your email. Click \"Resend OTP\" to get a new code.",
+  "login_success": "Login Success"
 }

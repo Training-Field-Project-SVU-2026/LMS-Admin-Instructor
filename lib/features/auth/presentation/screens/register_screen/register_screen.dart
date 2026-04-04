@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/register_screen/widgets/register_left_side.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/register_screen/widgets/register_right_side.dart';
 
@@ -20,10 +21,11 @@ class RegisterScreen extends StatelessWidget {
             ],
           ),
         ),
-        child: const Row(
+        child: Row(
           children: [
-            Expanded(flex: 1, child: RegisterLeftSide()),
-            Expanded(flex: 1, child: RegisterRightSide()),
+            if (isTablet(context) || isDesktop(context))
+              const Expanded(flex: 1, child: RegisterLeftSide()),
+            const Expanded(flex: 1, child: RegisterRightSide()),
           ],
         ),
       ),
