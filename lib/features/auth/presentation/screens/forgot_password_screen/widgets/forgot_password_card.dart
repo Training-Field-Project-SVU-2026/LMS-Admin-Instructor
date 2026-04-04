@@ -85,7 +85,8 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
                         color: context.colorScheme.onSurface,
                       ),
                       style: IconButton.styleFrom(
-                        backgroundColor: context.colorScheme.onSurface.withValues(alpha: 0.05),
+                        backgroundColor: context.colorScheme.onSurface
+                            .withValues(alpha: 0.05),
                         padding: const EdgeInsets.all(12),
                       ),
                     ),
@@ -102,7 +103,11 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
                       shape: BoxShape.circle,
                     ),
                     child: Center(
-                      child: _FloatingKeyIcon(),
+                      child: Icon(
+                        Icons.key_rounded,
+                        size: 48,
+                        color: context.colorScheme.primary,
+                      ),
                     ),
                   ),
 
@@ -158,7 +163,9 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: context.colorScheme.primary.withValues(alpha: 0.25),
+                          color: context.colorScheme.primary.withValues(
+                            alpha: 0.25,
+                          ),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
@@ -175,9 +182,9 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
                       width: cardWidth,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 24),
-                  
+
                   // Return Link
                   TextButton(
                     onPressed: () => context.go(AppRoutes.loginScreen),
@@ -198,42 +205,6 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _FloatingKeyIcon extends StatefulWidget {
-  @override
-  State<_FloatingKeyIcon> createState() => _FloatingKeyIconState();
-}
-
-class _FloatingKeyIconState extends State<_FloatingKeyIcon>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 2000),
-  )..repeat(reverse: true);
-
-  late final Animation<Offset> _animation = Tween<Offset>(
-    begin: const Offset(0, -0.1),
-    end: const Offset(0, 0.1),
-  ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _animation,
-      child: Icon(
-        Icons.key_rounded,
-        size: 48,
-        color: context.colorScheme.primary,
       ),
     );
   }

@@ -5,5 +5,4 @@ import 'package:lms_admin_instructor/features/auth/data/model/login_response_mod
 
 abstract class AuthRepository {
   Future<Either<String, LoginResponseModel>> login(LoginRequestModel request);
-  Future<void> register(String name, String email, String password);
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
 class LoginLeftSide extends StatelessWidget {
@@ -10,13 +12,12 @@ class LoginLeftSide extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Premium Glowing Orbs Background
         Positioned(
           top: -100,
           right: -100,
           child: Container(
-            width: 400,
-            height: 400,
+            width: 400.w,
+            height: 400.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(
@@ -32,8 +33,8 @@ class LoginLeftSide extends StatelessWidget {
           bottom: -50,
           left: -150,
           child: Container(
-            width: 500,
-            height: 500,
+            width: 500.w,
+            height: 500.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(
@@ -46,7 +47,6 @@ class LoginLeftSide extends StatelessWidget {
           ),
         ),
 
-        // Content
         SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -56,8 +56,7 @@ class LoginLeftSide extends StatelessWidget {
                 tabletSize: 48,
                 mobileSize: 24,
               ),
-              vertical:
-                  40, // Locked vertical padding so texts don't crush the SVG height
+              vertical: 40,
             ),
             child: TweenAnimationBuilder<double>(
               tween: Tween(begin: 0.0, end: 1.0),
@@ -75,7 +74,6 @@ class LoginLeftSide extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Brand Logo Area
                   Row(
                     children: [
                       Container(
@@ -101,7 +99,7 @@ class LoginLeftSide extends StatelessWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         child: Text(
-                          'Commit Ma3ana',
+                          context.tr('commit_ma3ana'),
                           style: context.textTheme.titleLarge?.copyWith(
                             color: context.colorScheme.onPrimary,
                             fontWeight: FontWeight.w800,
@@ -120,42 +118,37 @@ class LoginLeftSide extends StatelessWidget {
                   ),
                   const Spacer(),
 
-                  // Main Hero Illustration with Glow and Float
                   Expanded(
                     flex: 6,
-                    child: FloatingIllustration(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // Fancy Glowing Aura behind Illustration
-                          Container(
-                            width: 180,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: context.colorScheme.secondary
-                                      .withValues(alpha: 0.25),
-                                  blurRadius: 100,
-                                  spreadRadius: 40,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 180.w,
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: context.colorScheme.secondary.withValues(
+                                  alpha: 0.25,
                                 ),
-                              ],
-                            ),
+                                blurRadius: 100,
+                                spreadRadius: 40,
+                              ),
+                            ],
                           ),
-                          // The User's Illustration
-                          SvgPicture.asset(
-                            'assets/icons/login.svg',
-                            fit: BoxFit.contain,
-                            alignment: Alignment.center,
-                          ),
-                        ],
-                      ),
+                        ),
+                        SvgPicture.asset(
+                          'assets/icons/login.svg',
+                          fit: BoxFit.contain,
+                          alignment: Alignment.center,
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32.h),
 
-                  // Premium Typography
                   RichText(
                     text: TextSpan(
                       style: context.textTheme.headlineMedium?.copyWith(
@@ -170,9 +163,9 @@ class LoginLeftSide extends StatelessWidget {
                         ),
                       ),
                       children: [
-                        const TextSpan(text: 'Commit today.\n'),
+                        TextSpan(text: context.tr('commit_today')),
                         TextSpan(
-                          text: 'Build your future.',
+                          text: context.tr('build_your_future'),
                           style: TextStyle(
                             color: context.colorScheme.secondary,
                           ),
@@ -180,14 +173,14 @@ class LoginLeftSide extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   Text(
-                    'Join thousands of learners building consistency and\ngrowing their programming skills — one commit at a time.',
+                    context.tr('join_learners_desc'),
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.onPrimary.withValues(
                         alpha: 0.75,
                       ),
-                      height: 1.6,
+                      height: 1.6.h,
                       fontSize: getResponsiveSize(
                         context: context,
                         webSize: 18,
@@ -204,38 +197,5 @@ class LoginLeftSide extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-// Private widget for elegant floating animation
-class FloatingIllustration extends StatefulWidget {
-  final Widget child;
-  const FloatingIllustration({super.key, required this.child});
-
-  @override
-  State<FloatingIllustration> createState() => _FloatingIllustrationState();
-}
-
-class _FloatingIllustrationState extends State<FloatingIllustration>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 2500),
-  )..repeat(reverse: true);
-
-  late final Animation<Offset> _animation = Tween<Offset>(
-    begin: const Offset(0, -0.05),
-    end: const Offset(0, 0.05),
-  ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SlideTransition(position: _animation, child: widget.child);
   }
 }

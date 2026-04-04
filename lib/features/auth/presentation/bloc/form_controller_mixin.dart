@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/login_request_model.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/register_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
 
 
@@ -8,11 +7,6 @@ mixin FormControllersMixin {
   // Shared between login and register
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  // Register
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
 
   // Otp
   final List<TextEditingController> otpControllers = List.generate(
@@ -53,21 +47,9 @@ void clearResetPasswordControllers() {
     return registerFormKey.currentState?.validate() ?? false;
   }
 
-  RegisterRequestModel getRegisterRequest() {
-    return RegisterRequestModel(
-      firstName: firstNameController.text.trim(),
-      lastName: lastNameController.text.trim(),
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
-  }
-
   void clearRegisterControllers() {
-    firstNameController.clear();
-    lastNameController.clear();
     emailController.clear();
     passwordController.clear();
-    confirmPasswordController.clear();
   }
 
   // login
@@ -106,9 +88,6 @@ void clearResetPasswordControllers() {
   void disposeControllers() {
     emailController.dispose();
     passwordController.dispose();
-    firstNameController.dispose();
-    lastNameController.dispose();
-    confirmPasswordController.dispose();
     for (var controller in otpControllers) {
       controller.dispose();
     }

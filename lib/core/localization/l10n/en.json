@@ -13,5 +13,9 @@
   "dont_have_account": "Don't have an account? ",
   "sign_up": "Sign Up",
   "verify_email_message": "Please verify your email. Click \"Resend OTP\" to get a new code.",
-  "login_success": "Login Success"
+  "login_success": "Login Success",
+  "commit_ma3ana": "Commit Ma3ana",
+  "commit_today": "Commit today.\n",
+  "build_your_future": "Build your future.",
+  "join_learners_desc": "Join thousands of learners building consistency and\ngrowing their programming skills — one commit at a time."
 }
