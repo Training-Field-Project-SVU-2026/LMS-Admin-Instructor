@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
@@ -38,39 +37,46 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           getResponsiveSize(
             context: context,
             webSize: 550,
-            tabletSize: 400,
             mobileSize: 250,
           ),
       height: getResponsiveSize(
         context: context,
         webSize: 60,
-        tabletSize: 55,
         mobileSize: 50,
       ),
       child: TextFormField(
         controller: widget.controller,
         style: context.textTheme.labelMedium?.copyWith(
           color: context.colorScheme.primary,
+          fontSize: getResponsiveSize(
+            context: context,
+            webSize: 16,
+            mobileSize: 14,
+          ),
         ),
         decoration: InputDecoration(
           prefixIcon: widget.prefixIcon != null
-              ? Icon(widget.prefixIcon)
+              ? Icon(widget.prefixIcon, size: 20)
               : null,
 
           suffixIcon: widget.suffixIcon != null
-              ? Icon(widget.suffixIcon)
+              ? Icon(widget.suffixIcon, size: 20)
               : null,
-          contentPadding: EdgeInsets.only(
-            bottom: 15.h,
-            top: 10.h,
-            left: 10.w,
-            right: 10.w,
+          contentPadding: const EdgeInsets.only(
+            bottom: 15,
+            top: 10,
+            left: 16,
+            right: 16,
           ),
           labelText: widget.txt,
-          labelStyle: TextStyle(color: widget.color ?? Colors.grey),
+          labelStyle: TextStyle(
+            color: widget.color ?? Colors.grey,
+            fontSize: 14,
+          ),
           hintText: widget.hint,
+          hintStyle: const TextStyle(fontSize: 14),
         ),
-        cursorHeight: 30.h,
+        cursorHeight: 24,
         cursorColor: context.colorScheme.primary,
       ),
     );

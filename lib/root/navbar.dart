@@ -243,13 +243,20 @@ class NavItem extends StatelessWidget {
                 SizedBox(width: 5.w),
                 Text(
                   label,
-                  style: TextStyle(
+                  style: context.textTheme.labelSmall?.copyWith(
                     color: isSelected
                         ? context.colorScheme.onSurface.withValues(alpha: 0.8)
                         : context.colorScheme.onSurface.withValues(alpha: 0.5),
                     fontWeight: FontWeight.w500,
-                    fontSize: 15,
                   ),
+
+                  // TextStyle(
+                  //   color: isSelected
+                  //       ? context.colorScheme.onSurface.withValues(alpha: 0.8)
+                  //       : context.colorScheme.onSurface.withValues(alpha: 0.5),
+                  //   fontWeight: FontWeight.w500,
+                  //   fontSize: 15,
+                  // ),
                 ),
               ],
             ),

@@ -1,231 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/routing/app_routes.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:lms_admin_instructor/features/widgets/custom_viewer.dart';
-import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
-import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
-import 'package:lms_admin_instructor/features/widgets/instructor.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/widgets/login_left_side.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/widgets/login_right_side.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  final userData = [
-    Instructor(
-      name: "Taha",
-      date: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Instructor(
-      name: "Taha",
-      date: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Instructor(
-      name: "Taha",
-      date: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Instructor(
-      name: "Taha",
-      date: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Instructor(
-      name: "Taha",
-      date: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-    Student(
-      name: "Taha El-Student",
-      joinDate: "2022-01-01",
-      email: "[EMAIL_ADDRESS]",
-      action: () {},
-    ),
-  ];
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login', style: context.textTheme.labelMedium),
-      ),
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthSuccess) {
-            context.go(AppRoutes.homeScreen);
-          } else if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-          }
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // TextFormField(
-                //   controller: _emailController,
-                //   decoration: const InputDecoration(labelText: 'Email'),
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty)
-                //       return 'Please enter email';
-                //     return null;
-                //   },
-                // ),
-                // const SizedBox(height: 16),
-                // TextFormField(
-                //   controller: _passwordController,
-                //   decoration: const InputDecoration(labelText: 'Password'),
-                //   obscureText: true,
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty)
-                //       return 'Please enter password';
-                //     return null;
-                //   },
-                // ),
-                // const SizedBox(height: 24),
-                // BlocBuilder<AuthBloc, AuthState>(
-                //   builder: (context, state) {
-                //     if (state is AuthLoading) {
-                //       return const CircularProgressIndicator();
-                //     }
-                //     return ElevatedButton(
-                //       onPressed: () {
-                //         if (_formKey.currentState!.validate()) {
-                //           context.read<AuthBloc>().add(
-                //             LoginEvent(
-                //               email: _emailController.text,
-                //               password: _passwordController.text,
-                //             ),
-                //           );
-                //         }
-                //       },
-                //       child: const Text('Login'),
-                //     );
-                //   },
-                // ),
-                // TextButton(
-                //   onPressed: () => context.push(AppRoutes.registerScreen),
-                //   child: const Text('Don\'t have an account? Register'),
-                // ),
-                CustomPrimaryButton(
-                  text: 'Taha',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CustomViewer(
-                          userData: userData,
-                          instructorInfo: [
-                            "Instructor Name",
-                            "Join Date",
-                            "email",
-                            "Actions",
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  color: context.colorScheme.secondary,
-                  // h: 120,
-                ),
-                SizedBox(height: 20),
-                CustomTextFormField(
-                  txt: "taha",
-                  hint: "Taha@mail.com",
-                  controller: _emailController,
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              context.colorScheme.primary,
+              context.colorScheme.primary.withValues(alpha: 0.85),
+            ],
           ),
+        ),
+        child: Row(
+          children: [
+            if (isTablet(context) || isDesktop(context))
+              const Expanded(flex: 1, child: LoginLeftSide()),
+            const Expanded(flex: 1, child: LoginRightSide()),
+          ],
         ),
       ),
     );

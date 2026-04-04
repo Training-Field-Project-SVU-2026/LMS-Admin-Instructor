@@ -52,14 +52,12 @@ class _CustomViewerState extends State<CustomViewer> {
           width: getResponsiveSize(
             context: context,
             webSize: 1104,
-            tabletSize: 800,
             mobileSize: 650,
           ),
           // 1104.w,
           height: getResponsiveSize(
             context: context,
             webSize: 949,
-            tabletSize: 600,
             mobileSize: 550,
           ),
           // 949.h,
@@ -77,7 +75,6 @@ class _CustomViewerState extends State<CustomViewer> {
                   width: getResponsiveSize(
                     context: context,
                     webSize: 1104,
-                    tabletSize: 800,
                     mobileSize: 650,
                   ),
                   padding: EdgeInsets.symmetric(
