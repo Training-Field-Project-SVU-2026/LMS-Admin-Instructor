@@ -53,7 +53,6 @@ class LoginLeftSide extends StatelessWidget {
               horizontal: getResponsiveSize(
                 context: context,
                 webSize: 80,
-                tabletSize: 48,
                 mobileSize: 24,
               ),
               vertical:
@@ -109,7 +108,6 @@ class LoginLeftSide extends StatelessWidget {
                             fontSize: getResponsiveSize(
                               context: context,
                               webSize: 28,
-                              tabletSize: 24,
                               mobileSize: 20,
                             ),
                           ),
@@ -165,7 +163,6 @@ class LoginLeftSide extends StatelessWidget {
                         fontSize: getResponsiveSize(
                           context: context,
                           webSize: 48,
-                          tabletSize: 36,
                           mobileSize: 28,
                         ),
                       ),
@@ -191,7 +188,6 @@ class LoginLeftSide extends StatelessWidget {
                       fontSize: getResponsiveSize(
                         context: context,
                         webSize: 18,
-                        tabletSize: 16,
                         mobileSize: 14,
                       ),
                     ),

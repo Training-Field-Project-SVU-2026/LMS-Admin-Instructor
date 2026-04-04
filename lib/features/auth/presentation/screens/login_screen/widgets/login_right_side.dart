@@ -20,7 +20,6 @@ class LoginRightSide extends StatelessWidget {
     final formWidth = getResponsiveSize(
       context: context,
       webSize: 480,
-      tabletSize: 400,
       mobileSize: 320,
     );
 
@@ -124,7 +123,6 @@ class LoginRightSide extends StatelessWidget {
                               fontSize: getResponsiveSize(
                                 context: context,
                                 webSize: 36,
-                                tabletSize: 28,
                                 mobileSize: 24,
                               ),
                             ),
@@ -138,7 +136,6 @@ class LoginRightSide extends StatelessWidget {
                               fontSize: getResponsiveSize(
                                 context: context,
                                 webSize: 16,
-                                tabletSize: 16,
                                 mobileSize: 14,
                               ),
                             ),
