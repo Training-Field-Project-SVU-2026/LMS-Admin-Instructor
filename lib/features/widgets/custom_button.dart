@@ -61,7 +61,6 @@ class CustomPrimaryButton extends StatelessWidget {
                     fontSize: textStyle?.fontSize ?? getResponsiveSize(
                       context: context,
                       webSize: 16,
-                      tabletSize: 15,
                       mobileSize: 14,
                     ),
                   ),

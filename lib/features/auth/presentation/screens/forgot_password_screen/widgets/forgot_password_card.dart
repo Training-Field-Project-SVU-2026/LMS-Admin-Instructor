@@ -28,7 +28,6 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
     final cardWidth = getResponsiveSize(
       context: context,
       webSize: 520,
-      tabletSize: 480,
       mobileSize: double.infinity,
     );
 
@@ -65,7 +64,6 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
               getResponsiveSize(
                 context: context,
                 webSize: 48,
-                tabletSize: 40,
                 mobileSize: 32,
               ),
             ),
@@ -123,7 +121,6 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
                       fontSize: getResponsiveSize(
                         context: context,
                         webSize: 32,
-                        tabletSize: 28,
                         mobileSize: 24,
                       ),
                     ),
@@ -138,7 +135,6 @@ class _ForgotPasswordCardState extends State<ForgotPasswordCard> {
                       fontSize: getResponsiveSize(
                         context: context,
                         webSize: 16,
-                        tabletSize: 16,
                         mobileSize: 14,
                       ),
                     ),

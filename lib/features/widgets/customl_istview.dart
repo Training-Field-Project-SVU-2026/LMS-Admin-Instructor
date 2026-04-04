@@ -22,7 +22,6 @@ class CustomListView extends StatelessWidget {
           width: getResponsiveSize(
             context: context,
             webSize: 1104,
-            tabletSize: 800,
             mobileSize: 650,
           ),
           child: ListView.builder(

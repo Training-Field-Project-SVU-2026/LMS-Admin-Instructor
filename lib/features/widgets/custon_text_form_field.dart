@@ -37,13 +37,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           getResponsiveSize(
             context: context,
             webSize: 550,
-            tabletSize: 400,
             mobileSize: 250,
           ),
       height: getResponsiveSize(
         context: context,
         webSize: 60,
-        tabletSize: 55,
         mobileSize: 50,
       ),
       child: TextFormField(
@@ -53,7 +51,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           fontSize: getResponsiveSize(
             context: context,
             webSize: 16,
-            tabletSize: 14,
             mobileSize: 14,
           ),
         ),

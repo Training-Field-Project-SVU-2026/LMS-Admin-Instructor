@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,8 +20,10 @@ class AppTheme {
   static const _error = Color(0xFFD32F2F);
 
   static double getResponsiveSize(double webSize, double mobileSize) {
-    if (kIsWeb) return webSize.sp;
-    return ScreenUtil().screenWidth > 600 ? webSize.sp : mobileSize.sp;
+    log(
+      "${ScreenUtil().screenWidth.toString()} and ${ScreenUtil().screenWidth > 600 ? 'web' : 'mobile'}",
+    );
+    return ScreenUtil().screenWidth > 1024 ? webSize.sp : mobileSize.sp;
   }
 
   static TextTheme _buildTextTheme(ColorScheme colorScheme) {
@@ -81,7 +85,7 @@ class AppTheme {
         color: colorScheme.onSurfaceVariant,
       ),
       bodySmall: base.copyWith(
-        fontSize: getResponsiveSize(12, 11),
+        fontSize: getResponsiveSize(13, 11),
         fontWeight: FontWeight.normal,
         color: _textTertiary,
       ),
@@ -96,7 +100,7 @@ class AppTheme {
         color: colorScheme.onSurfaceVariant,
       ),
       labelSmall: base.copyWith(
-        fontSize: getResponsiveSize(11, 10),
+        fontSize: getResponsiveSize(12, 10),
         fontWeight: FontWeight.w500,
         color: colorScheme.primary,
       ),
