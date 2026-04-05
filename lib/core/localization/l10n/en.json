@@ -13,5 +13,16 @@
   "dont_have_account": "Don't have an account? ",
   "sign_up": "Sign Up",
   "verify_email_message": "Please verify your email. Click \"Resend OTP\" to get a new code.",
-  "login_success": "Login Success"
+  "login_success": "Login Success",
+  "home": "Home",
+  "explore": "Explore",
+  "my_learning": "My Learning",
+  "profile": "Profile",
+  "dashboard": "Dashboard",
+  "instructors": "Instructors",
+  "students": "Students",
+  "courses": "Courses",
+  "announcement": "Announcement",
+  "settings": "Settings",
+  "lms_admin": "LMS Admin"
 }

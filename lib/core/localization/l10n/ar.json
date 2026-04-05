@@ -12,5 +12,16 @@
     "dont_have_account": "ليس لديك حساب؟",
     "sign_up": "إنشاء حساب",
     "verify_email_message": "يرجى تفعيل بريدك الإلكتروني. اضغط على \"إعادة إرسال رمز التحقق\" للحصول على رمز جديد.",
-    "login_success": "تم تسجيل الدخول بنجاح"
+    "login_success": "تم تسجيل الدخول بنجاح",
+    "home": "الرئيسية",
+    "explore": "استكشاف",
+    "my_learning": "تعليمي",
+    "profile": "الملف الشخصي",
+    "dashboard": "لوحة التحكم",
+    "instructors": "المعلمون",
+    "students": "الطلاب",
+    "courses": "الدورات",
+    "announcement": "الإعلانات",
+    "settings": "الإعدادات",
+    "lms_admin": "مسؤول LMS"
 }

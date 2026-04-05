@@ -7,7 +7,7 @@ import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.d
 import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/register_screen/register_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
-import 'package:lms_admin_instructor/root/custonview.dart';
+import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
@@ -57,7 +57,7 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.customview,
         name: AppRoutes.customview,
-        builder: (context, state) => Customview(),
+        builder: (context, state) => CustomViewNavBar(),
       ),
       // GoRoute(
       //   path: AppRoutes.loginScreen,
