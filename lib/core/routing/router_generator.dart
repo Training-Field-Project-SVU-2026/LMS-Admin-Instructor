@@ -12,7 +12,7 @@ import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.verifyOtpScreen,
+    initialLocation: AppRoutes.navBar,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
