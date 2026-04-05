@@ -34,6 +34,7 @@ class _CustomAddInstructorState extends State<CustomAddInstructor> {
           ],
         ),
         Spacer(),
+
         CustomPrimaryButton(
           prefixIcon: Icon(Icons.add),
           text: "Add Instructor",

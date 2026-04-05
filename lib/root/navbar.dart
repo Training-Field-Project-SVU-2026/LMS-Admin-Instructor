@@ -142,52 +142,54 @@ class NavigationBarWidget extends StatelessWidget {
                   isSelected: selectedIndex == 5,
                   onTap: () => onItemTap(5),
                 ),
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: context.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: context.colorScheme.primary,
-                        child: Icon(
-                          Icons.person,
-                          color: context.colorScheme.onPrimary,
-                          size: 22,
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: context.colorScheme.primary,
+                          child: Icon(
+                            Icons.person,
+                            color: context.colorScheme.onPrimary,
+                            size: 22,
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 5.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Admin User',
-                              style: TextStyle(
-                                color: context.colorScheme.onSurface,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(height: 1.h),
-                            Text(
-                              'admin@lms.com',
-                              style: TextStyle(
-                                color: context.colorScheme.onSurface.withValues(
-                                  alpha: 0.5,
+                        SizedBox(width: 5.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Admin User',
+                                style: TextStyle(
+                                  color: context.colorScheme.onSurface,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
                                 ),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                              SizedBox(height: 1.h),
+                              Text(
+                                'admin@lms.com',
+                                style: TextStyle(
+                                  color: context.colorScheme.onSurface
+                                      .withValues(alpha: 0.5),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
