@@ -76,12 +76,12 @@ class LoginRightSide extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
-          borderRadius: isDesktop(context) 
+          borderRadius: context.isDesktop 
               ? BorderRadius.horizontal(left: Radius.circular(30.r)) 
               : BorderRadius.zero,
         ),
         child: ClipRRect(
-          borderRadius: isDesktop(context) 
+          borderRadius: context.isDesktop 
               ? BorderRadius.horizontal(left: Radius.circular(30.r)) 
               : BorderRadius.zero,
           child: Center(

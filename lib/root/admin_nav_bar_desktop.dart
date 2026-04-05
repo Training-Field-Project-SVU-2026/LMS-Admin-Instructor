@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/home/ttt.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/screens/instructor_admin_screen.dart';
 
-class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({super.key});
+class AdminNavBarDesktop extends StatefulWidget {
+  const AdminNavBarDesktop({super.key});
 
   @override
-  State<AdminDashboard> createState() => _AdminDashboardState();
+  State<AdminNavBarDesktop> createState() => _AdminNavBarDesktopState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
+class _AdminNavBarDesktopState extends State<AdminNavBarDesktop> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     const Ttt(),
-    const Ttt(),
-    const Ttt(),
+    const InstructorAdminScreen(),
     const Ttt(),
     const Ttt(),
     const Ttt(),
@@ -56,37 +57,33 @@ class NavigationBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 280,
+      width: 280.w,
       decoration: BoxDecoration(color: context.colorScheme.surface),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(28, 32, 28, 24),
+            padding: EdgeInsets.fromLTRB(28.w, 32.h, 28.w, 24.h),
             child: Text(
-              'LMS Admin',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+              context.tr('lms_admin'),
+              style: context.textTheme.displaySmall?.copyWith(
                 color: context.colorScheme.primary,
               ),
             ),
           ),
           Divider(
-            color: context.colorScheme.onSurface,
+            color: context.colorScheme.onSurface.withValues(alpha: 0.1),
             height: 1,
             thickness: 1,
-            indent: 24,
-            endIndent: 24,
           ),
           SizedBox(height: 24.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               children: [
                 NavItem(
                   icon: Icons.dashboard_outlined,
-                  label: 'Dashboard',
+                  label: 'dashboard',
                   index: 0,
                   isSelected: selectedIndex == 0,
                   onTap: () => onItemTap(0),
@@ -94,7 +91,7 @@ class NavigationBarWidget extends StatelessWidget {
                 SizedBox(height: 8.h),
                 NavItem(
                   icon: Icons.person_outline,
-                  label: 'Instructors',
+                  label: 'instructors',
                   index: 1,
                   isSelected: selectedIndex == 1,
                   onTap: () => onItemTap(1),
@@ -102,7 +99,7 @@ class NavigationBarWidget extends StatelessWidget {
                 SizedBox(height: 8.h),
                 NavItem(
                   icon: Icons.school_outlined,
-                  label: 'Students',
+                  label: 'students',
                   index: 2,
                   isSelected: selectedIndex == 2,
                   onTap: () => onItemTap(2),
@@ -110,7 +107,7 @@ class NavigationBarWidget extends StatelessWidget {
                 SizedBox(height: 8.h),
                 NavItem(
                   icon: Icons.menu_book_outlined,
-                  label: 'Courses',
+                  label: 'courses',
                   index: 3,
                   isSelected: selectedIndex == 3,
                   onTap: () => onItemTap(3),
@@ -118,7 +115,7 @@ class NavigationBarWidget extends StatelessWidget {
                 SizedBox(height: 8.h),
                 NavItem(
                   icon: Icons.campaign_outlined,
-                  label: 'Announcement',
+                  label: 'announcement',
                   index: 4,
                   isSelected: selectedIndex == 4,
                   onTap: () => onItemTap(4),
@@ -126,59 +123,54 @@ class NavigationBarWidget extends StatelessWidget {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
+          Divider(
+            color: context.colorScheme.onSurface.withValues(alpha: 0.1),
+            height: 1,
+            thickness: 1,
+          ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               children: [
-                Divider(color: Colors.white24, height: 1, thickness: 1),
                 SizedBox(height: 16.h),
                 NavItem(
                   icon: Icons.settings_outlined,
-                  label: 'Settings',
+                  label: 'settings',
                   index: 5,
                   isSelected: selectedIndex == 5,
                   onTap: () => onItemTap(5),
                 ),
-                SizedBox(height: 16.h),
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white.withOpacity(0.1)),
+                    color: context.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Color(0xFF3B82F6),
+                        radius: 20.r,
+                        backgroundColor: context.colorScheme.primary,
                         child: Icon(
                           Icons.person,
-                          color: Colors.white,
-                          size: 22,
+                          color: context.colorScheme.onPrimary,
+                          size: 22.sp,
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: 8.w),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Admin User',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                              ),
+                              style: context.textTheme.titleMedium,
                             ),
-                            SizedBox(height: 4.h),
+                            SizedBox(height: 1.h),
                             Text(
                               'admin@lms.com',
-                              style: TextStyle(
-                                color: Color(0xFF94A3B8),
-                                fontSize: 11,
-                              ),
+                              style: context.textTheme.bodySmall,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
@@ -190,6 +182,7 @@ class NavigationBarWidget extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: 16.h),
         ],
       ),
     );
@@ -218,16 +211,16 @@ class NavItem extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14.r),
         color: isSelected
-            ? context.colorScheme.primary.withValues(alpha: 0.3)
+            ? context.colorScheme.primary.withValues(alpha: 0.15)
             : Colors.transparent,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(14.r),
           onTap: onTap,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             child: Row(
               children: [
                 Icon(
@@ -235,25 +228,24 @@ class NavItem extends StatelessWidget {
                   color: isSelected
                       ? context.colorScheme.primary
                       : context.colorScheme.onSurface.withValues(alpha: 0.5),
-                  size: 22,
+                  size: 22.sp,
                 ),
-                SizedBox(width: 5.w),
-                Text(
-                  label,
-                  style: context.textTheme.labelSmall?.copyWith(
-                    color: isSelected
-                        ? context.colorScheme.onSurface.withValues(alpha: 0.8)
-                        : context.colorScheme.onSurface.withValues(alpha: 0.5),
-                    fontWeight: FontWeight.w500,
+                SizedBox(width: 8.w),
+                Flexible(
+                  child: Text(
+                    context.tr(label),
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: isSelected
+                          ? context.colorScheme.primary
+                          : context.colorScheme.onSurface.withValues(
+                              alpha: 0.5,
+                            ),
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-
-                  // TextStyle(
-                  //   color: isSelected
-                  //       ? context.colorScheme.onSurface.withValues(alpha: 0.8)
-                  //       : context.colorScheme.onSurface.withValues(alpha: 0.5),
-                  //   fontWeight: FontWeight.w500,
-                  //   fontSize: 15,
-                  // ),
                 ),
               ],
             ),

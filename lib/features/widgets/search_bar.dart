@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
-class CustomTextFormField extends StatefulWidget {
-  final String txt;
+class CustomSearchBarr extends StatefulWidget {
   final String hint;
   final double? w;
   final double? h;
+  final double? r;
   final Color? color;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final TextEditingController controller;
-  const CustomTextFormField({
+  const CustomSearchBarr({
     Key? key,
-    required this.txt,
     required this.hint,
     this.w,
     this.h,
+    this.r,
     this.color,
     this.prefixIcon,
     this.suffixIcon,
@@ -25,10 +25,10 @@ class CustomTextFormField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+  State<CustomSearchBarr> createState() => _SearchBar();
 }
 
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
+class _SearchBar extends State<CustomSearchBarr> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -47,12 +47,22 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           ),
         ),
         decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.r ?? 8.0),
+            borderSide: BorderSide(
+              color: widget.color ?? Colors.grey.shade400,
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(widget.r ?? 8.0),
+            borderSide: BorderSide(
+              color: context.colorScheme.primary,
+              width: 1.5,
+            ),
+          ),
           prefixIcon: widget.prefixIcon != null
               ? Icon(widget.prefixIcon, size: 20)
-              : null,
-
-          suffixIcon: widget.suffixIcon != null
-              ? Icon(widget.suffixIcon, size: 20)
               : null,
           contentPadding: const EdgeInsets.only(
             bottom: 15,
@@ -60,13 +70,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             left: 16,
             right: 16,
           ),
-          labelText: widget.txt,
-          labelStyle: TextStyle(
-            color: widget.color ?? Colors.grey,
-            fontSize: 14,
-          ),
           hintText: widget.hint,
-          hintStyle: const TextStyle(fontSize: 14),
+          hintStyle: context.textTheme.labelMedium?.copyWith(
+            color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+          ),
         ),
         cursorHeight: 24,
         cursorColor: context.colorScheme.primary,

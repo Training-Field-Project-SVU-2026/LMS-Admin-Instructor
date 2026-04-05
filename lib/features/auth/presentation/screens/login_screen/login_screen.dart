@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
-            if (isDesktop(context))
+            if (context.isDesktop)
               const Expanded(flex: 1, child: LoginLeftSide()),
             const Expanded(flex: 1, child: LoginRightSide()),
           ],
