@@ -76,10 +76,14 @@ class LoginRightSide extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
-          borderRadius: BorderRadius.horizontal(left: Radius.circular(30.r)),
+          borderRadius: isDesktop(context) 
+              ? BorderRadius.horizontal(left: Radius.circular(30.r)) 
+              : BorderRadius.zero,
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.horizontal(left: Radius.circular(30.r)),
+          borderRadius: isDesktop(context) 
+              ? BorderRadius.horizontal(left: Radius.circular(30.r)) 
+              : BorderRadius.zero,
           child: Center(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -90,20 +94,7 @@ class LoginRightSide extends StatelessWidget {
                     horizontal: 32.0,
                     vertical: 24.0,
                   ),
-                  child: TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0.0, end: 1.0),
-                    duration: const Duration(milliseconds: 800),
-                    curve: Curves.easeOutCubic,
-                    builder: (context, value, child) {
-                      return Opacity(
-                        opacity: value,
-                        child: Transform.translate(
-                          offset: Offset(30 * (1 - value), 0),
-                          child: child,
-                        ),
-                      );
-                    },
-                    child: Form(
+                  child: Form(
                       key: authBloc.loginFormKey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -138,7 +129,6 @@ class LoginRightSide extends StatelessWidget {
                           ),
                           SizedBox(height: 56.h),
 
-                          // Inputs
                           CustomTextFormField(
                             controller: authBloc.emailController,
                             txt: context.tr('email_address'),
@@ -158,7 +148,6 @@ class LoginRightSide extends StatelessWidget {
 
                           const SizedBox(height: 16),
 
-                          // Actions
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
@@ -233,41 +222,9 @@ class LoginRightSide extends StatelessWidget {
                           ),
 
                           const SizedBox(height: 32),
-
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     Text(
-                          //       context.tr('dont_have_account'),
-                          //       style: context.textTheme.bodyMedium?.copyWith(
-                          //         color: context.colorScheme.onSurfaceVariant,
-                          //         fontSize: 14,
-                          //       ),
-                          //     ),
-                          //     TextButton(
-                          //       onPressed: () {
-                          //         context.go(AppRoutes.registerScreen);
-                          //       },
-                          //       style: TextButton.styleFrom(
-                          //         padding: EdgeInsets.zero,
-                          //         minimumSize: Size.zero,
-                          //         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          //       ),
-                          //       child: Text(
-                          //         context.tr('sign_up'),
-                          //         style: context.textTheme.bodyMedium?.copyWith(
-                          //           color: context.colorScheme.primary,
-                          //           fontWeight: FontWeight.bold,
-                          //           fontSize: 14.sp,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
                         ],
                       ),
                     ),
-                  ),
                 ),
               ),
             ),

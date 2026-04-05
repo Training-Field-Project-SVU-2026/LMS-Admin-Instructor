@@ -42,11 +42,6 @@ void clearResetPasswordControllers() {
   final otpFormKey = GlobalKey<FormState>();
   final resetPasswordFormKey = GlobalKey<FormState>();
 
-  //Register
-  bool validateRegisterForm() {
-    return registerFormKey.currentState?.validate() ?? false;
-  }
-
   void clearRegisterControllers() {
     emailController.clear();
     passwordController.clear();

@@ -6,11 +6,13 @@ import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_admin_instructor/root/navbar.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.navbarScreen,
+    initialLocation: AppRoutes.verifyOtpScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -35,6 +37,26 @@ class RouterGenerator {
           return BlocProvider.value(
             value: sl<AuthBloc>(),
             child: const ForgotPasswordScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.verifyOtpScreen,
+        name: AppRoutes.verifyOtpScreen,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<AuthBloc>(),
+            child: const VerifyOtpScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.resetPasswordScreen,
+        name: AppRoutes.resetPasswordScreen,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<AuthBloc>(),
+            child: const ResetPasswordScreen(),
           );
         },
       ),

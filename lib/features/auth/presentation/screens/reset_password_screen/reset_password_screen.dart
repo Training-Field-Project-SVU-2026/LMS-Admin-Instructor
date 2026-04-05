@@ -10,8 +10,8 @@ import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.d
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  const ForgotPasswordScreen({super.key});
+class ResetPasswordScreen extends StatelessWidget {
+  const ResetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +73,13 @@ class ForgotPasswordScreen extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: formWidth),
                 child: Form(
-                  key: authBloc.forgetPasswordFormKey,
+                  key: authBloc.resetPasswordFormKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        context.tr('forgot_password_title'),
+                        context.tr('reset_password_title'),
                         style: context.textTheme.displaySmall?.copyWith(
                           color: context.colorScheme.onSurface,
                           fontWeight: FontWeight.w800,
@@ -95,7 +95,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       SizedBox(height: 12.h),
 
                       Text(
-                        context.tr('forgot_password_desc'),
+                        context.tr('reset_password_subtitle'),
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                           fontSize: getResponsiveSize(
@@ -111,7 +111,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 4.0, left: 4.0),
                         child: Text(
-                          context.tr('email_address').toUpperCase(),
+                          context.tr('new_password').toUpperCase(),
                           style: context.textTheme.labelSmall?.copyWith(
                             color: context.colorScheme.primary,
                             fontWeight: FontWeight.w700,
@@ -121,28 +121,67 @@ class ForgotPasswordScreen extends StatelessWidget {
                         ),
                       ),
                       CustomTextFormField(
-                        controller: authBloc.emailController,
+                        controller: authBloc.newPasswordController,
                         txt: "",
-                        hint: context.tr('email_address'),
-                        prefixIcon: Icons.email_outlined,
+                        hint: context.tr('new_password_hint'),
+                        prefixIcon: Icons.lock_outline_rounded,
+                        suffixIcon: Icons.visibility_off_outlined,
                         w: formWidth,
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: 20.h),
+
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0, left: 4.0),
+                        child: Text(
+                          context.tr('confirm_password').toUpperCase(),
+                          style: context.textTheme.labelSmall?.copyWith(
+                            color: context.colorScheme.primary,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 11,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                      ),
+                      CustomTextFormField(
+                        controller: authBloc.confirmNewPasswordController,
+                        txt: "",
+                        hint: context.tr('confirm_password_hint'),
+                        prefixIcon: Icons.lock_outline_rounded,
+                        suffixIcon: Icons.visibility_off_outlined,
+                        w: formWidth,
+                      ),
+
+                      SizedBox(height: 32.h),
 
                       CustomPrimaryButton(
-                        text: context.tr('send_an_email'),
+                        text: context.tr('save_password'),
                         onTap: () {
-                          if (authBloc.forgetPasswordFormKey.currentState
+                          if (authBloc.resetPasswordFormKey.currentState
                                   ?.validate() ??
                               false) {
-                            FocusScope.of(context).unfocus();
+                            if (authBloc.newPasswordController.text !=
+                                authBloc.confirmNewPasswordController.text) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    "Passwords do not match",
+                                    style: context.textTheme.labelSmall
+                                        ?.copyWith(
+                                          color: context.colorScheme.surface,
+                                        ),
+                                  ),
+                                  backgroundColor: context.colorScheme.error,
+                                ),
+                              );
+                              return;
+                            }
 
-                            context.go(AppRoutes.verifyOtpScreen);
+                            FocusScope.of(context).unfocus();
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  "Otp code sent successfully!",
+                                  "Password changed successfully!",
                                   style: context.textTheme.labelSmall?.copyWith(
                                     color: context.colorScheme.surface,
                                   ),
@@ -150,6 +189,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 backgroundColor: context.colorScheme.secondary,
                               ),
                             );
+
+                            context.go(AppRoutes.loginScreen);
                           }
                         },
                         width: formWidth,
