@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_img.dart';
 import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 
 // ignore: must_be_immutable
@@ -36,7 +37,17 @@ class CustomListView extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: [
-                          const CircleAvatar(child: Icon(Icons.person)),
+                          InkWell(
+                            onTap: () {},
+                            child: CustomImage(
+                              aspectRatio: 1,
+                              imagePath:
+                                  "https://i.pinimg.com/474x/be/24/f1/be24f1ad82c82e78997c80ff0f8d6a53.jpg",
+                              width: 40.w,
+                              height: 40.h,
+                              borderRadius: BorderRadius.circular(30.r),
+                            ),
+                          ),
                           SizedBox(width: 8.w),
 
                           Expanded(

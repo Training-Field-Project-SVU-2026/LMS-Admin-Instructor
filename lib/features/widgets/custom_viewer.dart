@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
-import 'package:lms_admin_instructor/features/widgets/customl_istview.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_listview.dart';
 import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 
 class CustomViewer extends StatefulWidget {
