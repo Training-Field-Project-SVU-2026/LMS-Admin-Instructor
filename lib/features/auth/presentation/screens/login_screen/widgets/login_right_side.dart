@@ -76,14 +76,14 @@ class LoginRightSide extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
-          borderRadius: const BorderRadius.horizontal(
-            left: Radius.circular(48),
-          ),
+          borderRadius: isDesktop(context) 
+              ? BorderRadius.horizontal(left: Radius.circular(30.r)) 
+              : BorderRadius.zero,
         ),
         child: ClipRRect(
-          borderRadius: const BorderRadius.horizontal(
-            left: Radius.circular(48),
-          ),
+          borderRadius: isDesktop(context) 
+              ? BorderRadius.horizontal(left: Radius.circular(30.r)) 
+              : BorderRadius.zero,
           child: Center(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -94,26 +94,12 @@ class LoginRightSide extends StatelessWidget {
                     horizontal: 32.0,
                     vertical: 24.0,
                   ),
-                  child: TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0.0, end: 1.0),
-                    duration: const Duration(milliseconds: 800),
-                    curve: Curves.easeOutCubic,
-                    builder: (context, value, child) {
-                      return Opacity(
-                        opacity: value,
-                        child: Transform.translate(
-                          offset: Offset(30 * (1 - value), 0),
-                          child: child,
-                        ),
-                      );
-                    },
-                    child: Form(
+                  child: Form(
                       key: authBloc.loginFormKey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Clean and welcoming header
                           Text(
                             context.tr('welcome_back'),
                             style: context.textTheme.displaySmall?.copyWith(
@@ -128,7 +114,7 @@ class LoginRightSide extends StatelessWidget {
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12.h),
                           Text(
                             context.tr('sign_in_subtitle'),
                             style: context.textTheme.bodyMedium?.copyWith(
@@ -141,9 +127,8 @@ class LoginRightSide extends StatelessWidget {
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          const SizedBox(height: 56),
-                      
-                          // Inputs
+                          SizedBox(height: 56.h),
+
                           CustomTextFormField(
                             controller: authBloc.emailController,
                             txt: context.tr('email_address'),
@@ -151,7 +136,7 @@ class LoginRightSide extends StatelessWidget {
                             prefixIcon: Icons.alternate_email_rounded,
                             w: formWidth,
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24.h),
                           CustomTextFormField(
                             controller: authBloc.passwordController,
                             txt: context.tr('password'),
@@ -160,10 +145,9 @@ class LoginRightSide extends StatelessWidget {
                             suffixIcon: Icons.visibility_off_outlined,
                             w: formWidth,
                           ),
-                      
+
                           const SizedBox(height: 16),
-                      
-                          // Actions
+
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
@@ -186,10 +170,9 @@ class LoginRightSide extends StatelessWidget {
                               ),
                             ),
                           ),
-                      
+
                           const SizedBox(height: 32),
-                      
-                          // Bold Premium Login Button
+
                           BlocBuilder<AuthBloc, AuthState>(
                             builder: (context, state) {
                               final isLoading = state is AuthLoading;
@@ -222,7 +205,8 @@ class LoginRightSide extends StatelessWidget {
                                           width: 10.w,
                                           height: 10.w,
                                           child: CircularProgressIndicator(
-                                            color: context.colorScheme.onPrimary,
+                                            color:
+                                                context.colorScheme.onPrimary,
                                             strokeWidth: 2,
                                           ),
                                         )
@@ -236,44 +220,11 @@ class LoginRightSide extends StatelessWidget {
                               );
                             },
                           ),
-                      
+
                           const SizedBox(height: 32),
-                      
-                          // Navigation to Register
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                context.tr('dont_have_account'),
-                                style: context.textTheme.bodyMedium?.copyWith(
-                                  color: context.colorScheme.onSurfaceVariant,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  context.go(AppRoutes.registerScreen);
-                                },
-                                style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  minimumSize: Size.zero,
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                child: Text(
-                                  context.tr('sign_up'),
-                                  style: context.textTheme.bodyMedium?.copyWith(
-                                    color: context.colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
-                  ),
                 ),
               ),
             ),

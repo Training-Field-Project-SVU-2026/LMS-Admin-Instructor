@@ -10,7 +10,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
     on<LoginEvent>(_onLogin);
-    on<RegisterEvent>(_onRegister);
   }
 
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -33,19 +32,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
         emit(AuthSuccess(data: successResponse));
       },
     );
-  }
-
-  Future<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
-    try {
-      final result = await authRepository.register(
-        event.name,
-        event.email,
-        event.password,
-      );
-      emit(AuthSuccess());
-    } catch (e) {
-      emit(AuthError(message: e.toString()));
-    }
   }
 }

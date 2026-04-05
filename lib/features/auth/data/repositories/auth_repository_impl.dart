@@ -52,8 +52,4 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
-  @override
-  Future<void> register(String name, String email, String password) async {
-    // Implementation using apiConsumer
-  }
 }
