@@ -12,8 +12,8 @@ class EndPoint {
   static String logout = "/auth/logout/";
   static String forgotPassword = "/auth/forgot-password/";
   static String resetPassword = "/auth/reset-password/"; 
-
   static String refreshToken = "/auth/token/refresh/";
+  static String checkToken = "/auth/check-token/";
 
   static String getUserDataEndPoint(id) {
     return "/user/get-user/$id";

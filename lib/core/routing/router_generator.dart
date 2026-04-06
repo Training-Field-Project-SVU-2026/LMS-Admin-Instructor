@@ -8,17 +8,23 @@ import 'package:lms_admin_instructor/features/auth/presentation/screens/login_sc
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
+import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
+import 'package:lms_admin_instructor/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.forgotPasswordScreen,
+    initialLocation: AppRoutes.splashScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
         name: AppRoutes.splashScreen,
-        builder: (context, state) =>
-            const Scaffold(body: Center(child: Text("Splash Screen"))),
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: sl<SplashBloc>(),
+            child: const SplashScreen(),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.loginScreen,

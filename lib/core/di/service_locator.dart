@@ -6,6 +6,9 @@ import 'package:lms_admin_instructor/core/services/remote/dio_consumer.dart';
 import 'package:lms_admin_instructor/features/auth/data/repositories/auth_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/splash/data/repositories/splash_repository_impl.dart';
+import 'package:lms_admin_instructor/features/splash/domain/splash_repository.dart';
+import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -26,4 +29,10 @@ Future<void> setupServiceLocator() async {
     () => AuthRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
   sl.registerFactory(() => AuthBloc(authRepository: sl()));
+
+  // Splash
+  sl.registerLazySingleton<SplashRepository>(
+    () => SplashRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
+  );
+  sl.registerFactory(() => SplashBloc(splashRepository: sl()));
 }
