@@ -4,9 +4,10 @@ import 'package:dartz/dartz.dart';
 import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
 import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/login_request_model.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/login_response_model.dart';
-import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_repository.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_response_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final ApiConsumer apiConsumer;
@@ -52,4 +53,26 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
+ @override
+  Future<Either<String, String>> forgotPassword(String email) async {
+    final result = await apiConsumer.post<Map<String, dynamic>>(
+      EndPoint.forgotPassword,
+      data: {"email": email},
+    );
+    return result.fold(
+      (error) => Left(error),
+      (data) => Right(data['message']?.toString() ?? 'OTP sent successfully'),
+    );
+  }
+@override
+  Future<Either<String, String>> resetPassword(ResetPasswordRequestModel request) async {
+    final result = await apiConsumer.post<Map<String, dynamic>>(
+      EndPoint.resetPassword,
+      data: request.toJson(),
+    );
+    return result.fold(
+      (error) => Left(error),
+      (data) => Right(data['message']?.toString() ?? 'Password reset successfully'),
+    );
+  }
 }

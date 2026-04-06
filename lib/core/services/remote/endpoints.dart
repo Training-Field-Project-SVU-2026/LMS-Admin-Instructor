@@ -11,6 +11,7 @@ class EndPoint {
   static String register = "/auth/register/";
   static String logout = "/auth/logout/";
   static String forgotPassword = "/auth/forgot-password/";
+  static String resetPassword = "/auth/reset-password/"; 
 
   static String refreshToken = "/auth/token/refresh/";
 

@@ -12,6 +12,7 @@ class CustomTextFormField extends StatefulWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final TextEditingController controller;
+  final String? Function(String?)? validator;
   const CustomTextFormField({
     Key? key,
     required this.txt,
@@ -22,6 +23,7 @@ class CustomTextFormField extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     required this.controller,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -35,9 +37,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       width:
           widget.w ??
           getResponsiveSize(context: context, webSize: 550, mobileSize: 250),
-      height: getResponsiveSize(context: context, webSize: 60, mobileSize: 50),
       child: TextFormField(
         controller: widget.controller,
+        validator: widget.validator,
         style: context.textTheme.labelMedium?.copyWith(
           color: context.colorScheme.primary,
           fontSize: getResponsiveSize(

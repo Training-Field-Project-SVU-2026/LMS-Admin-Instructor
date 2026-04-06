@@ -1,41 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/login_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
 
-
-mixin FormControllersMixin {
-  // Shared between login and register
+mixin AuthAdminFromControllersMixin {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // Otp
   final List<TextEditingController> otpControllers = List.generate(
     6,
     (index) => TextEditingController(),
   );
 
-  // reset password
   final otpController = TextEditingController();
   final newPasswordController = TextEditingController();
   final confirmNewPasswordController = TextEditingController();
   bool validateResetPasswordForm() {
-  return resetPasswordFormKey.currentState?.validate() ?? false;
-}
+    return resetPasswordFormKey.currentState?.validate() ?? false;
+  }
 
-ResetPasswordRequestModel getResetPasswordRequest() {
-  return ResetPasswordRequestModel(
-    otp: otpController.text.trim(),
-    newPassword: newPasswordController.text.trim(),
-  );
-}
+  ResetPasswordRequestModel getResetPasswordRequest() {
+    return ResetPasswordRequestModel(
+      otp: otpController.text.trim(),
+      newPassword: newPasswordController.text.trim(),
+    );
+  }
 
-void clearResetPasswordControllers() {
-  otpController.clear();
-  newPasswordController.clear();
-  confirmNewPasswordController.clear();
-}
+  void clearResetPasswordControllers() {
+    otpController.clear();
+    newPasswordController.clear();
+    confirmNewPasswordController.clear();
+  }
 
-  // Form Keys
   final registerFormKey = GlobalKey<FormState>();
   final loginFormKey = GlobalKey<FormState>();
   final forgetPasswordFormKey = GlobalKey<FormState>();
@@ -47,7 +42,6 @@ void clearResetPasswordControllers() {
     passwordController.clear();
   }
 
-  // login
   bool validateLoginForm() {
     return loginFormKey.currentState?.validate() ?? false;
   }

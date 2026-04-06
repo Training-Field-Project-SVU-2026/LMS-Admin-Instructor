@@ -7,11 +7,12 @@ import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
-  const VerifyOtpScreen({super.key});
+  final String email;
+  const VerifyOtpScreen({super.key, required this.email});
 
   @override
   State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
@@ -122,11 +123,6 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           color: context.colorScheme.onSurface,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -0.5,
-                          fontSize: getResponsiveSize(
-                            context: context,
-                            webSize: 32,
-                            mobileSize: 28,
-                          ),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -136,11 +132,6 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         context.tr('verify_otp_desc'),
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
-                          fontSize: getResponsiveSize(
-                            context: context,
-                            webSize: 16,
-                            mobileSize: 14,
-                          ),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -207,11 +198,6 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             style: context.textTheme.bodySmall?.copyWith(
                               color: context.colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w600,
-                              fontSize: getResponsiveSize(
-                                context: context,
-                                webSize: 14,
-                                mobileSize: 12,
-                              ),
                             ),
                           ),
                         )
@@ -219,6 +205,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         Center(
                           child: TextButton(
                             onPressed: () {
+                              authBloc.add(
+                                ForgotPasswordEvent(email: widget.email),
+                              );
                               setState(() {
                                 _startTimer();
                               });
@@ -229,11 +218,6 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                 color: context.colorScheme.primary,
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
-                                fontSize: getResponsiveSize(
-                                  context: context,
-                                  webSize: 14,
-                                  mobileSize: 12,
-                                ),
                               ),
                             ),
                           ),
@@ -268,7 +252,6 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             style: context.textTheme.bodyMedium?.copyWith(
                               color: context.colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
                             ),
                           ),
                           style: TextButton.styleFrom(

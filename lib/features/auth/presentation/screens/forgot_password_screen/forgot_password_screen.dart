@@ -6,7 +6,8 @@ import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/utils/auth_validator.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
 
@@ -23,7 +24,32 @@ class ForgotPasswordScreen extends StatelessWidget {
 
     final authBloc = context.read<AuthBloc>();
 
-    return Scaffold(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is ForgotPasswordSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: context.colorScheme.secondary,
+            ),
+          );
+
+          context.go(
+            AppRoutes.verifyOtpScreen,
+            extra: {
+              'email': authBloc.emailController.text.trim(),
+            },
+          );
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: context.colorScheme.error,
+            ),
+          );
+        }
+      },
+      child: Scaffold(
       backgroundColor: context.colorScheme.surface,
       body: Stack(
         children: [
@@ -84,11 +110,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                           color: context.colorScheme.onSurface,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -0.5,
-                          fontSize: getResponsiveSize(
-                            context: context,
-                            webSize: 32,
-                            mobileSize: 28,
-                          ),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -98,11 +119,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                         context.tr('forgot_password_desc'),
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
-                          fontSize: getResponsiveSize(
-                            context: context,
-                            webSize: 16,
-                            mobileSize: 14,
-                          ),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -115,7 +131,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                           style: context.textTheme.labelSmall?.copyWith(
                             color: context.colorScheme.primary,
                             fontWeight: FontWeight.w700,
-                            fontSize: 11,
+
                             letterSpacing: 1.0,
                           ),
                         ),
@@ -126,33 +142,36 @@ class ForgotPasswordScreen extends StatelessWidget {
                         hint: context.tr('email_address'),
                         prefixIcon: Icons.email_outlined,
                         w: formWidth,
+                        validator: validateEmail,
                       ),
                       SizedBox(height: 24.h),
 
-                      CustomPrimaryButton(
-                        text: context.tr('send_an_email'),
-                        onTap: () {
-                          if (authBloc.forgetPasswordFormKey.currentState
-                                  ?.validate() ??
-                              false) {
-                            FocusScope.of(context).unfocus();
-
-                            context.go(AppRoutes.verifyOtpScreen);
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Otp code sent successfully!",
-                                  style: context.textTheme.labelSmall?.copyWith(
-                                    color: context.colorScheme.surface,
-                                  ),
-                                ),
-                                backgroundColor: context.colorScheme.secondary,
-                              ),
-                            );
-                          }
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          final isLoading = state is AuthLoading;
+                          return CustomPrimaryButton(
+                            text: isLoading
+                                ? context.tr('sending')
+                                : context.tr('send_an_email'),
+                            onTap: isLoading
+                                ? null
+                                : () {
+                                    if (authBloc.forgetPasswordFormKey
+                                            .currentState
+                                            ?.validate() ??
+                                        false) {
+                                      FocusScope.of(context).unfocus();
+                                      authBloc.add(
+                                        ForgotPasswordEvent(
+                                          email: authBloc.emailController.text
+                                              .trim(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                            width: formWidth,
+                          );
                         },
-                        width: formWidth,
                       ),
 
                       SizedBox(height: 32.h),
@@ -172,7 +191,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                             style: context.textTheme.bodyMedium?.copyWith(
                               color: context.colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
                             ),
                           ),
                           style: TextButton.styleFrom(
@@ -194,6 +212,6 @@ class ForgotPasswordScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

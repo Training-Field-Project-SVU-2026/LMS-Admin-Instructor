@@ -58,59 +58,63 @@ class LoginLeftSide extends StatelessWidget {
               vertical: 40,
             ),
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.onPrimary.withValues(
+                          alpha: 0.1,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
                           color: context.colorScheme.onPrimary.withValues(
-                            alpha: 0.1,
+                            alpha: 0.2,
                           ),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: context.colorScheme.onPrimary.withValues(
-                              alpha: 0.2,
-                            ),
-                            width: 1,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.commit_outlined,
-                          color: context.colorScheme.secondary,
-                          size: 28,
+                          width: 1,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Text(
-                          context.tr('commit_ma3ana'),
-                          style: context.textTheme.titleLarge?.copyWith(
-                            color: context.colorScheme.onPrimary,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 0.5,
-                            fontSize: getResponsiveSize(
-                              context: context,
-                              webSize: 28,
-                              mobileSize: 20,
-                            ),
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                      child: Icon(
+                        Icons.commit_outlined,
+                        color: context.colorScheme.secondary,
+                        size: 28,
                       ),
-                    ],
-                  ),
-                  const Spacer(),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        context.tr('commit_ma3ana'),
+                        style: context.textTheme.titleLarge?.copyWith(
+                          color: context.colorScheme.onPrimary,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
 
-                  Expanded(
-                    flex: 6,
+                Expanded(
+                  flex: 5,
+                  child: Center(
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
                         Container(
-                          width: 180.w,
-                          height: 180.h,
+                          width: getResponsiveSize(
+                            context: context,
+                            webSize: 250,
+                            mobileSize: 150,
+                          ),
+                          height: getResponsiveSize(
+                            context: context,
+                            webSize: 250,
+                            mobileSize: 150,
+                          ),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [
@@ -118,65 +122,59 @@ class LoginLeftSide extends StatelessWidget {
                                 color: context.colorScheme.secondary.withValues(
                                   alpha: 0.25,
                                 ),
-                                blurRadius: 100,
-                                spreadRadius: 40,
+                                blurRadius: 80,
+                                spreadRadius: 30,
                               ),
                             ],
                           ),
                         ),
                         SvgPicture.asset(
                           'assets/icons/login.svg',
+                          width: getResponsiveSize(
+                            context: context,
+                            webSize: 380,
+                            mobileSize: 250,
+                          ),
                           fit: BoxFit.contain,
                           alignment: Alignment.center,
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 32.h),
+                ),
+                SizedBox(height: 32.h),
 
-                  RichText(
-                    text: TextSpan(
-                      style: context.textTheme.headlineMedium?.copyWith(
-                        color: context.colorScheme.onPrimary,
-                        fontWeight: FontWeight.w900,
-                        height: 1.2,
-                        fontSize: getResponsiveSize(
-                          context: context,
-                          webSize: 48,
-                          mobileSize: 28,
-                        ),
-                      ),
-                      children: [
-                        TextSpan(text: context.tr('commit_today')),
-                        TextSpan(
-                          text: context.tr('build_your_future'),
-                          style: TextStyle(
-                            color: context.colorScheme.secondary,
-                          ),
-                        ),
-                      ],
+                RichText(
+                  text: TextSpan(
+                    style: context.textTheme.headlineMedium?.copyWith(
+                      color: context.colorScheme.onPrimary,
+                      fontWeight: FontWeight.w900,
+                      height: 1.2,
                     ),
+                    children: [
+                      TextSpan(text: context.tr('commit_today')),
+                      TextSpan(
+                        text: context.tr('build_your_future'),
+                        style: TextStyle(color: context.colorScheme.secondary),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 24.h),
-                  Text(
-                    context.tr('join_learners_desc'),
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: context.colorScheme.onPrimary.withValues(
-                        alpha: 0.75,
-                      ),
-                      height: 1.6.h,
-                      fontSize: getResponsiveSize(
-                        context: context,
-                        webSize: 18,
-                        mobileSize: 14,
-                      ),
+                ),
+                SizedBox(height: 24.h),
+                Text(
+                  context.tr('join_learners_desc'),
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colorScheme.onPrimary.withValues(
+                      alpha: 0.75,
                     ),
+                    height: 1.6.h,
                   ),
-                  const Spacer(),
-                ],
-              ),
+                ),
+                const Spacer(),
+              ],
             ),
           ),
+        ),
       ],
     );
   }

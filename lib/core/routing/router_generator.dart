@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
@@ -12,7 +12,7 @@ import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.verifyOtpScreen,
+    initialLocation: AppRoutes.forgotPasswordScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -44,9 +44,11 @@ class RouterGenerator {
         path: AppRoutes.verifyOtpScreen,
         name: AppRoutes.verifyOtpScreen,
         builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? {};
+          final email = extra['email'] as String? ?? '';
           return BlocProvider.value(
             value: sl<AuthBloc>(),
-            child: const VerifyOtpScreen(),
+            child: VerifyOtpScreen(email: email),
           );
         },
       ),

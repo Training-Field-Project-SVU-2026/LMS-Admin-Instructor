@@ -26,11 +26,12 @@
     "lms_admin": "مسؤول LMS",
     "commit_ma3ana": "كوميت معانا",
     "commit_today": "التزم اليوم.\n",
-    "build_your_future": "ابنِ مستقبلك.",            
+    "build_your_future": "ابنِ مستقبلك.",
     "join_learners_desc": "انضم إلى آلاف المتعلمين لبناء الاستمرارية وتنمية\nمهارات البرمجة الخاصة بهم — كوميت واحد في كل مرة.",
     "forgot_password_title": "نسيت كلمة المرور",
     "forgot_password_desc": "سنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
     "send_an_email": "إرسال البريد الإلكتروني",
+    "sending": "جاري الإرسال...",
     "go_back_to_login": "العودة إلى تسجيل الدخول",
     "reset_password_title": "تعيين كلمة مرور جديدة",
     "reset_password_subtitle": "يجب أن تكون كلمة المرور مختلفة. يرجى إدخال رمز التحقق المرسل لبريدك الإلكتروني.",
@@ -41,9 +42,11 @@
     "confirm_password": "تأكيد كلمة المرور",
     "confirm_password_hint": "قم بتأكيد كلمة المرور",
     "save_password": "حفظ كلمة المرور",
+    "saving": "جاري الحفظ...",
     "verify_otp_title": "التحقق من الرمز",
     "verify_otp_desc": "لقد أرسلنا رمز التحقق إلى بريدك الإلكتروني. أدخله أدناه للمتابعة.",
     "verify_otp_btn": "تأكيد الرمز",
     "resend_code_in": "إعادة الإرسال خلال",
-    "resend_code": "إعادة الإرسال"
+    "resend_code": "إعادة الإرسال",
+    "password_reset_success": "تم إعادة تعيين كلمة المرور بنجاح"
 }

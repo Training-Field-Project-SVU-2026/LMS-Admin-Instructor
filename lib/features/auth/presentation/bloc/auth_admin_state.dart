@@ -1,4 +1,4 @@
-part of 'auth_bloc.dart';
+part of 'auth_admin_bloc.dart';
 
 abstract class AuthState {}
 
@@ -14,4 +14,14 @@ class AuthSuccess<T> extends AuthState {
 class AuthError extends AuthState {
   final String message;
   AuthError({required this.message});
+}
+
+class ForgotPasswordSuccess extends AuthState {
+  final String message;
+  ForgotPasswordSuccess(this.message);
+}
+
+class ResetPasswordSuccess extends AuthState {
+  final String message;
+  ResetPasswordSuccess(this.message);
 }
