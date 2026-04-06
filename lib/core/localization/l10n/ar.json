@@ -26,7 +26,7 @@
     "lms_admin": "مسؤول LMS",
     "commit_ma3ana": "كوميت معانا",
     "commit_today": "التزم اليوم.\n",
-    "build_your_future": "ابنِ مستقبلك.",
+    "build_your_future": "ابدأ ببناء مستقبلك",
     "join_learners_desc": "انضم إلى آلاف المتعلمين لبناء الاستمرارية وتنمية\nمهارات البرمجة الخاصة بهم — كوميت واحد في كل مرة.",
     "forgot_password_title": "نسيت كلمة المرور",
     "forgot_password_desc": "سنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
@@ -48,5 +48,13 @@
     "verify_otp_btn": "تأكيد الرمز",
     "resend_code_in": "إعادة الإرسال خلال",
     "resend_code": "إعادة الإرسال",
-    "password_reset_success": "تم إعادة تعيين كلمة المرور بنجاح"
+    "password_reset_success": "تم إعادة تعيين كلمة المرور بنجاح",
+    "splash_title": "كوميت معانا",
+    "splash_desc": "ابنِ مستقبلك مع كل سطر برمجي.",
+    "error": "خطأ",
+    "authentication_failed": "فشل المصادقة",
+    "no_token_found": "لم يتم العثور على رمز تسجيل الدخول",
+    "session_expired": "انتهت الجلسة",
+    "account_inactive": "الحساب غير نشط. يرجى التواصل مع الدعم.",
+    "account_unverified": "الحساب غير مفعل. يرجى تفعيل البريد الإلكتروني."
 }

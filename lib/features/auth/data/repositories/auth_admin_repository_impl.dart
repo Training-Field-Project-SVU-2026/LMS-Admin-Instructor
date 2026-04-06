@@ -15,10 +15,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl({required this.apiConsumer, required this.cacheHelper});
 
-   @override
+  @override
   Future<Either<String, LoginResponseModel>> login(
     LoginRequestModel request,
   ) async {
+
     final result = await apiConsumer.post<LoginResponseModel>(
       EndPoint.login,
       data: request.toJson(),
@@ -26,34 +27,37 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     return await result.fold(
-      (error) => Left(error),
+      (error) {
+        return Left(error);
+      },
       (loginResponse) async {
+
         await cacheHelper.saveData(
           key: ApiKey.accessToken,
           value: loginResponse.accessToken,
         );
+
         await cacheHelper.saveData(
           key: ApiKey.refreshToken,
           value: loginResponse.refreshToken,
         );
-        await cacheHelper.saveData(
-          key: ApiKey.isLoggedIn,
-          value: true,
-        );
+
+        await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
 
         final userJson = jsonEncode(loginResponse.user.toJson());
         await cacheHelper.saveData(key: ApiKey.user, value: userJson);
 
         await cacheHelper.saveData(
-        key: ApiKey.slug,
-        value: loginResponse.user.slug,
-      );
-        return Right(loginResponse);
+          key: ApiKey.slug,
+          value: loginResponse.user.slug,
+        );
+
+          return Right(loginResponse);
       },
     );
   }
 
- @override
+  @override
   Future<Either<String, String>> forgotPassword(String email) async {
     final result = await apiConsumer.post<Map<String, dynamic>>(
       EndPoint.forgotPassword,
@@ -64,15 +68,19 @@ class AuthRepositoryImpl implements AuthRepository {
       (data) => Right(data['message']?.toString() ?? 'OTP sent successfully'),
     );
   }
-@override
-  Future<Either<String, String>> resetPassword(ResetPasswordRequestModel request) async {
+
+  @override
+  Future<Either<String, String>> resetPassword(
+    ResetPasswordRequestModel request,
+  ) async {
     final result = await apiConsumer.post<Map<String, dynamic>>(
       EndPoint.resetPassword,
       data: request.toJson(),
     );
     return result.fold(
       (error) => Left(error),
-      (data) => Right(data['message']?.toString() ?? 'Password reset successfully'),
+      (data) =>
+          Right(data['message']?.toString() ?? 'Password reset successfully'),
     );
   }
 }
