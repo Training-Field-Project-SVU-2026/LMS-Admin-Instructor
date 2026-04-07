@@ -23,6 +23,7 @@ class _InstructorDesktopAdminScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorScheme.primary.withValues(alpha: 0.005),
+      //**************************************??AppBar??********************************************??
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: CustomNavBar(),
@@ -33,12 +34,14 @@ class _InstructorDesktopAdminScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //**************************************??Button Add Instructor??********************************************??
             CustomAddInstructor(
               onTap: () {
                 context.push(AppRoutes.addInstructorAdminScreen);
               },
             ),
             SizedBox(height: 32.h),
+            //**************************************??Details Cards??********************************************??
             Row(
               children: [
                 CustomCardDesktop(
@@ -57,6 +60,7 @@ class _InstructorDesktopAdminScreenState
               ],
             ),
             SizedBox(height: 32.h),
+            //**************************************??show all instructors??********************************************??
             Expanded(
               child: CustomViewer(
                 instructorInfo: [
