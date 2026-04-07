@@ -3,12 +3,16 @@ import 'package:get_it/get_it.dart';
 import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
 import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/dio_consumer.dart';
-import 'package:lms_admin_instructor/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_repository.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/data/repositories/auth_admin_repository_impl.dart';
+import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/splash/data/repositories/splash_repository_impl.dart';
+import 'package:lms_admin_instructor/features/splash/domain/splash_repository.dart';
+import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_admin_instructor/features/students_admin/data/repository/students_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/students_admin/domain/repository/students_admin_repository.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/bloc/instructor_admin_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -28,11 +32,21 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
+
+  // Splash
+  sl.registerLazySingleton<SplashRepository>(
+    () => SplashRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
+  );
+  sl.registerFactory(() => SplashBloc(splashRepository: sl()));
+
+  sl.registerLazySingleton(() => AuthBloc(authRepository: sl()));
 
   // Features - Students Admin
   sl.registerLazySingleton<StudentsAdminRepository>(
     () => StudentsAdminRepositoryImpl(apiConsumer: sl()),
   );
   sl.registerFactory(() => StudentAdminBloc(studentsAdminRepository: sl()));
+
+  // Features - Instructor Admin
+  sl.registerFactory(() => InstructorAdminBloc());
 }

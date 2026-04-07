@@ -6,12 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
-  const VerifyOtpScreen({super.key});
+  final String email;
+  const VerifyOtpScreen({super.key, required this.email});
 
   @override
   State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
@@ -54,241 +54,215 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final formWidth = getResponsiveSize(
-      context: context,
-      webSize: 450,
-      mobileSize: 350,
-    );
-
     final authBloc = context.read<AuthBloc>();
 
-    return Scaffold(
-      backgroundColor: context.colorScheme.surface,
-      body: Stack(
-        children: [
-          Positioned(
-            top: -100,
-            right: -100,
-            child: Container(
-              width: 300,
-              height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: context.colorScheme.primary.withValues(alpha: 0.2),
-                boxShadow: [
-                  BoxShadow(
-                    color: context.colorScheme.primary.withValues(alpha: 0.2),
-                    blurRadius: 100,
-                    spreadRadius: 50,
+    return Center(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+          horizontal: 24.w,
+          vertical: 32.h,
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 400.w),
+          child: Form(
+            key: authBloc.otpFormKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  context.tr('verify_otp_title'),
+                  style: context.textTheme.headlineMedium!.copyWith(
+                    color: context.colorScheme.onSurface,
+                    fontWeight: FontWeight.w900,
                   ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: -150,
-            left: -150,
-            child: Container(
-              width: 400,
-              height: 400,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: context.colorScheme.primary.withValues(alpha: 0.15),
-                boxShadow: [
-                  BoxShadow(
-                    color: context.colorScheme.primary.withValues(alpha: 0.15),
-                    blurRadius: 120,
-                    spreadRadius: 60,
+                  textAlign: TextAlign.start,
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  context.tr('verify_otp_desc'),
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colorScheme.onSurfaceVariant,
                   ),
-                ],
-              ),
-            ),
-          ),
-
-          Center(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: formWidth),
-                child: Form(
-                  key: authBloc.otpFormKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        context.tr('verify_otp_title'),
-                        style: context.textTheme.displaySmall?.copyWith(
-                          color: context.colorScheme.onSurface,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.5,
-                          fontSize: getResponsiveSize(
-                            context: context,
-                            webSize: 32,
-                            mobileSize: 28,
-                          ),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 12.h),
-
-                      Text(
-                        context.tr('verify_otp_desc'),
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: context.colorScheme.onSurfaceVariant,
-                          fontSize: getResponsiveSize(
-                            context: context,
-                            webSize: 16,
-                            mobileSize: 14,
-                          ),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 48.h),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(6, (index) {
-                          return SizedBox(
-                            width: getResponsiveSize(
-                              context: context,
-                              webSize: 55,
-                              mobileSize: 45,
+                  textAlign: TextAlign.start,
+                ),
+                SizedBox(height: 48.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(6, (index) {
+                    return Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        child: AspectRatio(
+                          aspectRatio: 1.0,
+                          child: TextFormField(
+                            controller: authBloc.otpControllers[index],
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            maxLength: 1,
+                            style: context.textTheme.headlineSmall?.copyWith(
+                              color: context.colorScheme.onSecondary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.sp,
                             ),
-                            height: getResponsiveSize(
-                              context: context,
-                              webSize: 65,
-                              mobileSize: 55,
-                            ),
-                            child: TextFormField(
-                              controller: authBloc.otpControllers[index],
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              maxLength: 1,
-                              style: context.textTheme.headlineSmall?.copyWith(
-                                color: context.colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              decoration: InputDecoration(
-                                counterText: '',
-                                contentPadding: EdgeInsets.zero,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: context.colorScheme.onSurfaceVariant
-                                        .withValues(alpha: 0.3),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: context.colorScheme.primary,
-                                    width: 2,
-                                  ),
+                            decoration: InputDecoration(
+                              counterText: '',
+                              contentPadding: EdgeInsets.zero,
+                              filled: true,
+                              fillColor: context.colorScheme.secondary
+                                  .withValues(alpha: 0.03),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.r),
+                                borderSide: BorderSide(
+                                  color: context.colorScheme.secondary
+                                      .withValues(alpha: 0.15),
+                                  width: 1.5.w,
                                 ),
                               ),
-                              onChanged: (value) {
-                                if (value.isNotEmpty && index < 5) {
-                                  FocusScope.of(context).nextFocus();
-                                } else if (value.isEmpty && index > 0) {
-                                  FocusScope.of(context).previousFocus();
-                                }
-                              },
-                            ),
-                          );
-                        }),
-                      ),
-                      SizedBox(height: 32.h),
-
-                      if (_secondsRemaining > 0)
-                        Center(
-                          child: Text(
-                            '${context.tr('resend_code_in')} $_formattedTime',
-                            style: context.textTheme.bodySmall?.copyWith(
-                              color: context.colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
-                              fontSize: getResponsiveSize(
-                                context: context,
-                                webSize: 14,
-                                mobileSize: 12,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.r),
+                                borderSide: BorderSide(
+                                  color: context.colorScheme.secondary,
+                                  width: 2.5.w,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      else
-                        Center(
-                          child: TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _startTimer();
-                              });
+                            onChanged: (value) {
+                              if (value.isNotEmpty && index < 5) {
+                                FocusScope.of(context).nextFocus();
+                              } else if (value.isEmpty && index > 0) {
+                                FocusScope.of(context).previousFocus();
+                              }
                             },
-                            child: Text(
-                              context.tr('resend_code'),
-                              style: context.textTheme.bodySmall?.copyWith(
-                                color: context.colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                fontSize: getResponsiveSize(
-                                  context: context,
-                                  webSize: 14,
-                                  mobileSize: 12,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+                SizedBox(height: 32.h),
+                if (_secondsRemaining > 0)
+                  Center(
+                    child: Text(
+                      '${context.tr('resend_code_in')} $_formattedTime',
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                else
+                  Center(
+                    child: BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        final isResending = state is AuthLoading;
+                        return TextButton(
+                          onPressed: isResending
+                              ? null
+                              : () {
+                                  authBloc.add(
+                                    ResendOtpEvent(
+                                      email: authBloc.emailController.text
+                                          .trim(),
+                                    ),
+                                  );
+                                },
+                          child: isResending
+                              ? SizedBox(
+                                  height: 18.h,
+                                  width: 18.h,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: context.colorScheme.primary,
+                                  ),
+                                )
+                              : Text(
+                                  context.tr('resend_code'),
+                                  style: context.textTheme.bodySmall?.copyWith(
+                                    color: context.colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
+                        );
+                      },
+                    ),
+                  ),
+                SizedBox(height: 30.h),
+                CustomPrimaryButton(
+                  text: context.tr('verify_otp_btn'),
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    final otpCode = authBloc.getOtpCode();
+                    if (otpCode.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(context.tr('please_enter_full_otp')),
+                          backgroundColor: context.colorScheme.error,
                         ),
-
-                      SizedBox(height: 48.h),
-
-                      CustomPrimaryButton(
-                        text: context.tr('verify_otp_btn'),
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-
-                          context.go(AppRoutes.resetPasswordScreen);
-                        },
-                        width: formWidth,
-                      ),
-
-                      SizedBox(height: 24.h),
-
-                      Center(
-                        child: TextButton.icon(
-                          onPressed: () {
-                            context.go(AppRoutes.forgotPasswordScreen);
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            size: 14,
-                            color: context.colorScheme.onSurfaceVariant,
-                          ),
-                          label: Text(
-                            context.tr('go_back_to_login'),
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              color: context.colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
-                          ),
-                          style: TextButton.styleFrom(
-                            foregroundColor:
-                                context.colorScheme.onSurfaceVariant,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            splashFactory: NoSplash.splashFactory,
-                          ),
+                      );
+                      return;
+                    }
+                    authBloc.otpController.text = otpCode;
+                    context.go(AppRoutes.resetPasswordScreen);
+                  },
+                  width: 400.w,
+                ),
+               BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is ResendSuccess) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(context.tr('otp_resent_success')),
+                          backgroundColor: context.colorScheme.secondary,
                         ),
+                      );
+                      setState(() {
+                        _startTimer();
+                      });
+                    } else if (state is AuthError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: context.colorScheme.error,
+                        ),
+                      );
+                    }
+                  },
+                  child: const SizedBox.shrink(),
+                ),
+                SizedBox(height: 32.h),
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () {
+                      context.go(AppRoutes.loginScreen);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      size: 10.sp,
+                      color: context.colorScheme.onSurfaceVariant,
+                    ),
+                    label: Text(
+                      context.tr('go_back_to_login'),
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
                       ),
-                    ],
+                    ),
+                    style: TextButton.styleFrom(
+                      foregroundColor: context.colorScheme.onSurfaceVariant,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
+                      splashFactory: NoSplash.splashFactory,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

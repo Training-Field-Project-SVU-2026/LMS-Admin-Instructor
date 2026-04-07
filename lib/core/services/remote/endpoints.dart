@@ -1,26 +1,28 @@
-
 class EndPoint {
+  static String localUrl = "http://lcoalhost/api/";
+  static String remoteUrl =
+      "http://lms-env.eba-8nbnpx42.us-east-1.elasticbeanstalk.com/api";
 
-  static String localUrl = "http://lcoalhost/api";
-  static String remoteUrl = "http://lms-env.eba-8nbnpx42.us-east-1.elasticbeanstalk.com/api";
 
-  static String baseUrl = remoteUrl;  
-  
-  // auth 
+  static String baseUrl = remoteUrl;
+
+  // auth
   static String login = "/auth/login/";
   static String register = "/auth/register/";
   static String logout = "/auth/logout/";
   static String forgotPassword = "/auth/forgot-password/";
-
+  static String resetPassword = "/auth/reset-password/";
   static String refreshToken = "/auth/token/refresh/";
+  static String checkToken = "/auth/check-token/";
+  static String resendOtp = "/auth/resend-otp/";
 
   static String getUserDataEndPoint(id) {
     return "/user/get-user/$id";
   }
 
-
   //? Students
   static String studentsAdmin = "/admin/students/";
+
 
 }
 

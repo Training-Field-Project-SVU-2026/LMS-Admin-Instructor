@@ -29,7 +29,7 @@ class LoginResponseModel {
           ApiKey.refreshToken: refreshToken,
         },
         'user': user.toJson(),
-      }
+      },
     };
   }
 
