@@ -4,6 +4,7 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/home/ttt.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/students_admin/presentation/screens/student_admin_screen.dart';
 
 class AdminNavBarDesktop extends StatefulWidget {
   const AdminNavBarDesktop({super.key});
@@ -18,7 +19,7 @@ class _AdminNavBarDesktopState extends State<AdminNavBarDesktop> {
     const Ttt(),
     const InstructorAdminScreen(),
     const Ttt(),
-    const Ttt(),
+    const StudentAdminScreen(),
     const Ttt(),
   ];
 
