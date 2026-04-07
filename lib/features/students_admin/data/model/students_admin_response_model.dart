@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import '../../domain/entity/student_admin_ui_model.dart';
 import 'students_admin_model.dart';
 
 part 'students_admin_response_model.g.dart';
@@ -24,6 +25,15 @@ class StudentsAdminResponseModel {
   factory StudentsAdminResponseModel.fromJson(Map<String, dynamic> json) =>
       _$StudentsAdminResponseModelFromJson(json);
   Map<String, dynamic> toJson() => _$StudentsAdminResponseModelToJson(this);
+
+  StudentAdminUIModel toEntity() {
+    return StudentAdminUIModel(
+      students: data.students.map((e) => e.toEntity()).toList(),
+      totalEnrollments: data.totalEnrollments,
+      totalPages: data.totalPages,
+      currentPage: data.currentPage,
+    );
+  }
 }
 
 @JsonSerializable()

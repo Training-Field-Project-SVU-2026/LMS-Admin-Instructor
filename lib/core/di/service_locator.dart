@@ -6,6 +6,9 @@ import 'package:lms_admin_instructor/core/services/remote/dio_consumer.dart';
 import 'package:lms_admin_instructor/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_admin_instructor/features/students_admin/data/repository/students_admin_repository_impl.dart';
+import 'package:lms_admin_instructor/features/students_admin/domain/repository/students_admin_repository.dart';
+import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -26,4 +29,10 @@ Future<void> setupServiceLocator() async {
     () => AuthRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
   sl.registerFactory(() => AuthBloc(authRepository: sl()));
+
+  // Features - Students Admin
+  sl.registerLazySingleton<StudentsAdminRepository>(
+    () => StudentsAdminRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerFactory(() => StudentAdminBloc(studentsAdminRepository: sl()));
 }
