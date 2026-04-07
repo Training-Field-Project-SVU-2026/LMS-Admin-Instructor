@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_add_instructor.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_card_desktop.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_nav_bar.dart';
@@ -31,7 +33,11 @@ class _InstructorDesktopAdminScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomAddInstructor(),
+            CustomAddInstructor(
+              onTap: () {
+                context.push(AppRoutes.addInstructorAdminScreen);
+              },
+            ),
             SizedBox(height: 32.h),
             Row(
               children: [
@@ -66,7 +72,9 @@ class _InstructorDesktopAdminScreenState
                     bio: "PhD in Computer Science with 10 years of exp…",
                     date: "2022-01-01",
                     email: "[EMAIL_ADDRESS]",
-                    action: () {},
+                    action: () {
+                      context.push(AppRoutes.profileInstructorAdminScreen);
+                    },
                   ),
                   Instructor(
                     name: "John Doe",

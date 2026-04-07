@@ -40,12 +40,11 @@ class CustomListView extends StatelessWidget {
                           InkWell(
                             onTap: () {},
                             child: CustomImage(
-                              aspectRatio: 1,
                               imagePath:
                                   "https://i.pinimg.com/474x/be/24/f1/be24f1ad82c82e78997c80ff0f8d6a53.jpg",
-                              width: 40.w,
-                              height: 40.h,
-                              borderRadius: BorderRadius.circular(30.r),
+                              width: 45,
+                              height: 45,
+                              borderRadius: BorderRadius.circular(25.r),
                             ),
                           ),
                           SizedBox(width: 8.w),

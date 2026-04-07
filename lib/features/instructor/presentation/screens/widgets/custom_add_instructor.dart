@@ -4,7 +4,8 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class CustomAddInstructor extends StatefulWidget {
-  const CustomAddInstructor({super.key});
+  final Function() onTap;
+  const CustomAddInstructor({super.key, required this.onTap});
 
   @override
   State<CustomAddInstructor> createState() => _CustomAddInstructorState();
@@ -38,7 +39,7 @@ class _CustomAddInstructorState extends State<CustomAddInstructor> {
         CustomPrimaryButton(
           prefixIcon: Icon(Icons.add),
           text: "Add Instructor",
-          onTap: () {},
+          onTap: widget.onTap,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
