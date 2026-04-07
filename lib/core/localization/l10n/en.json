@@ -27,7 +27,7 @@
   "lms_admin": "LMS Admin",
   "commit_ma3ana": "Commit Ma3ana",
   "commit_today": "Commit today.\n",
-  "build_your_future": "Build your future.",
+  "build_your_future": "BUILD YOUR FUTURE",
   "join_learners_desc": "Join thousands of learners building consistency and\ngrowing their programming skills — one commit at a time.",
   "forgot_password_title": "Forgot Password",
   "forgot_password_desc": "We'll email you a link to reset your password.",
@@ -49,5 +49,17 @@
   "verify_otp_btn": "Verify OTP",
   "resend_code_in": "Resend Code In",
   "resend_code": "Resend Code",
-  "password_reset_success": "Password reset successfully"
+  "password_reset_success": "Password reset successfully",
+  "splash_title": "Commit Ma3ana",
+  "splash_desc": "Build your future with every line of code.",
+  "error": "Error",
+  "authentication_failed": "Authentication Failed",
+  "no_token_found": "No token found",
+  "session_expired": "Session expired",
+  "account_inactive": "Account is inactive. Please contact support.",
+  "account_unverified": "Account is not verified. Please verify your email.",
+  "please_enter_full_otp": "Please enter the full 6-digit code.",
+  "verifying": "Verifying...",
+  "otp_resent_success": "OTP resent successfully",
+  "resending": "Resending..."
 }

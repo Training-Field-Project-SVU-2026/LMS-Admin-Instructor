@@ -1,4 +1,3 @@
-
 import 'package:lms_admin_instructor/core/common/user_model.dart';
 
 class LoginResponseModel {
@@ -21,16 +20,17 @@ class LoginResponseModel {
         'access': accessToken,
         'refresh': refreshToken,
         'user': user.toJson(),
-      }
+      },
     };
   }
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
     final data = json['data'] ?? {};
+    final tokens = data['tokens'] ?? {};
     return LoginResponseModel(
       message: json['message'] ?? '',
-      accessToken: data['access'] ?? '',
-      refreshToken: data['refresh'] ?? '',
+      accessToken: tokens['access'] ?? '',
+      refreshToken: tokens['refresh'] ?? '',
       user: UserModel.fromJson(data['user'] ?? {}),
     );
   }

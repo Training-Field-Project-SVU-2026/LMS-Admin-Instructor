@@ -20,7 +20,7 @@ class LoginRightSide extends StatelessWidget {
 
     final formWidth = getResponsiveSize(
       context: context,
-      webSize: 450,
+      webSize: 400,
       mobileSize: 350,
     );
 
@@ -40,69 +40,76 @@ class LoginRightSide extends StatelessWidget {
           );
           context.go(AppRoutes.navBar);
         } else if (state is AuthError) {
-          final errorMsg = state.message.toLowerCase();
-          if (errorMsg.contains('verify') || errorMsg.contains('verified')) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  context.tr('verify_email_message'),
-                  style: context.textTheme.labelSmall?.copyWith(
-                    color: context.colorScheme.surface,
-                  ),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.message,
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: context.colorScheme.surface,
                 ),
-                backgroundColor: context.colorScheme.primary,
-                duration: const Duration(seconds: 4),
               ),
-            );
-            // TODO: Navigate to verify otp screen
-            // context.pushNamed(
-            //   AppRoutes.verifyOtpScreen,
-            //   extra: {'email': authBloc.emailController.text},
-            // );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.message,
-                  style: context.textTheme.labelSmall?.copyWith(
-                    color: context.colorScheme.surface,
-                  ),
-                ),
-                backgroundColor: context.colorScheme.error,
-              ),
-            );
-          }
+              backgroundColor: context.colorScheme.error,
+            ),
+          );
         }
       },
       child: Container(
-        decoration: BoxDecoration(
-          color: context.colorScheme.surface,
-          borderRadius: context.isDesktop
-              ? BorderRadius.horizontal(left: Radius.circular(30.r))
-              : BorderRadius.zero,
-        ),
-        child: ClipRRect(
-          borderRadius: context.isDesktop
-              ? BorderRadius.horizontal(left: Radius.circular(30.r))
-              : BorderRadius.zero,
-          child: Center(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: formWidth),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getResponsiveSize(
-                      context: context,
-                      webSize: 48,
-                      mobileSize: 24,
+        color: context.colorScheme.surface,
+        child: Stack(
+          children: [
+            Positioned(
+              top: -100,
+              right: -100,
+              child: Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.colorScheme.primary.withValues(alpha: 0.1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.colorScheme.primary.withValues(alpha: 0.1),
+                      blurRadius: 100,
+                      spreadRadius: 50,
                     ),
-                    vertical: getResponsiveSize(
-                      context: context,
-                      webSize: 48,
-                      mobileSize: 16,
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -150,
+              left: -150,
+              child: Container(
+                width: 400,
+                height: 400,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.colorScheme.primary.withValues(alpha: 0.08),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.colorScheme.primary.withValues(
+                        alpha: 0.08,
+                      ),
+                      blurRadius: 120,
+                      spreadRadius: 60,
                     ),
+                  ],
+                ),
+              ),
+            ),
+
+            Center(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: getResponsiveSize(
+                    context: context,
+                    webSize: 48,
+                    mobileSize: 64,
                   ),
+                  vertical: 32,
+                ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: formWidth),
                   child: Form(
                     key: authBloc.loginFormKey,
                     child: Column(
@@ -111,118 +118,73 @@ class LoginRightSide extends StatelessWidget {
                       children: [
                         Text(
                           context.tr('welcome_back'),
-                          style: context.textTheme.displaySmall?.copyWith(
-                            color: context.colorScheme.primary,
+                          style: context.textTheme.headlineMedium!.copyWith(
+                            color: context.colorScheme.onSurface,
                             fontWeight: FontWeight.w900,
-                            letterSpacing: -0.5,
                           ),
-                          textAlign: TextAlign.left,
                         ),
-                        SizedBox(height: 4.h),
+                        SizedBox(height: 8.h),
                         Text(
-                          context.tr('sign_in_subtitle'),
-                          style: context.textTheme.bodyMedium?.copyWith(
+                          "Good to see you again 👋",
+                          style: context.textTheme.bodyMedium!.copyWith(
                             color: context.colorScheme.onSurfaceVariant,
                           ),
-                          textAlign: TextAlign.left,
                         ),
-                        SizedBox(height: 45.h),
+                        SizedBox(height: 48.h),
 
                         CustomTextFormField(
                           controller: authBloc.emailController,
                           txt: context.tr('email_address'),
                           hint: context.tr('email_hint'),
                           prefixIcon: Icons.alternate_email_rounded,
-                          w: formWidth,
                           validator: validateEmail,
+                          w: formWidth,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 16.h),
                         CustomTextFormField(
                           controller: authBloc.passwordController,
                           txt: context.tr('password'),
                           hint: context.tr('password_hint'),
                           prefixIcon: Icons.lock_outline_rounded,
-                          suffixIcon: Icons.visibility_off_outlined,
-                          w: formWidth,
+                          isPassword: true,
+                          ///TODO: Add password validation
                           // validator: validatePassword,
+                          w: formWidth,
                         ),
-
-                        SizedBox(height: 12.h),
 
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () {
-                              context.go(AppRoutes.forgotPasswordScreen);
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: context.colorScheme.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            onPressed: () => context.pushNamed(
+                              AppRoutes.forgotPasswordScreen,
                             ),
                             child: Text(
                               context.tr('forgot_password'),
-                              style: context.textTheme.bodySmall?.copyWith(),
+                              style: context.textTheme.labelSmall!.copyWith(
+                                color: context.colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-
-                        SizedBox(height: 20.h),
+                        SizedBox(height: 30.h),
 
                         BlocBuilder<AuthBloc, AuthState>(
                           builder: (context, state) {
                             final isLoading = state is AuthLoading;
-                            return Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: context.colorScheme.primary
-                                        .withValues(alpha: 0.25),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 8),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: CustomPrimaryButton(
-                                text: isLoading
-                                    ? context.tr('signing_in')
-                                    : context.tr('sign_in_to_dashboard'),
-                                onTap: isLoading
-                                    ? null
-                                    : () {
-                                        FocusScope.of(context).unfocus();
-                                        context.read<AuthBloc>().add(
-                                          LoginEvent(),
-                                        );
-                                      },
-                                suffixIcon: isLoading
-                                    ? SizedBox(
-                                        width: 10.w,
-                                        height: 10.w,
-                                        child: CircularProgressIndicator(
-                                          color: context.colorScheme.onPrimary,
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                    : Icon(
-                                        Icons.arrow_forward,
-                                        color: context.colorScheme.surface,
-                                        size: 10.w,
-                                      ),
-                                width: formWidth,
-                              ),
+                            return CustomPrimaryButton(
+                              text: "Sign In",
+                              onTap: isLoading
+                                  ? null
+                                  : () {
+                                      FocusScope.of(context).unfocus();
+                                      context.read<AuthBloc>().add(
+                                        LoginEvent(),
+                                      );
+                                    },
+                              width: formWidth,
                             );
                           },
-                        ),
-
-                        SizedBox(
-                          height: getResponsiveSize(
-                            context: context,
-                            webSize: 32,
-                            mobileSize: 12,
-                          ),
                         ),
                       ],
                     ),
@@ -230,7 +192,7 @@ class LoginRightSide extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

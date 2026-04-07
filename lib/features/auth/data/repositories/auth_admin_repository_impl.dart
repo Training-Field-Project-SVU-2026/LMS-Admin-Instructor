@@ -6,7 +6,7 @@ import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_response_model.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_reset_password_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -15,7 +15,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl({required this.apiConsumer, required this.cacheHelper});
 
-   @override
+  @override
   Future<Either<String, LoginResponseModel>> login(
     LoginRequestModel request,
   ) async {
@@ -26,34 +26,36 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     return await result.fold(
-      (error) => Left(error),
+      (error) {
+        return Left(error);
+      },
       (loginResponse) async {
         await cacheHelper.saveData(
           key: ApiKey.accessToken,
           value: loginResponse.accessToken,
         );
+
         await cacheHelper.saveData(
           key: ApiKey.refreshToken,
           value: loginResponse.refreshToken,
         );
-        await cacheHelper.saveData(
-          key: ApiKey.isLoggedIn,
-          value: true,
-        );
+
+        await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
 
         final userJson = jsonEncode(loginResponse.user.toJson());
         await cacheHelper.saveData(key: ApiKey.user, value: userJson);
 
         await cacheHelper.saveData(
-        key: ApiKey.slug,
-        value: loginResponse.user.slug,
-      );
+          key: ApiKey.slug,
+          value: loginResponse.user.slug,
+        );
+
         return Right(loginResponse);
       },
     );
   }
 
- @override
+  @override
   Future<Either<String, String>> forgotPassword(String email) async {
     final result = await apiConsumer.post<Map<String, dynamic>>(
       EndPoint.forgotPassword,
@@ -64,15 +66,31 @@ class AuthRepositoryImpl implements AuthRepository {
       (data) => Right(data['message']?.toString() ?? 'OTP sent successfully'),
     );
   }
-@override
-  Future<Either<String, String>> resetPassword(ResetPasswordRequestModel request) async {
+
+  @override
+  Future<Either<String, String>> resetPassword(
+    ResetPasswordRequestModel request,
+  ) async {
     final result = await apiConsumer.post<Map<String, dynamic>>(
       EndPoint.resetPassword,
       data: request.toJson(),
     );
     return result.fold(
       (error) => Left(error),
-      (data) => Right(data['message']?.toString() ?? 'Password reset successfully'),
+      (data) =>
+          Right(data['message']?.toString() ?? 'Password reset successfully'),
+    );
+  }
+
+  @override
+  Future<Either<String, String>> resendOtp(String email) async {
+    final result = await apiConsumer.post<Map<String, dynamic>>(
+      EndPoint.resendOtp,
+      data: {"email": email},
+    );
+    return result.fold(
+      (error) => Left(error),
+      (data) => Right(data['message']?.toString() ?? 'OTP resent successfully'),
     );
   }
 }

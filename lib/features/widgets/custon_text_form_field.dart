@@ -1,7 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String txt;
@@ -13,8 +12,10 @@ class CustomTextFormField extends StatefulWidget {
   final IconData? suffixIcon;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final bool isPassword;
+
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.txt,
     required this.hint,
     this.w,
@@ -24,54 +25,111 @@ class CustomTextFormField extends StatefulWidget {
     this.suffixIcon,
     required this.controller,
     this.validator,
-  }) : super(key: key);
+    this.isPassword = false,
+  });
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool _obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.isPassword;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width:
-          widget.w ??
-          getResponsiveSize(context: context, webSize: 550, mobileSize: 250),
-      child: TextFormField(
-        controller: widget.controller,
-        validator: widget.validator,
-        style: context.textTheme.labelMedium?.copyWith(
-          color: context.colorScheme.primary,
-          fontSize: getResponsiveSize(
-            context: context,
-            webSize: 16,
-            mobileSize: 14,
+      width: widget.w ?? double.infinity,
+      child: Padding(
+        padding: EdgeInsets.all(1.0),
+        child: TextFormField(
+          controller: widget.controller,
+          validator: widget.validator,
+          obscureText: _obscureText,
+          style: context.textTheme.labelMedium?.copyWith(
+            color: context.colorScheme.onSurface,
+            fontSize: 16.sp,
           ),
+          decoration: InputDecoration(
+            prefixIcon: widget.prefixIcon != null
+                ? Icon(
+                    widget.prefixIcon,
+                    size: 18.sp,
+                    color: context.colorScheme.onSecondary.withValues(
+                      alpha: 0.7,
+                    ),
+                  )
+                : null,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                    icon: Icon(
+                      _obscureText
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      size: 20.sp,
+                      color: context.colorScheme.onSurfaceVariant,
+                    ),
+                  )
+                : widget.suffixIcon != null
+                ? Icon(
+                    widget.suffixIcon,
+                    size: 18.sp,
+                    color: context.colorScheme.onSecondary,
+                  )
+                : null,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 14.h,
+            ),
+            labelText: widget.txt,
+            labelStyle: TextStyle(
+              color: widget.color ?? context.colorScheme.onSurfaceVariant,
+              fontSize: 14.sp,
+            ),
+            hintText: widget.hint,
+            hintStyle: TextStyle(
+              fontSize: 14.sp,
+              color: context.colorScheme.onSurfaceVariant.withValues(
+                alpha: 0.5,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(
+                color: context.colorScheme.onSurface.withValues(alpha: 0.1),
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(
+                color: context.colorScheme.primary,
+                width: 1.5,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(color: context.colorScheme.error),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(
+                color: context.colorScheme.error,
+                width: 1.5,
+              ),
+            ),
+          ),
+          cursorColor: context.colorScheme.primary,
         ),
-        decoration: InputDecoration(
-          prefixIcon: widget.prefixIcon != null
-              ? Icon(widget.prefixIcon, size: 20)
-              : null,
-
-          suffixIcon: widget.suffixIcon != null
-              ? Icon(widget.suffixIcon, size: 20)
-              : null,
-          contentPadding: const EdgeInsets.only(
-            bottom: 15,
-            top: 10,
-            left: 16,
-            right: 16,
-          ),
-          labelText: widget.txt,
-          labelStyle: TextStyle(
-            color: widget.color ?? Colors.grey,
-            fontSize: 14,
-          ),
-          hintText: widget.hint,
-          hintStyle: const TextStyle(fontSize: 14),
-        ),
-        cursorHeight: 24,
-        cursorColor: context.colorScheme.primary,
       ),
     );
   }

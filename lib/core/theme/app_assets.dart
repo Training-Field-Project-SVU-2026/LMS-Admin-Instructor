@@ -1,3 +1,3 @@
 class AppAssets {
-  static const String loginIcon = 'assets/icons/login.svg';
+  static const String authImage = 'assets/images/auth_left_side.png';
 }
