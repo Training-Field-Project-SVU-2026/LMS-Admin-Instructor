@@ -5,6 +5,7 @@ import 'package:lms_admin_instructor/core/routing/router_generator.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lms_admin_instructor/core/theme/app_theme.dart';
+import 'package:lms_admin_instructor/core/constants/app_breakpoints.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,9 @@ class MyApp extends StatelessWidget {
       left: false,
       right: false,
       child: ScreenUtilInit(
-        designSize: const Size(390, 852),
+        designSize: (MediaQuery.of(context).size.width >= AppBreakpoints.tablet)
+            ? const Size(1440, 1024)
+            : const Size(390, 852),
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {

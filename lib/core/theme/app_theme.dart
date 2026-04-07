@@ -1,3 +1,5 @@
+// import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,86 +19,91 @@ class AppTheme {
   static const _outline = Color(0xFFD1DDE1);
   static const _error = Color(0xFFD32F2F);
 
-  static double getResponsiveSize(double webSize, double mobileSize) {
-    if (kIsWeb) return webSize.sp;
-    return ScreenUtil().screenWidth > 600 ? webSize.sp : mobileSize.sp;
+  static double getResponsiveSize(double webSize, double mobileSize,
+      [double? tabletSize]) {
+    final width = ScreenUtil().screenWidth;
+    if (width >= 1100) return webSize.sp;
+    if (width >= 600) {
+      return (tabletSize ?? ((webSize + mobileSize) / 2)).sp;
+    }
+    return mobileSize.sp;
   }
 
   static TextTheme _buildTextTheme(ColorScheme colorScheme) {
     const base = TextStyle(fontFamily: 'Inter');
     return TextTheme(
       displayLarge: base.copyWith(
-        fontSize: getResponsiveSize(30, 28),
+        fontSize: getResponsiveSize(36, 30, 32),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       displayMedium: base.copyWith(
-        fontSize: getResponsiveSize(26, 24),
+        fontSize: getResponsiveSize(30, 24, 28),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       displaySmall: base.copyWith(
-        fontSize: getResponsiveSize(22, 20),
+        fontSize: getResponsiveSize(26, 20, 24),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineLarge: base.copyWith(
-        fontSize: getResponsiveSize(20, 18),
+        fontSize: getResponsiveSize(24, 18, 22),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       headlineMedium: base.copyWith(
-        fontSize: getResponsiveSize(18, 16),
+        fontSize: getResponsiveSize(20, 16, 18),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       headlineSmall: base.copyWith(
-        fontSize: getResponsiveSize(16, 14),
+        fontSize: getResponsiveSize(18, 14, 16),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       titleLarge: base.copyWith(
-        fontSize: getResponsiveSize(18, 16),
+        fontSize: getResponsiveSize(20, 16, 18),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       titleMedium: base.copyWith(
-        fontSize: getResponsiveSize(16, 14),
+        fontSize: getResponsiveSize(18, 14, 16),
         fontWeight: FontWeight.w600,
         color: colorScheme.onSurface,
       ),
       titleSmall: base.copyWith(
-        fontSize: getResponsiveSize(14, 12),
+        fontSize: getResponsiveSize(16, 12, 14),
         fontWeight: FontWeight.bold,
         color: colorScheme.onSurface,
       ),
       bodyLarge: base.copyWith(
-        fontSize: getResponsiveSize(16, 14),
+        fontSize: getResponsiveSize(18, 14, 16),
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurface,
       ),
       bodyMedium: base.copyWith(
-        fontSize: getResponsiveSize(14, 12),
+        fontSize: getResponsiveSize(16, 12, 14),
         fontWeight: FontWeight.normal,
         color: colorScheme.onSurfaceVariant,
       ),
       bodySmall: base.copyWith(
-        fontSize: getResponsiveSize(12, 11),
+        fontSize: getResponsiveSize(14, 11, 12),
         fontWeight: FontWeight.normal,
         color: _textTertiary,
       ),
       labelLarge: base.copyWith(
-        fontSize: getResponsiveSize(14, 12),
+        fontSize: getResponsiveSize(16, 12, 14),
         fontWeight: FontWeight.w500,
         color: colorScheme.onPrimary,
       ),
       labelMedium: base.copyWith(
-        fontSize: getResponsiveSize(12, 11),
+        fontSize: getResponsiveSize(14, 11, 12),
         fontWeight: FontWeight.w500,
         color: colorScheme.onSurfaceVariant,
       ),
       labelSmall: base.copyWith(
-        fontSize: getResponsiveSize(11, 10),
+        fontSize: getResponsiveSize(12, 10, 11),
         fontWeight: FontWeight.w500,
         color: colorScheme.primary,
       ),

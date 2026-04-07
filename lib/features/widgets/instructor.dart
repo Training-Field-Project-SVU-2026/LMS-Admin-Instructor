@@ -1,20 +1,24 @@
+class User {}
 
-
-class User{
-}
-
-class Student extends User{
+class Student extends User {
   final String name;
+  final String bio;
   final String joinDate;
   final String email;
   final Function()? action;
-Student({required this.name, required this.joinDate, required this.email, this.action});
+  Student({
+    required this.name,
+    required this.bio,
+    required this.joinDate,
+    required this.email,
+    this.action,
+  });
 }
 
-class Instructor extends User{
+class Instructor extends User {
   final String? image;
   final String name;
-  final String? bio;
+  final String bio;
   final String date;
   final String email;
   final Function()? action;
@@ -22,7 +26,7 @@ class Instructor extends User{
   Instructor({
     this.image,
     required this.name,
-    this.bio,
+    required this.bio,
     required this.date,
     required this.email,
     required this.action,
