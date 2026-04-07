@@ -25,3 +25,9 @@ class ResetPasswordSuccess extends AuthState {
   final String message;
   ResetPasswordSuccess(this.message);
 }
+
+
+class ResendSuccess extends AuthState {
+  final String message;
+  ResendSuccess(this.message);
+}

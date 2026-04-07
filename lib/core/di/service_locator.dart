@@ -28,7 +28,7 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
+  sl.registerLazySingleton(() => AuthBloc(authRepository: sl()));
 
   // Splash
   sl.registerLazySingleton<SplashRepository>(

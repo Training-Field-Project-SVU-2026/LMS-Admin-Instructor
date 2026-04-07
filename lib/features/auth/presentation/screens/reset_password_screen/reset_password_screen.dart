@@ -6,7 +6,7 @@ import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_reset_password_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
@@ -77,80 +77,28 @@ class ResetPasswordScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                  SizedBox(height: 48.h),
+                  SizedBox(height: 68.h),
 
-                  // OTP Code Field
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0, left: 4.0),
-                    child: Text(
-                      context.tr('otp_code').toUpperCase(),
-                      style: context.textTheme.labelSmall?.copyWith(
-                        color: context.colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                  ),
-                  CustomTextFormField(
-                    controller: authBloc.otpController,
-                    txt: "",
-                    hint: context.tr('otp_hint'),
-                    prefixIcon: Icons.verified_user_outlined,
-                    w: formWidth,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Verification code is required';
-                      }
-                      if (value.length < 6) {
-                        return 'Enter a valid 6-digit code';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-
-                  // New Password Field
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0, left: 4.0),
-                    child: Text(
-                      context.tr('new_password').toUpperCase(),
-                      style: context.textTheme.labelSmall?.copyWith(
-                        color: context.colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                  ),
                   CustomTextFormField(
                     controller: authBloc.newPasswordController,
-                    txt: "",
+                    txt: context.tr('new_password'),
                     hint: context.tr('new_password_hint'),
                     prefixIcon: Icons.lock_outline_rounded,
                     isPassword: true,
                     w: formWidth,
+                    //TODO: add validation
                     // validator: validatePassword,
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 18.h),
 
-                  // Confirm Password Field
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0, left: 4.0),
-                    child: Text(
-                      context.tr('confirm_password').toUpperCase(),
-                      style: context.textTheme.labelSmall?.copyWith(
-                        color: context.colorScheme.primary,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                  ),
                   CustomTextFormField(
                     controller: authBloc.confirmNewPasswordController,
-                    txt: "",
+                    txt: context.tr('confirm_password'),
                     hint: context.tr('confirm_password_hint'),
                     prefixIcon: Icons.lock_outline_rounded,
                     isPassword: true,
                     w: formWidth,
+                    //TODO: add validation
                     // validator: (value) {
                     //   if (value == null || value.isEmpty) {
                     //     return 'Please confirm your password';
@@ -162,9 +110,8 @@ class ResetPasswordScreen extends StatelessWidget {
                     // },
                   ),
 
-                  SizedBox(height: 32.h),
+                  SizedBox(height: 68.h),
 
-                  // Submit Button
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       final isLoading = state is AuthLoading;
@@ -206,12 +153,12 @@ class ResetPasswordScreen extends StatelessWidget {
                       },
                       icon: Icon(
                         Icons.arrow_back_ios_new_rounded,
-                        size: 14,
+                        size: 10.sp,
                         color: context.colorScheme.onSurfaceVariant,
                       ),
                       label: Text(
                         context.tr('go_back_to_login'),
-                        style: context.textTheme.bodyMedium?.copyWith(
+                        style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
                         ),

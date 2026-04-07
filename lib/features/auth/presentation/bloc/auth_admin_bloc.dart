@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_reset_password_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_form_controller_mixin.dart';
 
@@ -14,7 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
     on<LoginEvent>(_onLogin);
     on<ForgotPasswordEvent>(_onForgotPassword);
     on<ResetPasswordEvent>(_onResetPassword);
-
+    on<ResendOtpEvent>(_onResendOtp);
   }
 
   Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -39,7 +39,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
     );
   }
 
-
   Future<void> _onForgotPassword(
     ForgotPasswordEvent event,
     Emitter<AuthState> emit,
@@ -54,7 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
     );
   }
 
- Future<void> _onResetPassword(
+  Future<void> _onResetPassword(
     ResetPasswordEvent event,
     Emitter<AuthState> emit,
   ) async {
@@ -65,6 +64,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
     result.fold(
       (error) => emit(AuthError(message: error)),
       (successMessage) => emit(AuthSuccess(data: successMessage)),
+    );
+  }
+
+  Future<void> _onResendOtp(
+    ResendOtpEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    final result = await authRepository.resendOtp(event.email);
+
+    result.fold(
+      (error) => emit(AuthError(message: error)),
+      (successMessage) => emit(ResendSuccess(successMessage)),
     );
   }
 }

@@ -90,7 +90,6 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   textAlign: TextAlign.start,
                 ),
                 SizedBox(height: 8.h),
-
                 Text(
                   context.tr('verify_otp_desc'),
                   style: context.textTheme.bodyMedium?.copyWith(
@@ -98,62 +97,65 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   ),
                   textAlign: TextAlign.start,
                 ),
-                SizedBox(height: 48.h),
-
+                SizedBox(height: 80.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(6, (index) {
-                    return SizedBox(
-                      width: getResponsiveSize(
-                        context: context,
-                        webSize: 55,
-                        mobileSize: 45,
-                      ),
-                      height: getResponsiveSize(
-                        context: context,
-                        webSize: 65,
-                        mobileSize: 55,
-                      ),
-                      child: TextFormField(
-                        controller: authBloc.otpControllers[index],
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        maxLength: 1,
-                        style: context.textTheme.headlineSmall?.copyWith(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        decoration: InputDecoration(
-                          counterText: '',
-                          contentPadding: EdgeInsets.zero,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: context.colorScheme.onSurfaceVariant
-                                  .withValues(alpha: 0.3),
+                    return Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        child: AspectRatio(
+                          aspectRatio: 1.0,
+                          child: TextFormField(
+                            controller: authBloc.otpControllers[index],
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            maxLength: 1,
+                            style: context.textTheme.headlineSmall?.copyWith(
+                              color: context.colorScheme.onSecondary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: getResponsiveSize(
+                                context: context,
+                                webSize: 20.sp,
+                                mobileSize: 14.sp,
+                              ),
                             ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: context.colorScheme.primary,
-                              width: 2,
+                            decoration: InputDecoration(
+                              counterText: '',
+                              contentPadding: EdgeInsets.zero,
+                              filled: true,
+                              fillColor: context.colorScheme.secondary
+                                  .withValues(alpha: 0.03),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.r),
+                                borderSide: BorderSide(
+                                  color: context.colorScheme.secondary
+                                      .withValues(alpha: 0.15),
+                                  width: 1.5,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.r),
+                                borderSide: BorderSide(
+                                  color: context.colorScheme.secondary,
+                                  width: 2.5,
+                                ),
+                              ),
                             ),
+                            onChanged: (value) {
+                              if (value.isNotEmpty && index < 5) {
+                                FocusScope.of(context).nextFocus();
+                              } else if (value.isEmpty && index > 0) {
+                                FocusScope.of(context).previousFocus();
+                              }
+                            },
                           ),
                         ),
-                        onChanged: (value) {
-                          if (value.isNotEmpty && index < 5) {
-                            FocusScope.of(context).nextFocus();
-                          } else if (value.isEmpty && index > 0) {
-                            FocusScope.of(context).previousFocus();
-                          }
-                        },
                       ),
                     );
                   }),
                 ),
                 SizedBox(height: 32.h),
-
                 if (_secondsRemaining > 0)
                   Center(
                     child: Text(
@@ -166,60 +168,103 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   )
                 else
                   Center(
-                    child: TextButton(
-                      onPressed: () {
-                        authBloc.add(
-                          ForgotPasswordEvent(email: widget.email),
+                    child: BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        final isResending = state is AuthLoading;
+                        return TextButton(
+                          onPressed: isResending
+                              ? null
+                              : () {
+                                  authBloc.add(
+                                    ResendOtpEvent(
+                                      email: authBloc.emailController.text
+                                          .trim(),
+                                    ),
+                                  );
+                                },
+                          child: isResending
+                              ? SizedBox(
+                                  height: 18.h,
+                                  width: 18.h,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: context.colorScheme.primary,
+                                  ),
+                                )
+                              : Text(
+                                  context.tr('resend_code'),
+                                  style: context.textTheme.bodySmall?.copyWith(
+                                    color: context.colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
                         );
-                        setState(() {
-                          _startTimer();
-                        });
                       },
-                      child: Text(
-                        context.tr('resend_code'),
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
                     ),
                   ),
-
                 SizedBox(height: 48.h),
-
                 CustomPrimaryButton(
                   text: context.tr('verify_otp_btn'),
                   onTap: () {
                     FocusScope.of(context).unfocus();
-
+                    final otpCode = authBloc.getOtpCode();
+                    if (otpCode.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(context.tr('please_enter_full_otp')),
+                          backgroundColor: context.colorScheme.error,
+                        ),
+                      );
+                      return;
+                    }
+                    authBloc.otpController.text = otpCode;
                     context.go(AppRoutes.resetPasswordScreen);
                   },
                   width: formWidth,
                 ),
-
-                SizedBox(height: 24.h),
-
+                BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is ResendSuccess) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(context.tr('otp_resent_success')),
+                          backgroundColor: context.colorScheme.secondary,
+                        ),
+                      );
+                      setState(() {
+                        _startTimer();
+                      });
+                    } else if (state is AuthError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: context.colorScheme.error,
+                        ),
+                      );
+                    }
+                  },
+                  child: const SizedBox.shrink(),
+                ),
                 Center(
                   child: TextButton.icon(
                     onPressed: () {
-                      context.go(AppRoutes.forgotPasswordScreen);
+                      context.go(AppRoutes.loginScreen);
                     },
                     icon: Icon(
                       Icons.arrow_back_ios_new_rounded,
-                      size: 14,
+                      size: 10.sp,
                       color: context.colorScheme.onSurfaceVariant,
                     ),
                     label: Text(
                       context.tr('go_back_to_login'),
-                      style: context.textTheme.bodyMedium?.copyWith(
+                      style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     style: TextButton.styleFrom(
-                      foregroundColor:
-                          context.colorScheme.onSurfaceVariant,
+                      foregroundColor: context.colorScheme.onSurfaceVariant,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 8,

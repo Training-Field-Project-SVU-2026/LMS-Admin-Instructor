@@ -6,7 +6,7 @@ import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_response_model.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_reset_password_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -19,7 +19,6 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<String, LoginResponseModel>> login(
     LoginRequestModel request,
   ) async {
-
     final result = await apiConsumer.post<LoginResponseModel>(
       EndPoint.login,
       data: request.toJson(),
@@ -31,7 +30,6 @@ class AuthRepositoryImpl implements AuthRepository {
         return Left(error);
       },
       (loginResponse) async {
-
         await cacheHelper.saveData(
           key: ApiKey.accessToken,
           value: loginResponse.accessToken,
@@ -52,11 +50,10 @@ class AuthRepositoryImpl implements AuthRepository {
           value: loginResponse.user.slug,
         );
 
-          return Right(loginResponse);
+        return Right(loginResponse);
       },
     );
   }
-  
 
   @override
   Future<Either<String, String>> forgotPassword(String email) async {
@@ -82,6 +79,18 @@ class AuthRepositoryImpl implements AuthRepository {
       (error) => Left(error),
       (data) =>
           Right(data['message']?.toString() ?? 'Password reset successfully'),
+    );
+  }
+
+  @override
+  Future<Either<String, String>> resendOtp(String email) async {
+    final result = await apiConsumer.post<Map<String, dynamic>>(
+      EndPoint.resendOtp,
+      data: {"email": email},
+    );
+    return result.fold(
+      (error) => Left(error),
+      (data) => Right(data['message']?.toString() ?? 'OTP resent successfully'),
     );
   }
 }

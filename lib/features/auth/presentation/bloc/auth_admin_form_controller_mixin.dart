@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_login_request_model.dart';
-import 'package:lms_admin_instructor/features/auth/data/model/reset_password_request_model.dart';
+import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_reset_password_request_model.dart';
 
 mixin AuthAdminFromControllersMixin {
   final emailController = TextEditingController();

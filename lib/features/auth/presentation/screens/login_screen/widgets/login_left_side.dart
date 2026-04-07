@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/theme/app_assets.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
 class LoginLeftSide extends StatelessWidget {
@@ -75,7 +76,7 @@ class LoginLeftSide extends StatelessWidget {
                               ),
                               padding: const EdgeInsets.all(32),
                               child: Image.asset(
-                                'assets/images/auth_left_side.png',
+                                AppAssets.authImage,
                                 fit: BoxFit.contain,
                               ),
                             ),

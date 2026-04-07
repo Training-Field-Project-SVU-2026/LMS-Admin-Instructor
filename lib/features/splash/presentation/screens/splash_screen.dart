@@ -207,7 +207,7 @@ class _SplashScreenState extends State<SplashScreen>
             title: context.tr('error'),
             message: state.message!,
             onRetry: () {
-              Navigator.pop(context);
+              context.pop();
               context.read<SplashBloc>().add(SplashStarted());
             },
           ),

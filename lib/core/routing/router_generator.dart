@@ -28,10 +28,12 @@ class RouterGenerator {
         },
       ),
 
-
       ShellRoute(
         builder: (context, state, child) {
-          return AuthLayout(child: child);
+          return BlocProvider.value(
+            value: sl<AuthBloc>(),
+            child: AuthLayout(child: child),
+          );
         },
         routes: [
           GoRoute(
@@ -39,13 +41,11 @@ class RouterGenerator {
             name: AppRoutes.loginScreen,
             pageBuilder: (context, state) => CustomTransitionPage(
               key: state.pageKey,
-              child: BlocProvider.value(
-                value: sl<AuthBloc>(),
-                child: const LoginScreen(),
-              ),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
+              child: const LoginScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
             ),
           ),
           GoRoute(
@@ -53,13 +53,11 @@ class RouterGenerator {
             name: AppRoutes.forgotPasswordScreen,
             pageBuilder: (context, state) => CustomTransitionPage(
               key: state.pageKey,
-              child: BlocProvider.value(
-                value: sl<AuthBloc>(),
-                child: const ForgotPasswordScreen(),
-              ),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
+              child: const ForgotPasswordScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
             ),
           ),
           GoRoute(
@@ -70,13 +68,11 @@ class RouterGenerator {
               final email = extra['email'] as String? ?? '';
               return CustomTransitionPage(
                 key: state.pageKey,
-                child: BlocProvider.value(
-                  value: sl<AuthBloc>(),
-                  child: VerifyOtpScreen(email: email),
-                ),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
+                child: VerifyOtpScreen(email: email),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
               );
             },
           ),
@@ -85,13 +81,11 @@ class RouterGenerator {
             name: AppRoutes.resetPasswordScreen,
             pageBuilder: (context, state) => CustomTransitionPage(
               key: state.pageKey,
-              child: BlocProvider.value(
-                value: sl<AuthBloc>(),
-                child: const ResetPasswordScreen(),
-              ),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
+              child: const ResetPasswordScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
             ),
           ),
         ],
