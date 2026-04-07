@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/auth/data/model/auth_admin_reset_password_request_model.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
@@ -16,12 +15,6 @@ class ResetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formWidth = getResponsiveSize(
-      context: context,
-      webSize: 400,
-      mobileSize: 350,
-    );
-
     final authBloc = context.read<AuthBloc>();
 
     return BlocListener<AuthBloc, AuthState>(
@@ -46,15 +39,11 @@ class ResetPasswordScreen extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
-            horizontal: getResponsiveSize(
-              context: context,
-              webSize: 48,
-              mobileSize: 64,
-            ),
-            vertical: 32,
+            horizontal: 24.w,
+            vertical: 32.h,
           ),
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: formWidth),
+            constraints: BoxConstraints(maxWidth: 400.w),
             child: Form(
               key: authBloc.resetPasswordFormKey,
               child: Column(
@@ -77,7 +66,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                  SizedBox(height: 68.h),
+                  SizedBox(height: 48.h),
 
                   CustomTextFormField(
                     controller: authBloc.newPasswordController,
@@ -85,11 +74,11 @@ class ResetPasswordScreen extends StatelessWidget {
                     hint: context.tr('new_password_hint'),
                     prefixIcon: Icons.lock_outline_rounded,
                     isPassword: true,
-                    w: formWidth,
+                    w: 400.w,
                     //TODO: add validation
                     // validator: validatePassword,
                   ),
-                  SizedBox(height: 18.h),
+                  SizedBox(height: 16.h),
 
                   CustomTextFormField(
                     controller: authBloc.confirmNewPasswordController,
@@ -97,7 +86,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     hint: context.tr('confirm_password_hint'),
                     prefixIcon: Icons.lock_outline_rounded,
                     isPassword: true,
-                    w: formWidth,
+                    w: 400.w,
                     //TODO: add validation
                     // validator: (value) {
                     //   if (value == null || value.isEmpty) {
@@ -110,7 +99,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     // },
                   ),
 
-                  SizedBox(height: 68.h),
+                  SizedBox(height: 30.h),
 
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
@@ -139,7 +128,7 @@ class ResetPasswordScreen extends StatelessWidget {
                                   );
                                 }
                               },
-                        width: formWidth,
+                        width: 400.w,
                       );
                     },
                   ),
@@ -165,9 +154,9 @@ class ResetPasswordScreen extends StatelessWidget {
                       ),
                       style: TextButton.styleFrom(
                         foregroundColor: context.colorScheme.onSurfaceVariant,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 8.h,
                         ),
                         splashFactory: NoSplash.splashFactory,
                       ),

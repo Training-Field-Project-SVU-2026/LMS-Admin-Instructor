@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/home/ttt.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/instructor_admin_screen.dart';
 
@@ -160,20 +162,26 @@ class NavigationBarWidget extends StatelessWidget {
                       ),
                       SizedBox(width: 8.w),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Admin User',
-                              style: context.textTheme.titleMedium,
-                            ),
-                            SizedBox(height: 1.h),
-                            Text(
-                              'admin@lms.com',
-                              style: context.textTheme.bodySmall,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        child: InkWell(
+                          onTap: () {
+                            // TODO Replace this with proifile
+                            context.push(AppRoutes.loginScreen);
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Admin User',
+                                style: context.textTheme.titleMedium,
+                              ),
+                              SizedBox(height: 1.h),
+                              Text(
+                                'admin@lms.com',
+                                style: context.textTheme.bodySmall,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

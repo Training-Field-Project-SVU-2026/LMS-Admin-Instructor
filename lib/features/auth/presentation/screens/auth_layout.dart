@@ -30,12 +30,12 @@ class AuthLayout extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: context.colorScheme.primary.withValues(
-                        alpha: 0.15,
+                        alpha: 0.12,
                       ),
                       boxShadow: [
                         BoxShadow(
                           color: context.colorScheme.primary.withValues(
-                            alpha: 0.15,
+                            alpha: 0.12,
                           ),
                           blurRadius: 100,
                           spreadRadius: 50,
@@ -52,11 +52,13 @@ class AuthLayout extends StatelessWidget {
                     height: 400,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: context.colorScheme.primary.withValues(alpha: 0.1),
+                      color: context.colorScheme.primary.withValues(
+                        alpha: 0.08,
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: context.colorScheme.primary.withValues(
-                            alpha: 0.1,
+                            alpha: 0.08,
                           ),
                           blurRadius: 120,
                           spreadRadius: 60,

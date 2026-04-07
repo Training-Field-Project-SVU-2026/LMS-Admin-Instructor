@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/utils/auth_validator.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
@@ -16,12 +15,6 @@ class ForgotPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formWidth = getResponsiveSize(
-      context: context,
-      webSize: 400,
-      mobileSize: 350,
-    );
-
     final authBloc = context.read<AuthBloc>();
 
     return BlocListener<AuthBloc, AuthState>(
@@ -50,15 +43,11 @@ class ForgotPasswordScreen extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
-            horizontal: getResponsiveSize(
-              context: context,
-              webSize: 48,
-              mobileSize: 64,
-            ),
-            vertical: 32,
+            horizontal: 24.w,
+            vertical: 32.h,
           ),
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: formWidth),
+            constraints: BoxConstraints(maxWidth: 400.w),
             child: Form(
               key: authBloc.forgetPasswordFormKey,
               child: Column(
@@ -82,14 +71,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                  SizedBox(height: 58.h),
+                  SizedBox(height: 48.h),
 
                   CustomTextFormField(
                     controller: authBloc.emailController,
                     txt: context.tr('email_address'),
                     hint: context.tr('email_hint'),
                     prefixIcon: Icons.email_outlined,
-                    w: formWidth,
+                    w: 400.w,
                     validator: validateEmail,
                   ),
                   SizedBox(height: 36.h),
@@ -116,7 +105,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                   );
                                 }
                               },
-                        width: formWidth,
+                        width: 400.w,
                       );
                     },
                   ),

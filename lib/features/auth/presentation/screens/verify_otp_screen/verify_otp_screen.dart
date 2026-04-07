@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
@@ -55,26 +54,16 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final formWidth = getResponsiveSize(
-      context: context,
-      webSize: 450,
-      mobileSize: 350,
-    );
-
     final authBloc = context.read<AuthBloc>();
 
     return Center(
       child: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
-          horizontal: getResponsiveSize(
-            context: context,
-            webSize: 48,
-            mobileSize: 64,
-          ),
-          vertical: 32,
+          horizontal: 24.w,
+          vertical: 32.h,
         ),
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: formWidth),
+          constraints: BoxConstraints(maxWidth: 400.w),
           child: Form(
             key: authBloc.otpFormKey,
             child: Column(
@@ -97,7 +86,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   ),
                   textAlign: TextAlign.start,
                 ),
-                SizedBox(height: 80.h),
+                SizedBox(height: 48.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(6, (index) {
@@ -114,11 +103,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             style: context.textTheme.headlineSmall?.copyWith(
                               color: context.colorScheme.onSecondary,
                               fontWeight: FontWeight.bold,
-                              fontSize: getResponsiveSize(
-                                context: context,
-                                webSize: 20.sp,
-                                mobileSize: 14.sp,
-                              ),
+                              fontSize: 18.sp,
                             ),
                             decoration: InputDecoration(
                               counterText: '',
@@ -131,14 +116,14 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                                 borderSide: BorderSide(
                                   color: context.colorScheme.secondary
                                       .withValues(alpha: 0.15),
-                                  width: 1.5,
+                                  width: 1.5.w,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16.r),
                                 borderSide: BorderSide(
                                   color: context.colorScheme.secondary,
-                                  width: 2.5,
+                                  width: 2.5.w,
                                 ),
                               ),
                             ),
@@ -203,7 +188,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       },
                     ),
                   ),
-                SizedBox(height: 48.h),
+                SizedBox(height: 30.h),
                 CustomPrimaryButton(
                   text: context.tr('verify_otp_btn'),
                   onTap: () {
@@ -221,9 +206,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     authBloc.otpController.text = otpCode;
                     context.go(AppRoutes.resetPasswordScreen);
                   },
-                  width: formWidth,
+                  width: 400.w,
                 ),
-                BlocListener<AuthBloc, AuthState>(
+               BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is ResendSuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -246,6 +231,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   },
                   child: const SizedBox.shrink(),
                 ),
+                SizedBox(height: 32.h),
                 Center(
                   child: TextButton.icon(
                     onPressed: () {
@@ -265,9 +251,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     ),
                     style: TextButton.styleFrom(
                       foregroundColor: context.colorScheme.onSurfaceVariant,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
                       ),
                       splashFactory: NoSplash.splashFactory,
                     ),
