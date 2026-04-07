@@ -5,6 +5,8 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 class CustomCardMobile extends StatefulWidget {
   final String title;
   final String num;
+  final Color colortitle;
+  final Color colornum;
   final Color color1;
   final Color color2;
   final Color color3;
@@ -19,6 +21,8 @@ class CustomCardMobile extends StatefulWidget {
     required this.color2,
     required this.color3,
     required this.colorIcon,
+    required this.colornum,
+    required this.colortitle,
     required this.icon,
   });
 
@@ -30,9 +34,9 @@ class _CustomCardMobileState extends State<CustomCardMobile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(24.r),
+      padding: EdgeInsets.all(18.r),
       width: 163.w,
-      height: 133.h,
+      height: 140.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
         gradient: LinearGradient(
@@ -57,7 +61,7 @@ class _CustomCardMobileState extends State<CustomCardMobile> {
           Text(
             widget.num,
             style: context.textTheme.titleLarge?.copyWith(
-              color: context.colorScheme.surface,
+              color: widget.colornum,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -66,7 +70,7 @@ class _CustomCardMobileState extends State<CustomCardMobile> {
           Text(
             widget.title,
             style: context.textTheme.titleLarge?.copyWith(
-              color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+              color: widget.colortitle,
             ),
           ),
         ],

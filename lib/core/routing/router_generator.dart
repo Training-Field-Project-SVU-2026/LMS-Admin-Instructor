@@ -8,6 +8,8 @@ import 'package:lms_admin_instructor/features/auth/presentation/screens/login_sc
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/screens/add_instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/screens/profile_instructor_admin_screen.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
@@ -69,6 +71,16 @@ class RouterGenerator {
         path: AppRoutes.navBar,
         name: AppRoutes.navBar,
         builder: (context, state) => CustomViewNavBar(),
+      ),
+      GoRoute(
+        path: AppRoutes.addInstructorAdminScreen,
+        name: AppRoutes.addInstructorAdminScreen,
+        builder: (context, state) => AddInstructorAdminScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileInstructorAdminScreen,
+        name: AppRoutes.profileInstructorAdminScreen,
+        builder: (context, state) => ProfileInstructorAdminScreen(),
       ),
       // GoRoute(
       //   path: AppRoutes.loginScreen,
