@@ -10,24 +10,13 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              context.colorScheme.primary,
-              context.colorScheme.primary.withValues(alpha: 0.85),
-            ],
-          ),
-        ),
-        child: Row(
-          children: [
-            if (context.isDesktop)
-              const Expanded(flex: 1, child: LoginLeftSide()),
-            const Expanded(flex: 1, child: LoginRightSide()),
-          ],
-        ),
+      backgroundColor: context.colorScheme.surface,
+      body: Row(
+        children: [
+          if (context.isDesktop)
+            const Expanded(flex: 1, child: LoginLeftSide()),
+          const Expanded(flex: 1, child: LoginRightSide()),
+        ],
       ),
     );
   }

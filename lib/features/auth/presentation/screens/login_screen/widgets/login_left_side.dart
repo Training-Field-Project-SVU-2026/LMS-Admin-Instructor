@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
@@ -10,172 +9,146 @@ class LoginLeftSide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          top: -100,
-          right: -100,
-          child: Container(
-            width: 400.w,
-            height: 400.h,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: [
-                  context.colorScheme.secondary.withValues(alpha: 0.15),
-                  Colors.transparent,
-                ],
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: -50,
-          left: -150,
-          child: Container(
-            width: 500.w,
-            height: 500.h,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: [
-                  context.colorScheme.onPrimary.withValues(alpha: 0.08),
-                  Colors.transparent,
-                ],
-              ),
-            ),
-          ),
-        ),
-
-        SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: getResponsiveSize(
-                context: context,
-                webSize: 80,
-                mobileSize: 24,
-              ),
-              vertical: 40,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
+    return Container(
+      color: context.colorScheme.primary,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: getResponsiveSize(
+                    context: context,
+                    webSize: 64,
+                    mobileSize: 24,
+                  ),
+                  vertical: 48,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.onPrimary.withValues(
-                          alpha: 0.1,
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: context.colorScheme.onPrimary.withValues(
-                            alpha: 0.2,
+                    Row(
+                      children: [
+                        Container(
+                          width: 32.w,
+                          height: 32.w,
+                          decoration: BoxDecoration(
+                            color: context.colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          width: 1,
                         ),
-                      ),
-                      child: Icon(
-                        Icons.commit_outlined,
-                        color: context.colorScheme.secondary,
-                        size: 28,
+                        SizedBox(width: 12.w),
+                        Text(
+                          context.tr('commit_ma3ana'),
+                          style: context.textTheme.titleMedium!.copyWith(
+                            color: context.colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 320.w,
+                              height: 320.h,
+                              decoration: BoxDecoration(
+                                color: context.colorScheme.surface,
+                                borderRadius: BorderRadius.circular(24),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: context.colorScheme.onSecondary
+                                        .withValues(alpha: 0.2),
+                                    blurRadius: 30.r,
+                                    offset: Offset(0, 15.h),
+                                  ),
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(32),
+                              child: Image.asset(
+                                'assets/images/auth_left_side.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            SizedBox(height: 48.h),
+                            RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                style: context.textTheme.headlineMedium!
+                                    .copyWith(
+                                      color: context.colorScheme.onPrimary,
+                                      fontWeight: FontWeight.w900,
+                                      height: 1.2,
+                                    ),
+                                children: [
+                                  TextSpan(
+                                    text: "${context.tr('commit_today')}\n",
+                                  ),
+                                  TextSpan(
+                                    text: context.tr('build_your_future'),
+                                    style: TextStyle(
+                                      color: context.colorScheme.secondary,
+                                      fontSize: 24.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            Text(
+                              context.tr('join_learners_desc'),
+                              style: context.textTheme.bodyMedium!.copyWith(
+                                color: context.colorScheme.onPrimary.withValues(
+                                  alpha: 0.7,
+                                ),
+                                height: 1.5,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        context.tr('commit_ma3ana'),
-                        style: context.textTheme.titleLarge?.copyWith(
-                          color: context.colorScheme.onPrimary,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.5,
-                        ),
-                        overflow: TextOverflow.ellipsis,
+
+                    Center(
+                      child: Wrap(
+                        spacing: 32,
+                        runSpacing: 16,
+                        children: [
+                          _buildBottomLink(context, "Learn by doing"),
+                          _buildBottomLink(context, "Track progress"),
+                          _buildBottomLink(context, "Grow daily"),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                const Spacer(),
-
-                Expanded(
-                  flex: 5,
-                  child: Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: getResponsiveSize(
-                            context: context,
-                            webSize: 250,
-                            mobileSize: 150,
-                          ),
-                          height: getResponsiveSize(
-                            context: context,
-                            webSize: 250,
-                            mobileSize: 150,
-                          ),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: context.colorScheme.secondary.withValues(
-                                  alpha: 0.25,
-                                ),
-                                blurRadius: 80,
-                                spreadRadius: 30,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SvgPicture.asset(
-                          'assets/icons/login.svg',
-                          width: getResponsiveSize(
-                            context: context,
-                            webSize: 380,
-                            mobileSize: 250,
-                          ),
-                          fit: BoxFit.contain,
-                          alignment: Alignment.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 32.h),
-
-                RichText(
-                  text: TextSpan(
-                    style: context.textTheme.headlineMedium?.copyWith(
-                      color: context.colorScheme.onPrimary,
-                      fontWeight: FontWeight.w900,
-                      height: 1.2,
-                    ),
-                    children: [
-                      TextSpan(text: context.tr('commit_today')),
-                      TextSpan(
-                        text: context.tr('build_your_future'),
-                        style: TextStyle(color: context.colorScheme.secondary),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 24.h),
-                Text(
-                  context.tr('join_learners_desc'),
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: context.colorScheme.onPrimary.withValues(
-                      alpha: 0.75,
-                    ),
-                    height: 1.6.h,
-                  ),
-                ),
-                const Spacer(),
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBottomLink(BuildContext context, String text) {
+    return Text(
+      text,
+      style: context.textTheme.labelMedium!.copyWith(
+        color: context.colorScheme.onPrimary.withValues(alpha: 0.8),
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }

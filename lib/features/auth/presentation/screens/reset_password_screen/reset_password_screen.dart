@@ -171,7 +171,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           txt: "",
                           hint: context.tr('new_password_hint'),
                           prefixIcon: Icons.lock_outline_rounded,
-                          suffixIcon: Icons.visibility_off_outlined,
+                          isPassword: true,
                           w: formWidth,
                           // validator: validatePassword,
                         ),
@@ -197,7 +197,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           txt: "",
                           hint: context.tr('confirm_password_hint'),
                           prefixIcon: Icons.lock_outline_rounded,
-                          suffixIcon: Icons.visibility_off_outlined,
+                          isPassword: true,
                           w: formWidth,
                           // validator: (value) {
                           //   if (value == null || value.isEmpty) {
