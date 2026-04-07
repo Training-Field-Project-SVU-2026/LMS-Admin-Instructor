@@ -14,6 +14,7 @@ import 'package:lms_admin_instructor/features/splash/presentation/screens/splash
 import 'package:lms_admin_instructor/features/instructor/presentation/bloc/instructor_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/add_instructor_admin_screen.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/profile_instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
@@ -104,7 +105,10 @@ class RouterGenerator {
         name: AppRoutes.navBar,
         builder: (context, state) {
           return MultiBlocProvider(
-            providers: [BlocProvider.value(value: sl<InstructorAdminBloc>())],
+            providers: [
+              BlocProvider.value(value: sl<InstructorAdminBloc>()),
+              BlocProvider.value(value: sl<StudentAdminBloc>()),
+            ],
             child: const CustomViewNavBar(),
           );
         },
