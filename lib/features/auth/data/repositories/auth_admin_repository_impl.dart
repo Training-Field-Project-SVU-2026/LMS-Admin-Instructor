@@ -56,6 +56,7 @@ class AuthRepositoryImpl implements AuthRepository {
       },
     );
   }
+  
 
   @override
   Future<Either<String, String>> forgotPassword(String email) async {

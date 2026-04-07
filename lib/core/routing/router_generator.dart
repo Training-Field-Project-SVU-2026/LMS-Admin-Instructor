@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/auth/presentation/screens/auth_layout.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
@@ -26,48 +27,76 @@ class RouterGenerator {
           );
         },
       ),
-      GoRoute(
-        path: AppRoutes.loginScreen,
-        name: AppRoutes.loginScreen,
-        builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
-            child: const LoginScreen(),
-          );
+
+
+      ShellRoute(
+        builder: (context, state, child) {
+          return AuthLayout(child: child);
         },
+        routes: [
+          GoRoute(
+            path: AppRoutes.loginScreen,
+            name: AppRoutes.loginScreen,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: BlocProvider.value(
+                value: sl<AuthBloc>(),
+                child: const LoginScreen(),
+              ),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.forgotPasswordScreen,
+            name: AppRoutes.forgotPasswordScreen,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: BlocProvider.value(
+                value: sl<AuthBloc>(),
+                child: const ForgotPasswordScreen(),
+              ),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.verifyOtpScreen,
+            name: AppRoutes.verifyOtpScreen,
+            pageBuilder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              final email = extra['email'] as String? ?? '';
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: BlocProvider.value(
+                  value: sl<AuthBloc>(),
+                  child: VerifyOtpScreen(email: email),
+                ),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+              );
+            },
+          ),
+          GoRoute(
+            path: AppRoutes.resetPasswordScreen,
+            name: AppRoutes.resetPasswordScreen,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: BlocProvider.value(
+                value: sl<AuthBloc>(),
+                child: const ResetPasswordScreen(),
+              ),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          ),
+        ],
       ),
-      GoRoute(
-        path: AppRoutes.forgotPasswordScreen,
-        name: AppRoutes.forgotPasswordScreen,
-        builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
-            child: const ForgotPasswordScreen(),
-          );
-        },
-      ),
-      GoRoute(
-        path: AppRoutes.verifyOtpScreen,
-        name: AppRoutes.verifyOtpScreen,
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          final email = extra['email'] as String? ?? '';
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
-            child: VerifyOtpScreen(email: email),
-          );
-        },
-      ),
-      GoRoute(
-        path: AppRoutes.resetPasswordScreen,
-        name: AppRoutes.resetPasswordScreen,
-        builder: (context, state) {
-          return BlocProvider.value(
-            value: sl<AuthBloc>(),
-            child: const ResetPasswordScreen(),
-          );
-        },
-      ),
+
       GoRoute(
         path: AppRoutes.homeScreen,
         name: AppRoutes.homeScreen,
@@ -78,16 +107,6 @@ class RouterGenerator {
         name: AppRoutes.navBar,
         builder: (context, state) => CustomViewNavBar(),
       ),
-      // GoRoute(
-      //   path: AppRoutes.loginScreen,
-      //   name: AppRoutes.loginScreen,
-      //   builder: (context, state) {
-      //     return BlocProvider(
-      //       create: (context) => sl<AuthCubit>(),
-      //       child: LoginScreen(),
-      //     );
-      //   },
-      // ),
     ],
   );
 }

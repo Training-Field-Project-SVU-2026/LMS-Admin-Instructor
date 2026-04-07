@@ -39,6 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
     );
   }
 
+
   Future<void> _onForgotPassword(
     ForgotPasswordEvent event,
     Emitter<AuthState> emit,

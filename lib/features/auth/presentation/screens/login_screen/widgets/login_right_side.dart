@@ -147,7 +147,8 @@ class LoginRightSide extends StatelessWidget {
                           hint: context.tr('password_hint'),
                           prefixIcon: Icons.lock_outline_rounded,
                           isPassword: true,
-                          validator: validatePassword,
+                          ///TODO: Add password validation
+                          // validator: validatePassword,
                           w: formWidth,
                         ),
 
