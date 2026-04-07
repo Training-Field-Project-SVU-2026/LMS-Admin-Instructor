@@ -3,6 +3,7 @@ class EndPoint {
   static String remoteUrl =
       "http://lms-env.eba-8nbnpx42.us-east-1.elasticbeanstalk.com/api";
 
+
   static String baseUrl = remoteUrl;
 
   // auth
@@ -18,6 +19,11 @@ class EndPoint {
   static String getUserDataEndPoint(id) {
     return "/user/get-user/$id";
   }
+
+  //? Students
+  static String studentsAdmin = "/admin/students/";
+
+
 }
 
 class ApiKey {

@@ -25,7 +25,7 @@ class _CustomCardDesktopState extends State<CustomCardDesktop> {
     return Container(
       padding: EdgeInsets.all(24.r),
       width: 300.w,
-      height: 110.h,
+      height: 115.h,
       decoration: BoxDecoration(
         color: context.colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(12.r),
