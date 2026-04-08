@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_card_mobile.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/custom_card_status_info_mobile.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/instructor_card.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_img.dart';
 
@@ -22,7 +23,7 @@ class _InstructorMobileAdminScreenState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "All Instructors",
+          context.tr('all_instructors'),
           style: context.textTheme.titleLarge?.copyWith(
             color: context.colorScheme.primary,
           ),
@@ -63,14 +64,14 @@ class _InstructorMobileAdminScreenState
               children: [
                 //***************************************??HEADERr PAGE??********************************************??
                 Text(
-                  "Manage Instructors",
+                  context.tr('manage_instructors'),
                   style: context.textTheme.displayMedium?.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  "Create, update and manage instructor profiles and assignments.",
+                  context.tr('create_update_manage_instructor_profiles_assignments'),
                   style: context.textTheme.labelLarge?.copyWith(
                     color: context.colorScheme.onSurface.withValues(alpha: 0.3),
                   ),
@@ -80,7 +81,7 @@ class _InstructorMobileAdminScreenState
                 //**************************************??TOTAL VIDEOS AND TOTAL COURSES CARDS??********************************************??
                 Row(
                   children: [
-                    CustomCardMobile(
+                    CustomCardStatusInfoMobile(
                       colortitle: context.colorScheme.onSurface.withValues(
                         alpha: 0.6,
                       ),
@@ -89,8 +90,7 @@ class _InstructorMobileAdminScreenState
                         alpha: 0.5,
                       ),
                       icon: Icons.person,
-                      title: '''Total
-Instructors''',
+                      title: context.tr('total_instructors'),
                       num: "100",
                       color1: context.colorScheme.primary,
                       color2: Color(0xFF117A8B),
@@ -99,15 +99,14 @@ Instructors''',
                       ),
                     ),
                     SizedBox(width: 16.w),
-                    CustomCardMobile(
+                    CustomCardStatusInfoMobile(
                       colortitle: context.colorScheme.onSecondary.withValues(
                         alpha: 0.7,
                       ),
                       colornum: context.colorScheme.primary,
                       colorIcon: context.colorScheme.onSecondary,
                       icon: Icons.book_outlined,
-                      title: '''Total
-Courses''',
+                      title: context.tr('total_courses'),
                       num: "48",
                       color1: context.colorScheme.secondary,
                       color2: Color(0xFFB7EF9C).withValues(alpha: 0.6),

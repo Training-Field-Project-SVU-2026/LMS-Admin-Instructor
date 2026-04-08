@@ -5,13 +5,15 @@ import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/s
 
 class StudentAdminBloc extends Bloc<StudentAdminEvent, StudentAdminState> {
   final StudentsAdminRepository studentsAdminRepository;
-  StudentAdminBloc({required this.studentsAdminRepository}) : super(StudentAdminInitial()) {
-
+  StudentAdminBloc({required this.studentsAdminRepository})
+    : super(StudentAdminInitial()) {
     on<GetStudentsAdminEvent>(_onGetStudentsAdminEvent);
   }
 
   Future<void> _onGetStudentsAdminEvent(
-      GetStudentsAdminEvent event, Emitter<StudentAdminState> emit) async {
+    GetStudentsAdminEvent event,
+    Emitter<StudentAdminState> emit,
+  ) async {
     final currentState = state;
     final int pageToFetch = event.page ?? 1;
 
@@ -25,33 +27,32 @@ class StudentAdminBloc extends Bloc<StudentAdminEvent, StudentAdminState> {
       emit(currentState.copyWith(isPaginationLoading: true));
     }
 
-    final result = await studentsAdminRepository.getAllStudentsAdmin(
+    final result = await studentsAdminRepository.getStudentsAdmin(
       page: pageToFetch,
       pageSize: event.pageSize,
     );
 
-    result.fold(
-      (failure) => emit(StudentAdminError(message: failure)),
-      (responseModel) {
-        final newEntity = responseModel.toEntity();
+    result.fold((failure) => emit(StudentAdminError(message: failure)), (
+      responseModel,
+    ) {
+      final newEntity = responseModel.toEntity();
 
-        if (pageToFetch == 1 || currentState is! StudentAdminLoaded) {
-          emit(StudentAdminLoaded(studentAdminUIModel: newEntity));
-        } else {
-          final accumulatedStudents = [
-            ...currentState.studentAdminUIModel.students,
-            ...newEntity.students,
-          ];
-          emit(
-            StudentAdminLoaded(
-              studentAdminUIModel: newEntity.copyWith(
-                students: accumulatedStudents,
-              ),
-              isPaginationLoading: false,
+      if (pageToFetch == 1 || currentState is! StudentAdminLoaded) {
+        emit(StudentAdminLoaded(studentAdminUIModel: newEntity));
+      } else {
+        final accumulatedStudents = [
+          ...currentState.studentAdminUIModel.students,
+          ...newEntity.students,
+        ];
+        emit(
+          StudentAdminLoaded(
+            studentAdminUIModel: newEntity.copyWith(
+              students: accumulatedStudents,
             ),
-          );
-        }
-      },
-    );
+            isPaginationLoading: false,
+          ),
+        );
+      }
+    });
   }
 }

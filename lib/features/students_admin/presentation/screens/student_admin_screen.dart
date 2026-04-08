@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_event.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/screens/student_admin_desktop_screen.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/screens/student_admin_mobile_screen.dart';
 
 class StudentAdminScreen extends StatefulWidget {
   const StudentAdminScreen({super.key});
@@ -24,9 +22,10 @@ class _StudentAdminScreenState extends State<StudentAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: context.isDesktop
-          ? StudentAdminDesktopScreen()
-          : StudentAdminMobileScreen(),
+      body: StudentAdminDesktopScreen(),
+      // context.isDesktop
+      //     ? StudentAdminDesktopScreen()
+      //     : StudentAdminMobileScreen(),
     );
   }
 }

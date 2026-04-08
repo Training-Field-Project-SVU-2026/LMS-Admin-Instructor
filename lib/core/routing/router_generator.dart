@@ -15,6 +15,7 @@ import 'package:lms_admin_instructor/features/instructor/presentation/bloc/instr
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/add_instructor_admin_screen.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/profile_instructor_admin_screen.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/students_admin/presentation/screens/add_student_screen/add_student_admin_screen.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
@@ -117,6 +118,11 @@ class RouterGenerator {
         path: AppRoutes.addInstructorAdminScreen,
         name: AppRoutes.addInstructorAdminScreen,
         builder: (context, state) => AddInstructorAdminScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.addStudentAdminScreen,
+        name: AppRoutes.addStudentAdminScreen,
+        builder: (context, state) => AddStudentAdminScreen(),
       ),
       GoRoute(
         path: AppRoutes.profileInstructorAdminScreen,

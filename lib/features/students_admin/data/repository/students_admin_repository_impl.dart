@@ -11,13 +11,16 @@ class StudentsAdminRepositoryImpl implements StudentsAdminRepository {
   StudentsAdminRepositoryImpl({required this.apiConsumer});
 
   @override
-  Future<Either<String, StudentsAdminResponseModel>> getAllStudentsAdmin({
+  Future<Either<String, StudentsAdminResponseModel>> getStudentsAdmin({
     int? page,
     int? pageSize,
   }) async {
     return await apiConsumer.get<StudentsAdminResponseModel>(
       EndPoint.studentsAdmin,
-      queryParameters: ApiQueryParams.pagination(page: page, pageSize: pageSize),
+      queryParameters: ApiQueryParams.pagination(
+        page: page,
+        pageSize: pageSize,
+      ),
       fromJson: (json) => StudentsAdminResponseModel.fromJson(json),
     );
   }
