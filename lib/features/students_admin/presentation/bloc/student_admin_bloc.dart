@@ -17,14 +17,20 @@ class StudentAdminBloc extends Bloc<StudentAdminEvent, StudentAdminState> {
     final currentState = state;
     final int pageToFetch = event.page ?? 1;
 
-    if (pageToFetch == 1 || currentState is! StudentAdminLoaded) {
-      emit(StudentAdminLoading());
-    } else {
-      if (currentState.studentAdminUIModel.currentPage >=
-          currentState.studentAdminUIModel.totalPages) {
-        return;
+    if (pageToFetch == 1) {
+      if (currentState is! StudentAdminLoaded) {
+        emit(StudentAdminLoading());
       }
-      emit(currentState.copyWith(isPaginationLoading: true));
+    } else {
+      if (currentState is StudentAdminLoaded) {
+        if (currentState.studentAdminUIModel.currentPage >=
+            currentState.studentAdminUIModel.totalPages) {
+          return;
+        }
+        emit(currentState.copyWith(isPaginationLoading: true));
+      } else {
+        emit(StudentAdminLoading());
+      }
     }
 
     final result = await studentsAdminRepository.getStudentsAdmin(

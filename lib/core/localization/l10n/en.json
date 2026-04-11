@@ -96,5 +96,6 @@
   "courses_count_label": " Courses",
   "manage_btn": "Manage",
   "search_instructors_hint": "Search instructors by name, email or specialty...",
-  "number": "No."
+  "number": "No.",
+  "add_student": "Add Student"
 }

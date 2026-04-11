@@ -37,7 +37,7 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<SplashRepository>(
     () => SplashRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
-  sl.registerFactory(() => SplashBloc(splashRepository: sl()));
+  sl.registerLazySingleton(() => SplashBloc(splashRepository: sl()));
 
   sl.registerLazySingleton(() => AuthBloc(authRepository: sl()));
 
@@ -45,8 +45,8 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<StudentsAdminRepository>(
     () => StudentsAdminRepositoryImpl(apiConsumer: sl()),
   );
-  sl.registerFactory(() => StudentAdminBloc(studentsAdminRepository: sl()));
+  sl.registerLazySingleton(() => StudentAdminBloc(studentsAdminRepository: sl()));
 
   // Features - Instructor Admin
-  sl.registerFactory(() => InstructorAdminBloc());
+  sl.registerLazySingleton(() => InstructorAdminBloc());
 }

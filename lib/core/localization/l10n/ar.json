@@ -95,5 +95,6 @@
   "courses_count_label": " دورات",
   "manage_btn": "إدارة",
   "search_instructors_hint": "ابحث عن المعلمين بالاسم أو البريد الإلكتروني أو التخصص...",
-  "number": "رقم"
+  "number": "رقم",
+  "add_student": "إضافة طالب"
 }
