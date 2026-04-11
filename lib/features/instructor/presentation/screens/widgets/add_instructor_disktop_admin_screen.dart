@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
 
@@ -13,7 +14,7 @@ class AddInstructorDisktopAdminScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Back to Instructors",
+          context.tr('back_to_instructors'),
           style: context.textTheme.bodySmall?.copyWith(
             color: context.colorScheme.onSurface.withValues(alpha: 0.6),
             fontWeight: FontWeight.bold,
@@ -27,14 +28,14 @@ class AddInstructorDisktopAdminScreen extends StatelessWidget {
           children: [
             //**************************************??TEXT HEADER??********************************************??
             Text(
-              "Add New Instructor",
+              context.tr('add_new_instructor_title'),
               style: context.textTheme.displayLarge?.copyWith(
                 color: context.colorScheme.onSurface,
               ),
             ),
             SizedBox(height: 8.h),
             Text(
-              "Set up a new instructor account to start managing their courses and tracks.",
+              context.tr('add_instructor_screen_desc'),
               style: context.textTheme.bodyMedium?.copyWith(
                 color: context.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -73,16 +74,16 @@ class AddInstructorDisktopAdminScreen extends StatelessWidget {
                             CustomTextFormField(
                               h: 50.h,
                               w: 340.w,
-                              txt: "First Name",
-                              hint: "e.g. Michael",
+                              txt: context.tr('first_name_label'),
+                              hint: context.tr('first_name_hint'),
                               controller: TextEditingController(),
                             ),
                             SizedBox(width: 24.w),
                             CustomTextFormField(
                               h: 50.h,
                               w: 340.w,
-                              txt: "Last Name",
-                              hint: "e.g. Scott ",
+                              txt: context.tr('last_name_label'),
+                              hint: context.tr('last_name_hint'),
                               controller: TextEditingController(),
                             ),
                           ],
@@ -91,8 +92,8 @@ class AddInstructorDisktopAdminScreen extends StatelessWidget {
                         CustomTextFormField(
                           h: 60.h,
                           w: 700.w,
-                          txt: "Email Address",
-                          hint: "m.scott@paper.com",
+                          txt: context.tr('email_address'),
+                          hint: context.tr('email_hint'),
                           controller: TextEditingController(),
                           prefixIcon: Icons.email_outlined,
                         ),
@@ -120,7 +121,7 @@ class AddInstructorDisktopAdminScreen extends StatelessWidget {
                                 child: Text(
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  "The instructor will receive an automated email invitation to set their password and complete their profile setup once you save this information.",
+                                  context.tr('instructor_invitation_info'),
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(
                                         color: context.colorScheme.onSurface
@@ -156,7 +157,7 @@ class AddInstructorDisktopAdminScreen extends StatelessWidget {
                             context.pop();
                           },
                           child: Text(
-                            "Cancel",
+                            context.tr('cancel_button'),
                             style: context.textTheme.bodyLarge?.copyWith(
                               color: context.colorScheme.onSurface,
                             ),
@@ -172,7 +173,7 @@ class AddInstructorDisktopAdminScreen extends StatelessWidget {
                           textStyle: context.textTheme.bodyMedium?.copyWith(
                             color: context.colorScheme.surface,
                           ),
-                          text: "Add Instructor",
+                          text: context.tr('add_instructor'),
                           onTap: () {
                             Navigator.pop(context);
                           },

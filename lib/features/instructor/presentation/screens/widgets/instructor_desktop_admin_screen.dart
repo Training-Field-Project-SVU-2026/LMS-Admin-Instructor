@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_add_instructor.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_card_desktop.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_add_row/custom_add_row_widget.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/custom_card_status_info_desktop.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_nav_bar.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_viewer.dart';
 import 'package:lms_admin_instructor/features/widgets/instructor.dart';
@@ -33,7 +34,11 @@ class _InstructorDesktopAdminScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomAddInstructor(
+            CustomAddRowWidget(
+              title: context.tr('manage_instructors'),
+              description: context.tr('create_update_manage_instructor_profiles_assignments'),
+              buttonText: context.tr('add_instructor'),
+              icon: Icons.people_outline,
               onTap: () {
                 context.push(AppRoutes.addInstructorAdminScreen);
               },
@@ -41,15 +46,15 @@ class _InstructorDesktopAdminScreenState
             SizedBox(height: 32.h),
             Row(
               children: [
-                CustomCardDesktop(
-                  title: "Total Instructors",
+                CustomCardStatusInfoDesktop(
+                  title: context.tr('total_instructors'),
                   value: "120",
                   icon: Icons.people_outline,
                   color: Color(0xff3B82F6),
                 ),
                 SizedBox(width: 20.w),
-                CustomCardDesktop(
-                  title: "Total Courses",
+                CustomCardStatusInfoDesktop(
+                  title: context.tr('total_courses'),
                   value: "48",
                   icon: Icons.book_outlined,
                   color: Color(0xff16A34A),
@@ -60,11 +65,11 @@ class _InstructorDesktopAdminScreenState
             Expanded(
               child: CustomViewer(
                 instructorInfo: [
-                  "Instructor Name",
-                  "BIO",
-                  "Join Date",
-                  "Email",
-                  "Actions",
+                  context.tr('instructor_name_column'),
+                  context.tr('bio_column'),
+                  context.tr('join_date_column'),
+                  context.tr('email_column'),
+                  context.tr('actions_column'),
                 ],
                 userData: [
                   Instructor(

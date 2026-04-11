@@ -3,15 +3,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
-class CustomAddInstructor extends StatefulWidget {
-  final Function() onTap;
-  const CustomAddInstructor({super.key, required this.onTap});
+class CustomAddRowWidget extends StatelessWidget {
+  final String title;
+  final String description;
+  final String buttonText;
+  final IconData icon;
+  final VoidCallback onTap;
+  const CustomAddRowWidget({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.buttonText,
+    required this.icon,
+    required this.onTap,
+  });
 
-  @override
-  State<CustomAddInstructor> createState() => _CustomAddInstructorState();
-}
-
-class _CustomAddInstructorState extends State<CustomAddInstructor> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -20,14 +26,14 @@ class _CustomAddInstructorState extends State<CustomAddInstructor> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Manage Instructors",
+              title,
               style: context.textTheme.displayLarge!.copyWith(
                 fontWeight: FontWeight.bold,
                 color: context.colorScheme.onSurface,
               ),
             ),
             Text(
-              "Create, update and manage instructor profiles and assignments.",
+              description,
               style: context.textTheme.bodyMedium!.copyWith(
                 color: context.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
@@ -38,8 +44,8 @@ class _CustomAddInstructorState extends State<CustomAddInstructor> {
 
         CustomPrimaryButton(
           prefixIcon: Icon(Icons.add),
-          text: "Add Instructor",
-          onTap: widget.onTap,
+          text: buttonText,
+          onTap: onTap,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),

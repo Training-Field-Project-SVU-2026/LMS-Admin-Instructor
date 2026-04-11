@@ -8,6 +8,7 @@ import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/home/ttt.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/students_admin/presentation/screens/student_admin_screen.dart';
 
 class AdminNavBarMobile extends StatefulWidget {
   const AdminNavBarMobile({super.key});
@@ -23,7 +24,7 @@ class _AdminNavBarMobileState extends State<AdminNavBarMobile> {
   final List<Widget> screens = const [
     Ttt(),
     InstructorAdminScreen(),
-    Ttt(),
+    StudentAdminScreen(),
     Ttt(),
     Ttt(),
   ];

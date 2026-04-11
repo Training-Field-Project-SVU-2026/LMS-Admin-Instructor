@@ -58,11 +58,13 @@ class CustomPrimaryButton extends StatelessWidget {
                   maxLines: 1,
                   style: (textStyle ?? context.textTheme.labelLarge)?.copyWith(
                     color: defaultColor,
-                    fontSize: textStyle?.fontSize ?? getResponsiveSize(
-                      context: context,
-                      webSize: 16,
-                      mobileSize: 14,
-                    ),
+                    fontSize:
+                        textStyle?.fontSize ??
+                        getResponsiveSize(
+                          context: context,
+                          webSize: 16,
+                          mobileSize: 14,
+                        ),
                   ),
                 ),
               ),

@@ -20,8 +20,8 @@ class _AdminNavBarDesktopState extends State<AdminNavBarDesktop> {
   final List<Widget> _pages = [
     const Ttt(),
     const InstructorAdminScreen(),
-    const Ttt(),
     const StudentAdminScreen(),
+    const Ttt(),
     const Ttt(),
   ];
 

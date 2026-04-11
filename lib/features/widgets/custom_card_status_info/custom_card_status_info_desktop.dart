@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 
-class CustomCardDesktop extends StatefulWidget {
+class CustomCardStatusInfoDesktop extends StatefulWidget {
   final String title;
   final String value;
   final IconData icon;
   final Color color;
-  const CustomCardDesktop({
+  const CustomCardStatusInfoDesktop({
     super.key,
     required this.title,
     required this.value,
@@ -16,10 +16,12 @@ class CustomCardDesktop extends StatefulWidget {
   });
 
   @override
-  State<CustomCardDesktop> createState() => _CustomCardDesktopState();
+  State<CustomCardStatusInfoDesktop> createState() =>
+      _CustomCardStatusInfoDesktopState();
 }
 
-class _CustomCardDesktopState extends State<CustomCardDesktop> {
+class _CustomCardStatusInfoDesktopState
+    extends State<CustomCardStatusInfoDesktop> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,5 +74,3 @@ class _CustomCardDesktopState extends State<CustomCardDesktop> {
     );
   }
 }
-
-// Color(0xff3B82F6)

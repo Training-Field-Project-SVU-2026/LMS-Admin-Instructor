@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/widgets/search_bar.dart';
 
 class CustomNavBar extends StatefulWidget {
@@ -20,7 +21,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
             CustomSearchBarr(
               w: 383,
               h: 40,
-              hint: "Search instructors by name, email or specialty...",
+              hint: context.tr('search_instructors_hint'),
 
               controller: TextEditingController(),
               prefixIcon: Icons.search,

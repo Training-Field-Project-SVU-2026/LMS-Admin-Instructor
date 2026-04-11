@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
+
 class StudentAdminUIModel {
   final List<StudentItemUIModel> students;
   final int totalEnrollments;
@@ -26,7 +29,7 @@ class StudentAdminUIModel {
   }
 }
 
-class StudentItemUIModel {
+class StudentItemUIModel implements CustomDataTableRowModel {
   final String studentName;
   final String email;
   final bool isActive;
@@ -40,4 +43,20 @@ class StudentItemUIModel {
     required this.enrollmentsCount,
     this.image,
   });
+
+  @override
+  List<String> get rowTexts => [
+    studentName,
+    email,
+    isActive ? 'active' : 'inactive',
+  ];
+
+  @override
+  String? get avatarUrl => image;
+
+  @override
+  VoidCallback? get onAction => null;
+
+  @override
+  VoidCallback? get onOptions => null;
 }

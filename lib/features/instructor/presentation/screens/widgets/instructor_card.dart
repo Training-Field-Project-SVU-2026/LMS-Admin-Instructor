@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_img.dart';
 
@@ -91,7 +92,7 @@ class _InstructorCardState extends State<InstructorCard> {
                       ),
                     ),
                     TextSpan(
-                      text: " Courses",
+                      text: context.tr('courses_count_label'),
                       style: context.textTheme.labelLarge?.copyWith(
                         color: context.colorScheme.onSurface.withValues(
                           alpha: 0.6,
@@ -104,7 +105,7 @@ class _InstructorCardState extends State<InstructorCard> {
               ),
               Spacer(),
               CustomPrimaryButton(
-                text: "Manage",
+                text: context.tr('manage_btn'),
                 onTap: widget.onTap,
                 width: 120,
                 height: 40,

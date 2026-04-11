@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 
-class CustomCardMobile extends StatefulWidget {
+class CustomCardStatusInfoMobile extends StatefulWidget {
   final String title;
   final String num;
   final Color colortitle;
@@ -13,7 +13,7 @@ class CustomCardMobile extends StatefulWidget {
   final Color colorIcon;
   final IconData icon;
 
-  const CustomCardMobile({
+  const CustomCardStatusInfoMobile({
     super.key,
     required this.title,
     required this.num,
@@ -27,10 +27,12 @@ class CustomCardMobile extends StatefulWidget {
   });
 
   @override
-  State<CustomCardMobile> createState() => _CustomCardMobileState();
+  State<CustomCardStatusInfoMobile> createState() =>
+      _CustomCardStatusInfoMobileState();
 }
 
-class _CustomCardMobileState extends State<CustomCardMobile> {
+class _CustomCardStatusInfoMobileState
+    extends State<CustomCardStatusInfoMobile> {
   @override
   Widget build(BuildContext context) {
     return Container(

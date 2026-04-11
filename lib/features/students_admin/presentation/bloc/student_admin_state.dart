@@ -9,7 +9,7 @@ class StudentAdminLoading extends StudentAdminState {}
 class StudentAdminLoaded extends StudentAdminState {
   final StudentAdminUIModel studentAdminUIModel;
   final bool isPaginationLoading;
-  
+
   StudentAdminLoaded({
     required this.studentAdminUIModel,
     this.isPaginationLoading = false,
