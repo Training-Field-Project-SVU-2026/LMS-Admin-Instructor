@@ -67,6 +67,7 @@ class _RootScreenState extends State<RootScreen> {
               children: [
                 if (isDesktop)
                   AdminSidebar(
+                    navItems: widget.navItems,
                     selectedIndex: currentIndex,
                     onItemTap: _onNavigationChanged,
                   ),
@@ -84,6 +85,7 @@ class _RootScreenState extends State<RootScreen> {
             bottomNavigationBar: isDesktop
                 ? null
                 : AdminBottomBar(
+                    navItems: widget.navItems,
                     currentIndex: currentIndex,
                     onTap: _onNavigationChanged,
                   ),

@@ -6,4 +6,6 @@ abstract class StudentsAdminRepository {
     int? page,
     int? pageSize,
   });
+
+  Future<Either<String, Unit>> deleteStudent(String slug);
 }

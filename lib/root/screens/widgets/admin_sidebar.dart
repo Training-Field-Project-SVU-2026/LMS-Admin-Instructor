@@ -7,11 +7,13 @@ import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/root/models/nav_items.dart';
 
 class AdminSidebar extends StatelessWidget {
+  final List<NavItemModel> navItems;
   final int selectedIndex;
   final Function(int) onItemTap;
 
   const AdminSidebar({
     super.key,
+    required this.navItems,
     required this.selectedIndex,
     required this.onItemTap,
   });
@@ -51,7 +53,7 @@ class AdminSidebar extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
-              children: adminNavItems.take(5).map((item) {
+              children: navItems.take(5).map((item) {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 8.h),
                   child: ResponsiveNavItem(
@@ -77,11 +79,11 @@ class AdminSidebar extends StatelessWidget {
               children: [
                 SizedBox(height: 16.h),
                 ResponsiveNavItem(
-                  icon: adminNavItems[5].icon,
-                  label: adminNavItems[5].label,
-                  index: adminNavItems[5].index,
-                  isSelected: selectedIndex == adminNavItems[5].index,
-                  onTap: () => onItemTap(adminNavItems[5].index),
+                  icon: navItems[5].icon,
+                  label: navItems[5].label,
+                  index: navItems[5].index,
+                  isSelected: selectedIndex == navItems[5].index,
+                  onTap: () => onItemTap(navItems[5].index),
                 ),
                 const AdminProfileWidget(),
               ],

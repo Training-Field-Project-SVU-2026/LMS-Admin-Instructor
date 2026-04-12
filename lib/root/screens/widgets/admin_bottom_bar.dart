@@ -7,11 +7,13 @@ import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/root/models/nav_items.dart';
 
 class AdminBottomBar extends StatelessWidget {
+  final List<NavItemModel> navItems;
   final int currentIndex;
   final Function(int) onTap;
 
   const AdminBottomBar({
     super.key,
+    required this.navItems,
     required this.currentIndex,
     required this.onTap,
   });
@@ -40,7 +42,7 @@ class AdminBottomBar extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: adminNavItems.map((item) {
+                children: navItems.map((item) {
                   return _BottomNavItem(
                     icon: item.icon,
                     label: item.label,

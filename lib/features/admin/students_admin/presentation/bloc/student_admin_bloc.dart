@@ -8,6 +8,41 @@ class StudentAdminBloc extends Bloc<StudentAdminEvent, StudentAdminState> {
   StudentAdminBloc({required this.studentsAdminRepository})
     : super(StudentAdminInitial()) {
     on<GetStudentsAdminEvent>(_onGetStudentsAdminEvent);
+    on<DeleteStudentAdminEvent>(_onDeleteStudentAdminEvent);
+  }
+
+  Future<void> _onDeleteStudentAdminEvent(
+    DeleteStudentAdminEvent event,
+    Emitter<StudentAdminState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is StudentAdminLoaded) {
+      final result = await studentsAdminRepository.deleteStudent(event.slug);
+
+      result.fold(
+        (failure) {
+          // TODO
+          // You might want to emit an error state or show a toast
+          // For now we just stay in the current state
+        },
+        (unit) {
+          final updatedStudents =
+              currentState.studentAdminUIModel.students
+                  .where((student) => student.slug != event.slug)
+                  .toList();
+
+          emit(
+            currentState.copyWith(
+              studentAdminUIModel: currentState.studentAdminUIModel.copyWith(
+                students: updatedStudents,
+                totalEnrollments:
+                    currentState.studentAdminUIModel.totalEnrollments - 1,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   Future<void> _onGetStudentsAdminEvent(

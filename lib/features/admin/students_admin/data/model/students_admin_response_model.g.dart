@@ -28,13 +28,13 @@ Map<String, dynamic> _$StudentsAdminResponseModelToJson(
 
 StudentsAdminData _$StudentsAdminDataFromJson(Map<String, dynamic> json) =>
     StudentsAdminData(
-      totalPages: (json['total_pages'] as num).toInt(),
-      currentPage: (json['current_page'] as num).toInt(),
-      totalStudents: (json['total_students'] as num).toInt(),
-      students: (json['students'] as List<dynamic>)
-          .map((e) => StudentsAdminModel.fromJson(e as Map<String, dynamic>))
+      totalPages: (json['total_pages'] as num?)?.toInt(),
+      currentPage: (json['current_page'] as num?)?.toInt(),
+      totalStudents: (json['total_students'] as num?)?.toInt(),
+      students: (json['students'] as List<dynamic>?)
+          ?.map((e) => StudentsAdminModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalEnrollments: (json['total_enrollments'] as num).toInt(),
+      totalEnrollments: (json['total_enrollments'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$StudentsAdminDataToJson(StudentsAdminData instance) =>

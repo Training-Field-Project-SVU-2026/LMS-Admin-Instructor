@@ -24,4 +24,12 @@ class StudentsAdminRepositoryImpl implements StudentsAdminRepository {
       fromJson: (json) => StudentsAdminResponseModel.fromJson(json),
     );
   }
+
+  @override
+  Future<Either<String, Unit>> deleteStudent(String slug) async {
+    return await apiConsumer.delete<Unit>(
+      EndPoint.deleteStudentAdmin(slug),
+      fromJson: (json) => unit,
+    );
+  }
 }

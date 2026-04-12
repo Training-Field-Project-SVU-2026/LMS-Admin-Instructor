@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_event.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_state.dart';
@@ -115,8 +117,51 @@ class _StudentAdminDesktopScreenState extends State<StudentAdminDesktopScreen> {
                         context.tr('verified'),
                       ],
                       columnFlex: const [3, 4, 2, 2],
-                      data: state.studentAdminUIModel.students
-                          .cast<CustomDataTableRowModel>(),
+                      data: state.studentAdminUIModel.students.map((student) {
+                        return student.copyWith(
+                          onActionPressed: () {
+                            showAdaptiveDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog.adaptive(
+                                  title: Text(context.tr('delete_student')),
+                                  content: Text(
+                                    context.tr('are_you_sure_delete_student'),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text(context.tr('cancel')),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        context.read<StudentAdminBloc>().add(
+                                          DeleteStudentAdminEvent(
+                                            slug: student.slug,
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        context.tr('delete'),
+                                        style: TextStyle(
+                                          color: context.colorScheme.error,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          onOptionsPressed: () {
+                            context.pushNamed(
+                              AppRoutes.studentDetails,
+                              pathParameters: {'slug': student.slug},
+                            );
+                          },
+                        );
+                      }).cast<CustomDataTableRowModel>().toList(),
                       scrollController: _scrollController,
                       isPaginationLoading: state.isPaginationLoading,
                     );

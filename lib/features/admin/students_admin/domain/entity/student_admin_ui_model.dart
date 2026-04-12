@@ -30,6 +30,7 @@ class StudentAdminUIModel {
 }
 
 class StudentItemUIModel implements CustomDataTableRowModel {
+  final String slug;
   final String studentName;
   final String email;
   final bool isActive;
@@ -40,6 +41,7 @@ class StudentItemUIModel implements CustomDataTableRowModel {
   final VoidCallback? onOptionsPressed;
 
   StudentItemUIModel({
+    required this.slug,
     required this.studentName,
     required this.email,
     required this.isActive,
@@ -49,6 +51,30 @@ class StudentItemUIModel implements CustomDataTableRowModel {
     this.onActionPressed,
     this.onOptionsPressed,
   });
+
+  StudentItemUIModel copyWith({
+    String? slug,
+    String? studentName,
+    String? email,
+    bool? isActive,
+    int? enrollmentsCount,
+    String? image,
+    bool? isVerified,
+    VoidCallback? onActionPressed,
+    VoidCallback? onOptionsPressed,
+  }) {
+    return StudentItemUIModel(
+      slug: slug ?? this.slug,
+      studentName: studentName ?? this.studentName,
+      email: email ?? this.email,
+      isActive: isActive ?? this.isActive,
+      enrollmentsCount: enrollmentsCount ?? this.enrollmentsCount,
+      image: image ?? this.image,
+      isVerified: isVerified ?? this.isVerified,
+      onActionPressed: onActionPressed ?? this.onActionPressed,
+      onOptionsPressed: onOptionsPressed ?? this.onOptionsPressed,
+    );
+  }
 
   @override
   List<String> get rowTexts => [

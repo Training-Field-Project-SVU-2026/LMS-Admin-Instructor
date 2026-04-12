@@ -8,16 +8,18 @@ part of 'students_admin_model.dart';
 
 StudentsAdminModel _$StudentsAdminModelFromJson(Map<String, dynamic> json) =>
     StudentsAdminModel(
-      studentName: json['student_name'] as String,
-      email: json['email'] as String,
-      isActive: json['is_active'] as bool,
-      enrollmentsCount: (json['enrollments_count'] as num).toInt(),
+      slug: json['slug'] as String?,
+      studentName: json['student_name'] as String?,
+      email: json['email'] as String?,
+      isActive: json['is_active'] as bool?,
+      enrollmentsCount: (json['enrollments_count'] as num?)?.toInt(),
       image: json['image'] as String?,
-      isVerified: json['is_verified'] as bool,
+      isVerified: json['is_verified'] as bool?,
     );
 
 Map<String, dynamic> _$StudentsAdminModelToJson(StudentsAdminModel instance) =>
     <String, dynamic>{
+      'slug': instance.slug,
       'student_name': instance.studentName,
       'email': instance.email,
       'is_active': instance.isActive,

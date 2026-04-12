@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/student_details_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/auth_layout.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/login_screen.dart';
@@ -116,6 +117,14 @@ class RouterGenerator {
         path: AppRoutes.profileInstructorAdminScreen,
         name: AppRoutes.profileInstructorAdminScreen,
         builder: (context, state) => ProfileInstructorAdminScreen(),
+      ),
+      GoRoute(
+        path: '/student_details/:slug',
+        name: AppRoutes.studentDetails,
+        builder: (context, state) {
+          final slug = state.pathParameters['slug'] ?? '';
+          return StudentDetailsScreen(slug: slug);
+        },
       ),
     ],
   );

@@ -28,10 +28,10 @@ class StudentsAdminResponseModel {
 
   StudentAdminUIModel toEntity() {
     return StudentAdminUIModel(
-      students: data.students.map((e) => e.toEntity()).toList(),
-      totalEnrollments: data.totalEnrollments,
-      totalPages: data.totalPages,
-      currentPage: data.currentPage,
+      students: data.students?.map((e) => e.toEntity()).toList() ?? [],
+      totalEnrollments: data.totalEnrollments ?? 0,
+      totalPages: data.totalPages ?? 1,
+      currentPage: data.currentPage ?? 1,
     );
   }
 }
@@ -39,22 +39,22 @@ class StudentsAdminResponseModel {
 @JsonSerializable()
 class StudentsAdminData {
   @JsonKey(name: 'total_pages')
-  final int totalPages;
+  final int? totalPages;
   @JsonKey(name: 'current_page')
-  final int currentPage;
+  final int? currentPage;
   @JsonKey(name: 'total_students')
-  final int totalStudents;
-  final List<StudentsAdminModel> students;
+  final int? totalStudents;
+  final List<StudentsAdminModel>? students;
 
   @JsonKey(name: 'total_enrollments')
-  final int totalEnrollments;
+  final int? totalEnrollments;
 
   StudentsAdminData({
-    required this.totalPages,
-    required this.currentPage,
-    required this.totalStudents,
-    required this.students,
-    required this.totalEnrollments,
+    this.totalPages,
+    this.currentPage,
+    this.totalStudents,
+    this.students,
+    this.totalEnrollments,
   });
 
   factory StudentsAdminData.fromJson(Map<String, dynamic> json) =>

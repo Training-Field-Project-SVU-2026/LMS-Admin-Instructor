@@ -66,13 +66,13 @@ final List<NavItemModel> instructorNavItems = [
   const NavItemModel(
     icon: Icons.groups_outlined,
     label: 'students',
-    screen: InstructorAdminScreen(),
+    screen: Ttt(),
     index: 1,
   ),
   const NavItemModel(
     icon: Icons.school_outlined,
     label: 'courses',
-    screen: StudentAdminScreen(),
+    screen: Ttt(),
     index: 2,
   ),
   const NavItemModel(

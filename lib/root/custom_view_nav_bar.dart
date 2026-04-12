@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:lms_admin_instructor/root/models/nav_items.dart';
-import 'package:lms_admin_instructor/root/screens/admin_root_screen.dart';
+import 'package:lms_admin_instructor/root/screens/root_screen.dart';
 
 class CustomViewNavBar extends StatefulWidget {
   final String role;
@@ -13,6 +15,7 @@ class CustomViewNavBar extends StatefulWidget {
 class _CustomViewNavBarState extends State<CustomViewNavBar> {
   @override
   Widget build(BuildContext context) {
+    log("Role is: ${widget.role}");
     return RootScreen(
       navItems: widget.role == 'admin' ? adminNavItems : instructorNavItems,
     );
