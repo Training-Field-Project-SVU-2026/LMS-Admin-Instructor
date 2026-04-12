@@ -30,6 +30,11 @@ class AuthRepositoryImpl implements AuthRepository {
         return Left(error);
       },
       (loginResponse) async {
+        if (loginResponse.user.role != 'admin' &&
+            loginResponse.user.role != 'instructor') {
+          return Left('You are not authorized to login to dashboard');
+        }
+
         await cacheHelper.saveData(
           key: ApiKey.accessToken,
           value: loginResponse.accessToken,

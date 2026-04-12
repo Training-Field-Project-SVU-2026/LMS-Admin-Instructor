@@ -35,13 +35,19 @@ class StudentItemUIModel implements CustomDataTableRowModel {
   final bool isActive;
   final int enrollmentsCount;
   final String? image;
+  final bool isVerified;
+  final VoidCallback? onActionPressed;
+  final VoidCallback? onOptionsPressed;
 
   StudentItemUIModel({
     required this.studentName,
     required this.email,
     required this.isActive,
     required this.enrollmentsCount,
+    required this.isVerified,
     this.image,
+    this.onActionPressed,
+    this.onOptionsPressed,
   });
 
   @override
@@ -49,14 +55,15 @@ class StudentItemUIModel implements CustomDataTableRowModel {
     studentName,
     email,
     isActive ? 'active' : 'inactive',
+    isVerified ? 'verified' : 'not_verified',
   ];
 
   @override
   String? get avatarUrl => image;
 
   @override
-  VoidCallback? get onAction => null;
+  VoidCallback? get onAction => onActionPressed;
 
   @override
-  VoidCallback? get onOptions => null;
+  VoidCallback? get onOptions => onOptionsPressed;
 }

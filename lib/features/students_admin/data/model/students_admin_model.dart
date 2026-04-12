@@ -13,6 +13,8 @@ class StudentsAdminModel {
   @JsonKey(name: 'enrollments_count')
   final int enrollmentsCount;
   final String? image;
+  @JsonKey(name: 'is_verified')
+  final bool isVerified;
 
   StudentsAdminModel({
     required this.studentName,
@@ -20,11 +22,12 @@ class StudentsAdminModel {
     required this.isActive,
     required this.enrollmentsCount,
     this.image,
+    required this.isVerified,
   });
 
   factory StudentsAdminModel.fromJson(Map<String, dynamic> json) =>
-      _$StudentsAdminFromJson(json);
-  Map<String, dynamic> toJson() => _$StudentsAdminToJson(this);
+      _$StudentsAdminModelFromJson(json);
+  Map<String, dynamic> toJson() => _$StudentsAdminModelToJson(this);
 
   StudentItemUIModel toEntity() {
     return StudentItemUIModel(
@@ -33,6 +36,7 @@ class StudentsAdminModel {
       isActive: isActive,
       enrollmentsCount: enrollmentsCount,
       image: image,
+      isVerified: isVerified,
     );
   }
 }
