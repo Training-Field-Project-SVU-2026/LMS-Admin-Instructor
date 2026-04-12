@@ -31,7 +31,7 @@ class LoginRightSide extends StatelessWidget {
               backgroundColor: context.colorScheme.secondary,
             ),
           );
-          context.go(AppRoutes.navBar);
+          context.go(AppRoutes.navBar, extra: {"role": state.data.user.role});
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

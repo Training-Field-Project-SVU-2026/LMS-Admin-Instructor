@@ -68,6 +68,62 @@ class ResetPasswordScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 48.h),
 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(6, (index) {
+                      return Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.w),
+                          child: AspectRatio(
+                            aspectRatio: 1.0,
+                            child: TextFormField(
+                              controller: authBloc.otpControllers[index],
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              maxLength: 1,
+                              style: context.textTheme.headlineSmall?.copyWith(
+                                color: context.colorScheme.onSecondary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                              ),
+                              decoration: InputDecoration(
+                                counterText: '',
+                                contentPadding: EdgeInsets.zero,
+                                filled: true,
+                                fillColor: context.colorScheme.secondary
+                                    .withValues(alpha: 0.03),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  borderSide: BorderSide(
+                                    color: context.colorScheme.secondary
+                                        .withValues(alpha: 0.15),
+                                    width: 1.5.w,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  borderSide: BorderSide(
+                                    color: context.colorScheme.secondary,
+                                    width: 2.5.w,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                if (value.isNotEmpty && index < 5) {
+                                  FocusScope.of(context).nextFocus();
+                                } else if (value.isEmpty && index > 0) {
+                                  FocusScope.of(context).previousFocus();
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+
+                  SizedBox(height: 32.h),
+
                   CustomTextFormField(
                     controller: authBloc.newPasswordController,
                     txt: context.tr('new_password'),
@@ -111,6 +167,19 @@ class ResetPasswordScreen extends StatelessWidget {
                         onTap: isLoading
                             ? null
                             : () {
+                                final otpCode = authBloc.getOtpCode();
+                                if (otpCode.length < 6) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          context.tr('please_enter_full_otp')),
+                                      backgroundColor:
+                                          context.colorScheme.error,
+                                    ),
+                                  );
+                                  return;
+                                }
+                                authBloc.otpController.text = otpCode;
                                 if (authBloc.resetPasswordFormKey.currentState
                                         ?.validate() ??
                                     false) {

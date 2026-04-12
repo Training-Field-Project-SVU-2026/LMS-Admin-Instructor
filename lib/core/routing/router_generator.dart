@@ -3,18 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/student_details_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/auth_layout.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
-import 'package:lms_admin_instructor/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/screens/splash_screen.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/bloc/instructor_admin_bloc.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/add_instructor_admin_screen.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/profile_instructor_admin_screen.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/add_instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/profile_instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/add_student_screen/add_student_admin_screen.dart';
+import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
@@ -64,22 +66,7 @@ class RouterGenerator {
                   },
             ),
           ),
-          GoRoute(
-            path: AppRoutes.verifyOtpScreen,
-            name: AppRoutes.verifyOtpScreen,
-            pageBuilder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>? ?? {};
-              final email = extra['email'] as String? ?? '';
-              return CustomTransitionPage(
-                key: state.pageKey,
-                child: VerifyOtpScreen(email: email),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-              );
-            },
-          ),
+
           GoRoute(
             path: AppRoutes.resetPasswordScreen,
             name: AppRoutes.resetPasswordScreen,
@@ -104,12 +91,15 @@ class RouterGenerator {
         path: AppRoutes.navBar,
         name: AppRoutes.navBar,
         builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final role = extra?['role'] as String? ?? 'admin';
           return MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<InstructorAdminBloc>()),
               BlocProvider.value(value: sl<StudentAdminBloc>()),
+              BlocProvider.value(value: sl<RootBloc>()),
             ],
-            child: const CustomViewNavBar(),
+            child: CustomViewNavBar(role: role),
           );
         },
       ),
@@ -119,9 +109,22 @@ class RouterGenerator {
         builder: (context, state) => AddInstructorAdminScreen(),
       ),
       GoRoute(
+        path: AppRoutes.addStudentAdminScreen,
+        name: AppRoutes.addStudentAdminScreen,
+        builder: (context, state) => AddStudentAdminScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.profileInstructorAdminScreen,
         name: AppRoutes.profileInstructorAdminScreen,
         builder: (context, state) => ProfileInstructorAdminScreen(),
+      ),
+      GoRoute(
+        path: '/student_details/:slug',
+        name: AppRoutes.studentDetails,
+        builder: (context, state) {
+          final slug = state.pathParameters['slug'] ?? '';
+          return StudentDetailsScreen(slug: slug);
+        },
       ),
     ],
   );

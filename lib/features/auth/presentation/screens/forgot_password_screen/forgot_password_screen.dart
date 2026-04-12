@@ -27,10 +27,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             ),
           );
 
-          context.go(
-            AppRoutes.verifyOtpScreen,
-            extra: {'email': authBloc.emailController.text.trim()},
-          );
+          context.go(AppRoutes.resetPasswordScreen);
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
