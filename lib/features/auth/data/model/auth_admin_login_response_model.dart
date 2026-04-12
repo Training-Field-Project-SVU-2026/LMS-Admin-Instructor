@@ -36,7 +36,7 @@ class LoginResponseModel {
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
     final data = json['data'] ?? {};
     final tokens = data['tokens'] ?? {};
-    
+
     return LoginResponseModel(
       success: json['success'] ?? false,
       status: json['status'] ?? 0,

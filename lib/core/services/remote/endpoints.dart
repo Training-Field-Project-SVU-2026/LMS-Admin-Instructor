@@ -22,6 +22,7 @@ class EndPoint {
 
   //? Students
   static String studentsAdmin = "/admin/students/";
+  static String deleteStudentAdmin(String slug) => "/admin/students/$slug/delete/";
 
 
 }

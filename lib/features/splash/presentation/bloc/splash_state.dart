@@ -11,7 +11,10 @@ class SplashInitial extends SplashState {}
 
 class SplashLoading extends SplashState {}
 
-class SplashLoaded extends SplashState {}
+class SplashLoaded extends SplashState {
+  final String role;
+  const SplashLoaded({required this.role});
+}
 
 class SplashError extends SplashState {
   final String? message;
