@@ -1,29 +1,35 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_img.dart';
 
-class InstructorCard extends StatefulWidget {
-  final String name;
+class CustomCard extends StatefulWidget {
+  final String title;
   final String description;
-  final String image;
-  final int courses;
+  final String? image;
+  final int? total_num;
   final Function() onTap;
-  const InstructorCard({
+  final IconData? icon;
+  final String bottom_action;
+  const CustomCard({
     super.key,
-    required this.name,
+    required this.title,
     required this.description,
-    required this.image,
-    required this.courses,
+    this.image,
+    this.total_num,
     required this.onTap,
+    this.icon,
+    required this.bottom_action,
   });
 
   @override
-  State<InstructorCard> createState() => _InstructorCardState();
+  State<CustomCard> createState() => _CustomCardState();
 }
 
-class _InstructorCardState extends State<InstructorCard> {
+class _CustomCardState extends State<CustomCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,7 +63,7 @@ class _InstructorCardState extends State<InstructorCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.name,
+                      widget.title,
                       style: context.textTheme.titleLarge?.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
@@ -80,11 +86,15 @@ class _InstructorCardState extends State<InstructorCard> {
           Spacer(),
           Row(
             children: [
+              if (widget.icon != null) ...[
+                Icon(widget.icon, color: context.colorScheme.primary),
+                SizedBox(width: 8.w),
+              ],
               RichText(
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "${widget.courses}",
+                      text: "${widget.total_num}",
                       style: context.textTheme.bodyLarge?.copyWith(
                         color: context.colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
@@ -104,7 +114,7 @@ class _InstructorCardState extends State<InstructorCard> {
               ),
               Spacer(),
               CustomPrimaryButton(
-                text: "Manage",
+                text: widget.bottom_action,
                 onTap: widget.onTap,
                 width: 120,
                 height: 40,

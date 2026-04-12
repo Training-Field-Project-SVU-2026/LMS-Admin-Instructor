@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_card_mobile.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/instructor_card.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_card.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_img.dart';
 
 class InstructorMobileAdminScreen extends StatefulWidget {
@@ -127,18 +127,19 @@ Courses''',
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 10.h),
-                        child: InstructorCard(
+                        child: CustomCard(
                           onTap: () {
                             context.push(
                               AppRoutes.profileInstructorAdminScreen,
                             );
                           },
-                          name: "Dr. Elena Rodriguez",
+                          bottom_action: "Manage",
+                          title: "Dr. Elena Rodriguez",
                           description:
                               "Specializing in Neural Networks and Deep Learning architectures for the",
                           image:
                               "https://i.pinimg.com/474x/be/24/f1/be24f1ad82c82e78997c80ff0f8d6a53.jpg",
-                          courses: 12,
+                          total_num: 12,
                         ),
                       );
                     },

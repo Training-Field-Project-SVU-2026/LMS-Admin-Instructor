@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
-import 'package:lms_admin_instructor/features/widgets/custom_img.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_instructor_information_disktop.dart';
+import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/stats_card_widget%20.dart';
 
 class ProfileInstructorDisctopAdminScreen extends StatefulWidget {
   const ProfileInstructorDisctopAdminScreen({super.key});
@@ -17,97 +17,42 @@ class _ProfileInstructorDisctopAdminScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Profile Instructor")),
       body: Padding(
         padding: EdgeInsets.all(32.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //***********************************??Instructor Informations??*****************
+            CustomInstructorInformationDisktop(
+              name: "Eng. Taha",
+              description: "Senior Data Science Instructor",
+              image:
+                  "https://i.pinimg.com/474x/be/24/f1/be24f1ad82c82e78997c80ff0f8d6a53.jpg",
+            ),
+            SizedBox(height: 32.h),
+
+            //***********************************??Instructor Stats??*****************
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 125.w,
-                  height: 125.h,
-                  decoration: BoxDecoration(
-                    color: context.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(12.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: context.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
-                        ),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+                StatsCardWidget(
+                  backGroundIconColor: context.colorScheme.primary.withValues(
+                    alpha: 0.1,
                   ),
-                  child: CustomImage(
-                    imagePath:
-                        "https://i.pinimg.com/474x/be/24/f1/be24f1ad82c82e78997c80ff0f8d6a53.jpg",
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
+                  title: "Total Students",
+                  value: "14,285",
+                  icon: Icons.people_alt_rounded,
+                  iconColor: context.colorScheme.primary,
                 ),
                 SizedBox(width: 24.w),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Instructor /",
-                            style: context.textTheme.labelLarge?.copyWith(
-                              color: context.colorScheme.onSurface.withValues(
-                                alpha: 0.5,
-                              ),
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Details",
-                            style: context.textTheme.labelLarge?.copyWith(
-                              color: context.colorScheme.onSurface,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text("Eng. Taha", style: context.textTheme.headlineLarge),
-
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 300.w, // عرض محدد للنص
-                          child: Text(
-                            "Senior Data Science InstructorSenior Data Science InstructorSenior Data Science InstructorSenior Data Science InstructorSenior Data Science InstructorSenior Data Science InstructorSenior Data Science InstructorSenior Data Science Instructor",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              color: context.colorScheme.onSurface.withValues(
-                                alpha: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 400.w),
-                        SizedBox(
-                          width: 200.w,
-                          // height: 55.h,
-                          child: CustomPrimaryButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.r),
-                              ),
-                              backgroundColor: context.colorScheme.error,
-                            ),
-                            onTap: () {},
-                            text: "Delete Account",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                StatsCardWidget(
+                  title: "Avg. Total Course Rating",
+                  value: "4.9",
+                  icon: Icons.star_border_outlined,
+                  iconColor: Colors.amber,
+                  backGroundIconColor: Colors.amber.withValues(alpha: 0.1),
+                  subtitle: "/5",
+                  footerText: "Based on 3,420 reviews",
                 ),
               ],
             ),
