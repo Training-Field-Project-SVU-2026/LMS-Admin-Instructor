@@ -23,7 +23,12 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
           checkAuthDataModel.isVerified != null &&
           checkAuthDataModel.isActive! &&
           checkAuthDataModel.isVerified!) {
-        emit(SplashLoaded());
+        if (checkAuthDataModel.role != null &&
+            checkAuthDataModel.role != "student") {
+          emit(SplashLoaded(role: checkAuthDataModel.role!));
+        } else {
+          emit(SplashError(message: "You are not authorized to login"));
+        }
       } else {
         emit(
           SplashError(

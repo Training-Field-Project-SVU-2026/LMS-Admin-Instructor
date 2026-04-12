@@ -194,7 +194,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _handleNavigation(BuildContext context, SplashState state) {
     if (state is SplashLoaded) {
-      context.go(AppRoutes.navBar);
+      context.go(AppRoutes.navBar, extra: {"role": state.role});
     } else if (state is SplashError) {
       if (state.message != null &&
           state.message != "No token found" &&

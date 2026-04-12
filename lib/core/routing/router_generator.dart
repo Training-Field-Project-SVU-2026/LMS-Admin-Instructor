@@ -90,13 +90,15 @@ class RouterGenerator {
         path: AppRoutes.navBar,
         name: AppRoutes.navBar,
         builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final role = extra?['role'] as String? ?? 'admin';
           return MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<InstructorAdminBloc>()),
               BlocProvider.value(value: sl<StudentAdminBloc>()),
               BlocProvider.value(value: sl<RootBloc>()),
             ],
-            child: const CustomViewNavBar(),
+            child: CustomViewNavBar(role: role),
           );
         },
       ),
