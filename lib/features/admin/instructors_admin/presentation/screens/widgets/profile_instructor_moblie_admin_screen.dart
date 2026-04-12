@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_instructor_information_mobile.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_instructor_status_mobile.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_card.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_instructor_information_mobile.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_instructor_status_mobile.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_card.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class ProfileInstructorMoblieAdminScreen extends StatefulWidget {
