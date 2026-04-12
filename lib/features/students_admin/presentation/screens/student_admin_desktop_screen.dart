@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
-import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_event.dart';
 import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_state.dart';
-import 'package:lms_admin_instructor/features/widgets/custom_add_row/custom_add_row_widget.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/custom_card_status_info_desktop.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart';
@@ -68,35 +66,37 @@ class _StudentAdminDesktopScreenState extends State<StudentAdminDesktopScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomAddRowWidget(
-              title: context.tr('manage_students'),
-              description: context.tr(
-                "create_update_manage_student_profiles_assignments",
+            Text(
+              context.tr('manage_students'),
+              style: context.textTheme.displaySmall!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: context.colorScheme.onSurface,
               ),
-              buttonText: context.tr('add_student'),
-              icon: Icons.people_outline,
-              onTap: () {
-                context.push(AppRoutes.addStudentAdminScreen);
-              },
+            ),
+            Text(
+              context.tr("create_update_manage_student_profiles_assignments"),
+              style: context.textTheme.bodyMedium!.copyWith(
+                color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
             ),
             SizedBox(height: 32.h),
-            Row(
-              children: [
-                //! Watch out, this widget place not here
-                // CustomCardDesktop(
-                //   title: context.tr('total_students'),
-                //   value: "120",
-                //   icon: Icons.people_outline,
-                //   color: context.colorScheme.primary
-                // ),
-                // SizedBox(width: 20.w),
-                // CustomCardDesktop(
-                //   title: context.tr('total_courses'),
-                //   value: "48",
-                //   icon: Icons.book_outlined,
-                //   color: context.colorScheme.primary
-                // ),
-              ],
+            BlocBuilder<StudentAdminBloc, StudentAdminState>(
+              buildWhen: (previous, current) => current is StudentAdminLoaded,
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    CustomCardStatusInfoDesktop(
+                      title: context.tr('total_students'),
+                      value: state is StudentAdminLoaded
+                          ? state.studentAdminUIModel.totalEnrollments
+                                .toString()
+                          : '??',
+                      icon: Icons.people_outline,
+                      color: context.colorScheme.primary,
+                    ),
+                  ],
+                );
+              },
             ),
             SizedBox(height: 32.h),
             Expanded(
@@ -112,8 +112,9 @@ class _StudentAdminDesktopScreenState extends State<StudentAdminDesktopScreen> {
                         context.tr('student_name'),
                         context.tr('email_label'),
                         context.tr('status'),
+                        context.tr('verified'),
                       ],
-                      columnFlex: const [3, 4, 1],
+                      columnFlex: const [3, 4, 2, 2],
                       data: state.studentAdminUIModel.students
                           .cast<CustomDataTableRowModel>(),
                       scrollController: _scrollController,

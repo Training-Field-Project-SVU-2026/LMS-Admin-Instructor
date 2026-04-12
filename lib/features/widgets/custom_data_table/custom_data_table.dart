@@ -1,10 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
 
-class CustomDataTable extends StatelessWidget {
+class CustomDataTable extends StatefulWidget {
   final List<String> headers;
   final List<CustomDataTableRowModel> data;
   final bool isLoading;
@@ -25,141 +28,211 @@ class CustomDataTable extends StatelessWidget {
   });
 
   @override
+  State<CustomDataTable> createState() => _CustomDataTableState();
+}
+
+class _CustomDataTableState extends State<CustomDataTable> {
+  final ScrollController _horizontalScrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _horizontalScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (isLoading && data.isEmpty) {
+    if (widget.isLoading && widget.data.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-          decoration: BoxDecoration(
-            color: context.colorScheme.outline.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8.r),
-              topRight: Radius.circular(8.r),
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double minWidth = context.responsiveValue(
+          mobile: 650.w,
+          desktop: 1100.w,
+        );
+        final double horizontalPadding = context.responsiveValue(
+          mobile: 8.w,
+          desktop: 12.w,
+        );
+        final double tableWidth = constraints.maxWidth > minWidth
+            ? constraints.maxWidth
+            : minWidth;
+
+        return ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(
+            dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.trackpad,
+            },
           ),
-          child: DefaultTextStyle(
-            style: context.textTheme.titleMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: context.colorScheme.onSurface,
-            ),
-            child: Row(
-              children: [
-                SizedBox(width: 56.w), 
-                if (showIndex) _buildHeaderCell(context.tr('number'), flex: 1),
-                ...List.generate(headers.length, (index) {
-                  return _buildHeaderCell(
-                    headers[index],
-                    flex: columnFlex != null && columnFlex!.length > index
-                        ? columnFlex![index]
-                        : 2,
-                  );
-                }),
-                SizedBox(width: 150.w), 
-              ],
-            ),
-          ),
-        ),
-
-        Expanded(
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: data.length + (isPaginationLoading ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index == data.length) {
-                return Padding(
-                  padding: EdgeInsets.all(16.r),
-                  child: const Center(child: CircularProgressIndicator()),
-                );
-              }
-
-              final item = data[index];
-              final isEven = index % 2 == 0;
-
-              return Container(
-                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-                decoration: BoxDecoration(
-                  color: isEven
-                      ? context.colorScheme.surface
-                      : context.colorScheme.surfaceVariant,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: context.colorScheme.outline.withValues(alpha: 0.2),
-                    ),
-                  ),
-                ),
-                child: Row(
+          child: Scrollbar(
+            controller: _horizontalScrollController,
+            thumbVisibility: true,
+            trackVisibility: true,
+            thickness: 8.r,
+            radius: Radius.circular(8.r),
+            child: SingleChildScrollView(
+              controller: _horizontalScrollController,
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: tableWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width: 56.w,
-                      child: Center(
-                        child: Checkbox(
-                          value: false,
-                          onChanged: (v) {},
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.r),
-                          ),
-                          side: BorderSide(color: context.colorScheme.outline),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16.h,
+                        horizontal: horizontalPadding,
+                      ),
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.outline.withValues(
+                          alpha: 0.5,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8.r),
+                          topRight: Radius.circular(8.r),
+                        ),
+                      ),
+                      child: DefaultTextStyle(
+                        style: context.textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.colorScheme.onSurface,
+                        ),
+                        child: Row(
+                          children: [
+                            if (widget.showIndex)
+                              _buildHeaderCell(
+                                context.tr('number'),
+                                flex: 1,
+                                horizontalPadding: horizontalPadding,
+                              ),
+                            ...List.generate(widget.headers.length, (index) {
+                              return _buildHeaderCell(
+                                widget.headers[index],
+                                flex:
+                                    widget.columnFlex != null &&
+                                        widget.columnFlex!.length > index
+                                    ? widget.columnFlex![index]
+                                    : 2,
+                                horizontalPadding: horizontalPadding,
+                              );
+                            }),
+                            SizedBox(width: 100.w),
+                          ],
                         ),
                       ),
                     ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: widget.scrollController,
+                        itemCount:
+                            widget.data.length +
+                            (widget.isPaginationLoading ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index == widget.data.length) {
+                            return Padding(
+                              padding: EdgeInsets.all(16.r),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
 
-                    if (showIndex) _buildDataCell("${index + 1}", flex: 1),
+                          final item = widget.data[index];
+                          final isEven = index % 2 == 0;
 
-                    ...List.generate(item.rowTexts.length, (rowIndex) {
-                      return _buildDataCell(
-                        item.rowTexts[rowIndex],
-                        flex: columnFlex != null && columnFlex!.length > rowIndex
-                            ? columnFlex![rowIndex]
-                            : 2,
-                      );
-                    }),
-
-                    SizedBox(
-                      width: 150.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            visualDensity: VisualDensity.compact,
-                            padding: EdgeInsets.zero,
-                            icon: const Icon(Icons.more_horiz),
-                            onPressed: item.onOptions,
-                            splashRadius: 20.r,
-                          ),
-                          SizedBox(width: 8.w),
-                          IconButton(
-                            visualDensity: VisualDensity.compact,
-                            padding: EdgeInsets.zero,
-                            icon: Icon(
-                              Icons.delete_outline,
-                              color: context.colorScheme.error,
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 12.h,
+                              horizontal: horizontalPadding,
                             ),
-                            onPressed: item.onAction,
-                            splashRadius: 20.r,
-                          ),
-                        ],
+                            decoration: BoxDecoration(
+                              color: isEven
+                                  ? context.colorScheme.surface
+                                  : context.colorScheme.surfaceVariant,
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: context.colorScheme.outline.withValues(
+                                    alpha: 0.2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                if (widget.showIndex)
+                                  _buildDataCell(
+                                    "${index + 1}",
+                                    flex: 1,
+                                    horizontalPadding: horizontalPadding,
+                                  ),
+                                ...List.generate(item.rowTexts.length, (
+                                  rowIndex,
+                                ) {
+                                  return _buildDataCell(
+                                    item.rowTexts[rowIndex],
+                                    flex:
+                                        widget.columnFlex != null &&
+                                            widget.columnFlex!.length > rowIndex
+                                        ? widget.columnFlex![rowIndex]
+                                        : 2,
+                                    horizontalPadding: horizontalPadding,
+                                  );
+                                }),
+                                SizedBox(
+                                  width: 100.w,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        visualDensity: VisualDensity.compact,
+                                        padding: EdgeInsets.zero,
+                                        icon: const Icon(Icons.more_horiz),
+                                        onPressed: item.onOptions,
+                                        splashRadius: 20.r,
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      IconButton(
+                                        visualDensity: VisualDensity.compact,
+                                        padding: EdgeInsets.zero,
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: context.colorScheme.error,
+                                        ),
+                                        onPressed: item.onAction,
+                                        splashRadius: 20.r,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
                 ),
-              );
-            },
+              ),
+            ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 
-  Widget _buildHeaderCell(String text, {int flex = 2}) {
+  Widget _buildHeaderCell(
+    String text, {
+    int flex = 2,
+    double horizontalPadding = 12,
+  }) {
     return Expanded(
       flex: flex,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         alignment: flex == 1
             ? Alignment.center
             : AlignmentDirectional.centerStart,
@@ -172,11 +245,15 @@ class CustomDataTable extends StatelessWidget {
     );
   }
 
-  Widget _buildDataCell(String text, {int flex = 2}) {
+  Widget _buildDataCell(
+    String text, {
+    int flex = 2,
+    double horizontalPadding = 12,
+  }) {
     return Expanded(
       flex: flex,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         alignment: flex == 1
             ? Alignment.center
             : AlignmentDirectional.centerStart,
