@@ -1,4 +1,4 @@
-import 'package:lms_admin_instructor/features/students_admin/domain/entity/student_admin_ui_model.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/domain/entity/student_admin_ui_model.dart';
 
 class StudentAdminState {}
 

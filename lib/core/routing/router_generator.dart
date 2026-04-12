@@ -10,11 +10,12 @@ import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_p
 import 'package:lms_admin_instructor/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/screens/splash_screen.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/bloc/instructor_admin_bloc.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/add_instructor_admin_screen.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/profile_instructor_admin_screen.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/screens/add_student_screen/add_student_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/add_instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/profile_instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/add_student_screen/add_student_admin_screen.dart';
+import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
 class RouterGenerator {
@@ -93,6 +94,7 @@ class RouterGenerator {
             providers: [
               BlocProvider.value(value: sl<InstructorAdminBloc>()),
               BlocProvider.value(value: sl<StudentAdminBloc>()),
+              BlocProvider.value(value: sl<RootBloc>()),
             ],
             child: const CustomViewNavBar(),
           );

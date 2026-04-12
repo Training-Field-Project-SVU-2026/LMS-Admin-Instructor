@@ -9,10 +9,11 @@ import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_
 import 'package:lms_admin_instructor/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:lms_admin_instructor/features/splash/domain/splash_repository.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
-import 'package:lms_admin_instructor/features/students_admin/data/repository/students_admin_repository_impl.dart';
-import 'package:lms_admin_instructor/features/students_admin/domain/repository/students_admin_repository.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_bloc.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/bloc/instructor_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/data/repository/students_admin_repository_impl.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/domain/repository/students_admin_repository.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_bloc.dart';
+import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -49,4 +50,7 @@ Future<void> setupServiceLocator() async {
 
   // Features - Instructor Admin
   sl.registerLazySingleton(() => InstructorAdminBloc());
+
+  // Root
+  sl.registerLazySingleton(() => RootBloc());
 }

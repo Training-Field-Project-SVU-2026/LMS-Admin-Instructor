@@ -25,9 +25,9 @@ class _CustomCardStatusInfoDesktopState
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(24.r),
+      padding: EdgeInsets.symmetric(horizontal: 24.r, vertical: 16.r),
       width: 300.w,
-      height: 115.h,
+      constraints: BoxConstraints(minHeight: 115.h),
       decoration: BoxDecoration(
         color: context.colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(12.r),
@@ -41,25 +41,29 @@ class _CustomCardStatusInfoDesktopState
       ),
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.title,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: context.colorScheme.onSurface.withValues(alpha: 0.5),
-                  fontWeight: FontWeight.w500,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.title,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              Text(
-                widget.value,
-                style: context.textTheme.titleLarge?.copyWith(
-                  color: context.colorScheme.onSurface,
+                Text(
+                  widget.value,
+                  style: context.textTheme.titleLarge?.copyWith(
+                    color: context.colorScheme.onSurface,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Spacer(),
+          SizedBox(width: 16.w),
           Container(
             width: 36.w,
             height: 36.h,

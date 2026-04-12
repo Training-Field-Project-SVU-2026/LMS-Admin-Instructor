@@ -5,7 +5,7 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/custom_card_status_info_mobile.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/instructor_card.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/instructor_card.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_img.dart';
 
 class InstructorMobileAdminScreen extends StatefulWidget {

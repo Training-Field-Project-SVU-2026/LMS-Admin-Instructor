@@ -5,44 +5,46 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/home/ttt.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/instructor_admin_screen.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/screens/student_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/student_admin_screen.dart';
 
-class AdminNavBarDesktop extends StatefulWidget {
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
+
+class AdminNavBarDesktop extends StatelessWidget {
   const AdminNavBarDesktop({super.key});
 
-  @override
-  State<AdminNavBarDesktop> createState() => _AdminNavBarDesktopState();
-}
-
-class _AdminNavBarDesktopState extends State<AdminNavBarDesktop> {
-  int _selectedIndex = 0;
-  final List<Widget> _pages = [
-    const Ttt(),
-    const InstructorAdminScreen(),
-    const StudentAdminScreen(),
-    const Ttt(),
-    const Ttt(),
+  final List<Widget> _pages = const [
+    Ttt(),
+    InstructorAdminScreen(),
+    StudentAdminScreen(),
+    Ttt(),
+    Ttt(),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          NavigationBarWidget(
-            selectedIndex: _selectedIndex,
-            onItemTap: _onItemTapped,
+    return BlocBuilder<RootBloc, RootState>(
+      builder: (context, state) {
+        int selectedIndex = 0;
+        if (state is ChangeIndexRootState) {
+          selectedIndex = state.index;
+        }
+
+        return Scaffold(
+          body: Row(
+            children: [
+              NavigationBarWidget(
+                selectedIndex: selectedIndex,
+                onItemTap: (index) {
+                  context.read<RootBloc>().add(ChangeIndexRootEvent(index: index));
+                },
+              ),
+              Expanded(child: _pages[selectedIndex]),
+            ],
           ),
-          Expanded(child: _pages[_selectedIndex]),
-        ],
-      ),
+        );
+      },
     );
   }
 }

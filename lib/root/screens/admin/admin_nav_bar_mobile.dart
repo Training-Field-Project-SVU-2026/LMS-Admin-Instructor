@@ -7,8 +7,11 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/home/ttt.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/instructor_admin_screen.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/screens/student_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/student_admin_screen.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 
 class AdminNavBarMobile extends StatefulWidget {
   const AdminNavBarMobile({super.key});
@@ -18,8 +21,7 @@ class AdminNavBarMobile extends StatefulWidget {
 }
 
 class _AdminNavBarMobileState extends State<AdminNavBarMobile> {
-  final PageController controller = PageController();
-  int currentIndex = 0;
+  final PageController _controller = PageController();
 
   final List<Widget> screens = const [
     Ttt(),
@@ -29,36 +31,53 @@ class _AdminNavBarMobileState extends State<AdminNavBarMobile> {
     Ttt(),
   ];
 
-  void changePage(int index) {
-    if (currentIndex == index) return;
-    setState(() {
-      currentIndex = index;
-    });
-
-    controller.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: controller,
-        physics: const NeverScrollableScrollPhysics(),
-        children: screens,
+    return BlocListener<RootBloc, RootState>(
+      listener: (context, state) {
+        if (state is ChangeIndexRootState) {
+          if (_controller.hasClients &&
+              _controller.page?.round() != state.index) {
+            _controller.animateToPage(
+              state.index,
+              duration: const Duration(milliseconds: 50),
+              curve: Curves.easeInOut,
+            );
+          }
+        }
+      },
+      child: BlocBuilder<RootBloc, RootState>(
+        builder: (context, state) {
+          int currentIndex = 0;
+          if (state is ChangeIndexRootState) {
+            currentIndex = state.index;
+          }
+
+          return Scaffold(
+            body: PageView(
+              controller: _controller,
+              physics: const NeverScrollableScrollPhysics(),
+              children: screens,
+            ),
+            bottomNavigationBar: context.isDesktop
+                ? null
+                : AdminNavBarMobileUi(
+                    currentIndex: currentIndex,
+                    onTap: (index) {
+                      context.read<RootBloc>().add(
+                        ChangeIndexRootEvent(index: index),
+                      );
+                    },
+                  ),
+          );
+        },
       ),
-      bottomNavigationBar: context.isDesktop
-          ? null
-          : AdminNavBarMobileUi(currentIndex: currentIndex, onTap: changePage),
     );
   }
 }
@@ -105,14 +124,14 @@ class AdminNavBarMobileUi extends StatelessWidget {
                     context: context,
                   ),
                   navItem(
-                    icon: Icons.menu_book_outlined,
-                    label: "courses",
+                    icon: Icons.school_outlined,
+                    label: "students",
                     index: 2,
                     context: context,
                   ),
                   navItem(
-                    icon: Icons.school_outlined,
-                    label: "students",
+                    icon: Icons.menu_book_outlined,
+                    label: "courses",
                     index: 3,
                     context: context,
                   ),

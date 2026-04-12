@@ -6,7 +6,7 @@ import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_add_row/custom_add_row_widget.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/custom_card_status_info_desktop.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_nav_bar.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_nav_bar.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_viewer.dart';
 import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 

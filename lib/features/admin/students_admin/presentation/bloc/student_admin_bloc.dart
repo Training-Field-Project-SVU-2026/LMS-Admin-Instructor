@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lms_admin_instructor/features/students_admin/domain/repository/students_admin_repository.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_event.dart';
-import 'package:lms_admin_instructor/features/students_admin/presentation/bloc/student_admin_state.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/domain/repository/students_admin_repository.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_event.dart';
+import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_state.dart';
 
 class StudentAdminBloc extends Bloc<StudentAdminEvent, StudentAdminState> {
   final StudentsAdminRepository studentsAdminRepository;
