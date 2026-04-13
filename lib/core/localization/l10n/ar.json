@@ -97,5 +97,13 @@
   "manage_btn": "إدارة",
   "search_instructors_hint": "ابحث عن المعلمين بالاسم أو البريد الإلكتروني أو التخصص...",
   "number": "رقم",
-  "add_student": "إضافة طالب"
+  "add_student": "إضافة طالب",
+  "all_courses": "جميع الدورات",
+  "courses_screen_subtitle": "إدارة وعرض جميع الدورات المتاحة في النظام.",
+  "search_courses_hint": "بحث باسم الدورة...",
+  "create_new_course": "إنشاء دورة جديدة",
+  "course_name": "اسم الدورة",
+  "students_enrolled": "الطلاب المسجلون",
+  "created_date": "تاريخ الإنشاء",
+  "rating": "التقييم"
 }

@@ -91,5 +91,11 @@ class StudentItemUIModel implements CustomDataTableRowModel {
   VoidCallback? get onAction => onActionPressed;
 
   @override
+  IconData? get actionIcon => null;
+
+  @override
   VoidCallback? get onOptions => onOptionsPressed;
+
+  @override
+  IconData? get optionsIcon => null;
 }

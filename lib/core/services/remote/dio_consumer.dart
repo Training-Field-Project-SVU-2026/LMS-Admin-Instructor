@@ -65,6 +65,25 @@ class DioConsumer extends ApiConsumer {
   }
 
   @override
+  Future<Either<String, T>> getRaw<T>(
+    String path, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    T Function(dynamic)? fromJson,
+  }) async {
+    try {
+      final response = await dio.get(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+      return _handleRawResponse(response, fromJson);
+    } on DioException catch (e) {
+      return Left(DioExceptionHandler.handleException(e));
+    }
+  }
+
+  @override
   Future<Either<String, T>> patch<T>(
     String path, {
     dynamic data,
@@ -149,6 +168,32 @@ class DioConsumer extends ApiConsumer {
       return Left('Unexpected response format');
     } catch (e) {
       return Left('Error parsing response: ${e.toString()}');
+    }
+  }
+
+  Either<String, T> _handleRawResponse<T>(
+    Response response,
+    T Function(dynamic)? fromJson,
+  ) {
+    log("The Response (Raw): $response");
+    try {
+      final responseData = response.data;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if (fromJson != null) {
+          return Right(fromJson(responseData));
+        } else {
+          try {
+            return Right(responseData as T);
+          } catch (e) {
+            return Left('Type mismatch: expected $T, got ${responseData.runtimeType}');
+          }
+        }
+      } else {
+        return Left('Unexpected status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      return Left('Error parsing raw response: ${e.toString()}');
     }
   }
 }

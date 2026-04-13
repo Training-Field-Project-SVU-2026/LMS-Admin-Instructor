@@ -6,6 +6,8 @@ abstract class CustomDataTableRowModel {
   String? get avatarUrl;
 
   VoidCallback? get onAction;
+  IconData? get actionIcon;
 
   VoidCallback? get onOptions;
+  IconData? get optionsIcon;
 }
