@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lms_admin_instructor/core/utils/number_formatter.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
 
-class CourseInstructorListUIModel {
+import 'package:lms_admin_instructor/core/common/mixins/paginated_state.dart';
+
+class CourseInstructorListUIModel extends PaginatedUIModel<CourseInstructorItemUIModel> {
   final List<CourseInstructorItemUIModel> courses;
   final int totalCourses;
   final int totalPages;
@@ -13,7 +15,25 @@ class CourseInstructorListUIModel {
     required this.totalCourses,
     required this.totalPages,
     required this.currentPage,
-  });
+  }) : super(
+          items: courses,
+          totalPages: totalPages,
+          currentPage: currentPage,
+        );
+
+  @override
+  CourseInstructorListUIModel copyWithItems(
+    List<CourseInstructorItemUIModel> newItems, {
+    int? totalPages,
+    int? currentPage,
+  }) {
+    return CourseInstructorListUIModel(
+      courses: newItems,
+      totalCourses: totalCourses,
+      totalPages: totalPages ?? this.totalPages,
+      currentPage: currentPage ?? this.currentPage,
+    );
+  }
 
   CourseInstructorListUIModel copyWith({
     List<CourseInstructorItemUIModel>? courses,

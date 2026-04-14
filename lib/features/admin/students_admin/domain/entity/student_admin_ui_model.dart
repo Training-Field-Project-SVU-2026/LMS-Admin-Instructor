@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
 
-class StudentAdminUIModel {
+import 'package:lms_admin_instructor/core/common/mixins/paginated_state.dart';
+
+class StudentAdminUIModel extends PaginatedUIModel<StudentItemUIModel> {
   final List<StudentItemUIModel> students;
   final int totalEnrollments;
   final int totalPages;
@@ -12,7 +14,25 @@ class StudentAdminUIModel {
     required this.totalEnrollments,
     required this.totalPages,
     required this.currentPage,
-  });
+  }) : super(
+          items: students,
+          totalPages: totalPages,
+          currentPage: currentPage,
+        );
+
+  @override
+  StudentAdminUIModel copyWithItems(
+    List<StudentItemUIModel> newItems, {
+    int? totalPages,
+    int? currentPage,
+  }) {
+    return StudentAdminUIModel(
+      students: newItems,
+      totalEnrollments: totalEnrollments,
+      totalPages: totalPages ?? this.totalPages,
+      currentPage: currentPage ?? this.currentPage,
+    );
+  }
 
   StudentAdminUIModel copyWith({
     List<StudentItemUIModel>? students,
