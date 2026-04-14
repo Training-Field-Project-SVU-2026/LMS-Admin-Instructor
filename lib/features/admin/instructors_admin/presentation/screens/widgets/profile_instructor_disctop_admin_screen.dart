@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/custom_instructor_information_disktop.dart';
-import 'package:lms_admin_instructor/features/instructor/presentation/screens/widgets/stats_card_widget%20.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_instructor_information_disktop.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/stats_card_widget%20.dart';
 
 class ProfileInstructorDisctopAdminScreen extends StatefulWidget {
   const ProfileInstructorDisctopAdminScreen({super.key});

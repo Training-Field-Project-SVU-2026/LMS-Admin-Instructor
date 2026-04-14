@@ -3,7 +3,6 @@ class EndPoint {
   static String remoteUrl =
       "http://lms-env.eba-8nbnpx42.us-east-1.elasticbeanstalk.com/api";
 
-
   static String baseUrl = remoteUrl;
 
   // auth
@@ -20,11 +19,17 @@ class EndPoint {
     return "/user/get-user/$id";
   }
 
+  //?***********************************************************************?
+
   //? Students
   static String studentsAdmin = "/admin/students/";
-  static String deleteStudentAdmin(String slug) => "/admin/students/$slug/delete/";
+  static String deleteStudentAdmin(String slug) =>
+      "/admin/students/$slug/delete/";
 
+  //?***********************************************************************?
 
+  //? instructor
+  static String instructorAdmin = "/instructors/";
 }
 
 class ApiKey {

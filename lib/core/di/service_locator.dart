@@ -46,10 +46,14 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<StudentsAdminRepository>(
     () => StudentsAdminRepositoryImpl(apiConsumer: sl()),
   );
-  sl.registerLazySingleton(() => StudentAdminBloc(studentsAdminRepository: sl()));
+  sl.registerLazySingleton(
+    () => StudentAdminBloc(studentsAdminRepository: sl()),
+  );
 
   // Features - Instructor Admin
-  sl.registerLazySingleton(() => InstructorAdminBloc());
+  sl.registerLazySingleton(
+    () => InstructorAdminBloc(instructorAdminRepoditory: sl()),
+  );
 
   // Root
   sl.registerLazySingleton(() => RootBloc());

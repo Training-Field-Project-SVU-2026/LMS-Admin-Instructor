@@ -26,10 +26,9 @@ class StudentAdminBloc extends Bloc<StudentAdminEvent, StudentAdminState> {
           // For now we just stay in the current state
         },
         (unit) {
-          final updatedStudents =
-              currentState.studentAdminUIModel.students
-                  .where((student) => student.slug != event.slug)
-                  .toList();
+          final updatedStudents = currentState.studentAdminUIModel.students
+              .where((student) => student.slug != event.slug)
+              .toList();
 
           emit(
             currentState.copyWith(
