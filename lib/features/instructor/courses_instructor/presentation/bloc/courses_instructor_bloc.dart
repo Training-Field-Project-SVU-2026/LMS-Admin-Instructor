@@ -1,0 +1,63 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_admin_instructor/core/common/mixins/paginated_list_mixin.dart';
+import 'package:lms_admin_instructor/features/instructor/courses_instructor/domain/entity/course_instructor_ui_model.dart';
+import 'package:lms_admin_instructor/features/instructor/courses_instructor/domain/repository/courses_instructor_repository.dart';
+import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_event.dart';
+import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_state.dart';
+
+class CoursesInstructorBloc extends Bloc<CoursesInstructorEvent, CoursesInstructorState>
+    with
+        PaginatedListMixin<
+            CoursesInstructorEvent,
+            CoursesInstructorState,
+            CourseInstructorItemUIModel,
+            CourseInstructorListUIModel,
+            CoursesInstructorLoaded,
+            CoursesInstructorError,
+            CoursesInstructorLoading> {
+  final CoursesInstructorRepository repository;
+
+  CoursesInstructorBloc({required this.repository})
+      : super(CoursesInstructorInitial()) {
+    on<GetCoursesInstructorEvent>(_onGetCourses);
+  }
+
+  Future<void> _onGetCourses(
+    GetCoursesInstructorEvent event,
+    Emitter<CoursesInstructorState> emit,
+  ) async {
+    final int pageToFetch = event.page ?? 1;
+
+    if (!shouldHandlePagination(pageToFetch, state)) return;
+
+    if (pageToFetch == 1) {
+      if (state is! CoursesInstructorLoaded) {
+        emit(CoursesInstructorLoading());
+      }
+    } else {
+      emit((state as CoursesInstructorLoaded).copyWith(isPaginationLoading: true));
+    }
+
+    final response = await repository.getCoursesInstructor(
+      instructorSlug: event.instructorSlug,
+      page: pageToFetch,
+      pageSize: event.pageSize,
+    );
+
+    response.fold(
+      (error) => emit(CoursesInstructorError(message: error)),
+      (responseModel) {
+        handlePaginatedResponse(
+          page: pageToFetch,
+          newEntity: responseModel.toEntity(),
+          currentState: state,
+          emit: emit.call,
+          loadedStateBuilder: (model, isPaging) =>
+              CoursesInstructorLoaded(courseListUIModel: model, isPaginationLoading: isPaging),
+          errorStateBuilder: (msg) => CoursesInstructorError(message: msg),
+          loadingStateBuilder: () => CoursesInstructorLoading(),
+        );
+      },
+    );
+  }
+}

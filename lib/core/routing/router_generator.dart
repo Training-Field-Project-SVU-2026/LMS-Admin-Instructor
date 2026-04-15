@@ -16,6 +16,7 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/profile_instructor_admin_screen.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/add_student_screen/add_student_admin_screen.dart';
+import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
 import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
@@ -98,6 +99,7 @@ class RouterGenerator {
               BlocProvider.value(value: sl<InstructorAdminBloc>()),
               BlocProvider.value(value: sl<StudentAdminBloc>()),
               BlocProvider.value(value: sl<RootBloc>()),
+              BlocProvider.value(value: sl<CoursesInstructorBloc>()),
             ],
             child: CustomViewNavBar(role: role),
           );

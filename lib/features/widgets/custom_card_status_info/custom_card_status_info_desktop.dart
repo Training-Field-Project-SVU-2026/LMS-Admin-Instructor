@@ -33,7 +33,7 @@ class _CustomCardStatusInfoDesktopState
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
+            color: context.colorScheme.onSecondary.withValues(alpha: 0.3),
             blurRadius: 1,
             offset: Offset(3, 3),
           ),

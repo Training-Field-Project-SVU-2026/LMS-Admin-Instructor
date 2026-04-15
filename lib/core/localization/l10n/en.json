@@ -100,5 +100,13 @@
   "number": "No.",
   "add_student": "Add Student",
   "delete_Instructor": "Delete Instructor",
-  "are_you_sure_delete_instructor": "Are You Sure To Delete The Instructor"
+  "are_you_sure_delete_instructor": "Are You Sure To Delete The Instructor",
+  "all_courses": "All Courses",
+  "courses_screen_subtitle": "Manage and view all available courses in the system.",
+  "search_courses_hint": "Search by course name...",
+  "create_new_course": "Create New Course",
+  "course_name": "Course Name",
+  "students_enrolled": "Students Enrolled",
+  "created_date": "Created Date",
+  "rating": "Rating"
 }

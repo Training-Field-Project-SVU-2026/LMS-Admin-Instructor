@@ -7,6 +7,13 @@ abstract class ApiConsumer {
     Map<String, dynamic>? queryParameters,
     T Function(Map<String, dynamic>)? fromJson,
   });
+
+  Future<Either<String, T>> getRaw<T>(
+    String path, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    T Function(dynamic)? fromJson,
+  });
   Future<Either<String, T>> put<T>(
     String path, {
     Object? data,

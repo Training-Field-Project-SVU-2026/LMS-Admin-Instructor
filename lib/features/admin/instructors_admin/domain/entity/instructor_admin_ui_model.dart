@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/src/widgets/icon_data.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
 
 class InstructorAdminUiModel {
@@ -116,4 +117,12 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
     joindata ?? ' ',
     email,
   ];
+
+  @override
+  // TODO: implement actionIcon
+  IconData? get actionIcon => throw UnimplementedError();
+
+  @override
+  // TODO: implement optionsIcon
+  IconData? get optionsIcon => throw UnimplementedError();
 }
