@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
@@ -53,10 +54,13 @@ class CourseDetailsScreen extends StatelessWidget {
   Widget _buildBreadcrumbs(BuildContext context) {
     return Row(
       children: [
-        Text(
-          context.tr('courses'),
-          style: context.textTheme.bodyMedium?.copyWith(
-            color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+        InkWell(
+          onTap: () => context.pop(),
+          child: Text(
+            context.tr('courses'),
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
           ),
         ),
         Icon(

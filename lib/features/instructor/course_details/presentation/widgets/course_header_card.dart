@@ -15,7 +15,7 @@ class CourseHeaderCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: context.colorScheme.onSecondary.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -32,7 +32,7 @@ class CourseHeaderCard extends StatelessWidget {
                   width: 200.w,
                   height: 120.h,
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: context.colorScheme.onSecondary,
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Stack(
@@ -40,7 +40,10 @@ class CourseHeaderCard extends StatelessWidget {
                       Center(
                         child: Text(
                           context.tr('level_3_placeholder'),
-                          style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                          style: TextStyle(
+                            color: context.colorScheme.surface,
+                            fontSize: 10.sp,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -48,7 +51,9 @@ class CourseHeaderCard extends StatelessWidget {
                         right: 8.w,
                         child: Text(
                           context.tr('level_3_placeholder'),
-                          style: context.textTheme.labelSmall?.copyWith(color: Colors.white70),
+                          style: context.textTheme.labelSmall?.copyWith(
+                            color: context.colorScheme.surface,
+                          ),
                         ),
                       ),
                     ],
@@ -92,15 +97,25 @@ class CourseHeaderCard extends StatelessWidget {
                       Text(
                         context.tr('course_desc_placeholder'),
                         style: context.textTheme.bodyMedium?.copyWith(
-                          color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+                          color: context.colorScheme.onSurface.withValues(
+                            alpha: 0.6,
+                          ),
                         ),
                       ),
                       SizedBox(height: 16.h),
                       Row(
                         children: [
-                          _buildInfoBadge(context, Icons.category_outlined, "${context.tr('category_label')}${context.tr('category_web_dev')}"),
+                          _buildInfoBadge(
+                            context,
+                            Icons.category_outlined,
+                            "${context.tr('category_label')}${context.tr('category_web_dev')}",
+                          ),
                           SizedBox(width: 24.w),
-                          _buildInfoBadge(context, Icons.signal_cellular_alt, "${context.tr('level_label')}${context.tr('level_advanced')}"),
+                          _buildInfoBadge(
+                            context,
+                            Icons.signal_cellular_alt,
+                            "${context.tr('level_label')}${context.tr('level_advanced')}",
+                          ),
                         ],
                       ),
                     ],
@@ -109,7 +124,10 @@ class CourseHeaderCard extends StatelessWidget {
               ],
             ),
           ),
-          Divider(height: 1, color: context.colorScheme.outline.withValues(alpha: 0.1)),
+          Divider(
+            height: 1,
+            color: context.colorScheme.outline.withValues(alpha: 0.1),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
             child: Row(
@@ -164,7 +182,9 @@ class CourseHeaderCard extends StatelessWidget {
           ? CustomPrimaryButton(
               onTap: onTap,
               text: text,
-              prefixIcon: icon != null ? Icon(icon, size: 18.sp, color: Colors.white) : null,
+              prefixIcon: icon != null
+                  ? Icon(icon, size: 18.sp, color: context.colorScheme.surface)
+                  : null,
               width: 140.w,
               style: ElevatedButton.styleFrom(
                 backgroundColor: context.colorScheme.primary,
@@ -175,7 +195,9 @@ class CourseHeaderCard extends StatelessWidget {
               onPressed: onTap,
               style: OutlinedButton.styleFrom(
                 side: BorderSide(color: context.colorScheme.outline),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
               ),
               child: Text(
@@ -191,7 +213,11 @@ class CourseHeaderCard extends StatelessWidget {
   Widget _buildInfoBadge(BuildContext context, IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, size: 16.sp, color: context.colorScheme.onSurface.withValues(alpha: 0.5)),
+        Icon(
+          icon,
+          size: 16.sp,
+          color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+        ),
         SizedBox(width: 4.w),
         Text(
           text,

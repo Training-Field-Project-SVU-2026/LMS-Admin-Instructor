@@ -139,5 +139,6 @@
   "intro_assessment_placeholder": "التقييم التمهيدي",
   "intro_assessment_subtitle": "10 أسئلة • 100 درجة",
   "react_state_quiz_placeholder": "اختبار حالة React",
-  "react_state_quiz_subtitle": "15 سؤالاً • 150 درجة"
+  "react_state_quiz_subtitle": "15 سؤالاً • 150 درجة",
+  "pdf": "PDF"
 }

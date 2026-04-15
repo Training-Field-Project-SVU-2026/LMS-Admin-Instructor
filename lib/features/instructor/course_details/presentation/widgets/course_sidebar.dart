@@ -19,7 +19,11 @@ class CourseSidebar extends StatelessWidget {
           () {},
           child: Column(
             children: [
-              _buildMaterialItem(context, context.tr('slides_placeholder'), "2.4 MB"),
+              _buildMaterialItem(
+                context,
+                context.tr('slides_placeholder'),
+                "2.4 MB",
+              ),
               SizedBox(height: 16.h),
               _buildUploadButton(context, context.tr('upload_new_material')),
             ],
@@ -34,8 +38,16 @@ class CourseSidebar extends StatelessWidget {
           () {},
           child: Column(
             children: [
-              _buildQuizItem(context, context.tr('intro_assessment_placeholder'), context.tr('intro_assessment_subtitle')),
-              _buildQuizItem(context, context.tr('react_state_quiz_placeholder'), context.tr('react_state_quiz_subtitle')),
+              _buildQuizItem(
+                context,
+                context.tr('intro_assessment_placeholder'),
+                context.tr('intro_assessment_subtitle'),
+              ),
+              _buildQuizItem(
+                context,
+                context.tr('react_state_quiz_placeholder'),
+                context.tr('react_state_quiz_subtitle'),
+              ),
               SizedBox(height: 16.h),
               CustomPrimaryButton(
                 onTap: () {},
@@ -43,7 +55,7 @@ class CourseSidebar extends StatelessWidget {
                 prefixIcon: Icon(Icons.add, size: 18.sp, color: Colors.white),
                 width: double.infinity,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF084C61),
+                  backgroundColor: context.colorScheme.primary,
                   padding: EdgeInsets.symmetric(vertical: 12.h),
                 ),
               ),
@@ -68,7 +80,9 @@ class CourseSidebar extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: context.colorScheme.outline.withValues(alpha: 0.5)),
+        border: Border.all(
+          color: context.colorScheme.outline.withValues(alpha: 0.5),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,17 +96,25 @@ class CourseSidebar extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: context.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 TextButton(
                   onPressed: onManage,
-                  child: Text(context.tr('manage'), style: TextStyle(fontSize: 12.sp)),
+                  child: Text(
+                    context.tr('manage'),
+                    style: TextStyle(fontSize: 12.sp),
+                  ),
                 ),
               ],
             ),
           ),
-          Divider(height: 1, color: context.colorScheme.outline.withValues(alpha: 0.3)),
+          Divider(
+            height: 1,
+            color: context.colorScheme.outline.withValues(alpha: 0.3),
+          ),
           Padding(padding: EdgeInsets.all(16.r), child: child),
         ],
       ),
@@ -105,12 +127,16 @@ class CourseSidebar extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(8.r),
           decoration: BoxDecoration(
-            color: Colors.red.withValues(alpha: 0.1),
+            color: context.colorScheme.error.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(4.r),
           ),
           child: Text(
-            "PDF",
-            style: TextStyle(color: Colors.red, fontSize: 8.sp, fontWeight: FontWeight.bold),
+            context.tr('pdf'),
+            style: TextStyle(
+              color: context.colorScheme.error,
+              fontSize: 8.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         SizedBox(width: 12.w),
@@ -118,7 +144,12 @@ class CourseSidebar extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(name, style: context.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+              Text(
+                name,
+                style: context.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Text(size, style: context.textTheme.labelSmall),
             ],
           ),
@@ -134,7 +165,9 @@ class CourseSidebar extends StatelessWidget {
         onPressed: () {},
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: context.colorScheme.outline),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r),
+          ),
           padding: EdgeInsets.symmetric(vertical: 12.h),
         ),
         child: Text("+ $text", style: context.textTheme.labelMedium),
@@ -148,10 +181,19 @@ class CourseSidebar extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            title,
+            style: context.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Row(
             children: [
-              Icon(Icons.list_alt, size: 12.sp, color: Colors.grey),
+              Icon(
+                Icons.list_alt,
+                size: 12.sp,
+                color: context.colorScheme.outline,
+              ),
               SizedBox(width: 4.w),
               Text(subtitle, style: context.textTheme.labelSmall),
             ],
@@ -167,14 +209,20 @@ class CourseSidebar extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colorScheme.primary.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: context.colorScheme.primary.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: context.colorScheme.primary.withValues(alpha: 0.1),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.info_outline, size: 18.sp, color: context.colorScheme.primary),
+              Icon(
+                Icons.info_outline,
+                size: 18.sp,
+                color: context.colorScheme.primary,
+              ),
               SizedBox(width: 8.w),
               Text(
                 context.tr('content_tips'),
