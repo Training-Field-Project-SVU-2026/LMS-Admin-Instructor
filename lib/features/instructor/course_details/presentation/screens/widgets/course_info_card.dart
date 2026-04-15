@@ -4,8 +4,8 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
-class CourseHeaderCard extends StatelessWidget {
-  const CourseHeaderCard({super.key});
+class CourseInfoCard extends StatelessWidget {
+  const CourseInfoCard({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -5,9 +5,11 @@ import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/widgets/course_header_card.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/widgets/course_structure_section.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/widgets/course_sidebar.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_info_card.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_video_section/course_video_section.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/custom_course_sidebar.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_material_section/course_material_section.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_quiz_section/course_quiz_section.dart';
 
 class CourseDetailsScreen extends StatelessWidget {
   final String slug;
@@ -16,7 +18,6 @@ class CourseDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.colorScheme.primary.withValues(alpha: 0.005),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: CustomSearchAppBar(
@@ -35,14 +36,23 @@ class CourseDetailsScreen extends StatelessWidget {
           children: [
             _buildBreadcrumbs(context),
             SizedBox(height: 24.h),
-            const CourseHeaderCard(),
+            const CourseInfoCard(),
             SizedBox(height: 32.h),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(flex: 2, child: CourseStructureSection()),
+                const Expanded(flex: 2, child: CourseVideoSection()),
                 SizedBox(width: 32.w),
-                const Expanded(flex: 1, child: CourseSidebar()),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      const CourseMaterialSection(),
+                      SizedBox(height: 32.h),
+                      const CourseQuizSection(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],
