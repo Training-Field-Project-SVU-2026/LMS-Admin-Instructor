@@ -96,7 +96,10 @@ class RouterGenerator {
         name: AppRoutes.navBar,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>?;
-          final role = extra?['role'] as String? ?? sl<CacheHelper>().getDataString(key: ApiKey.role)??'';
+          final role =
+              extra?['role'] as String? ??
+              sl<CacheHelper>().getDataString(key: ApiKey.role) ??
+              '';
           return MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<InstructorAdminBloc>()),
@@ -111,7 +114,10 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.addInstructorAdminScreen,
         name: AppRoutes.addInstructorAdminScreen,
-        builder: (context, state) => AddInstructorAdminScreen(),
+        builder: (context, state) => BlocProvider.value(
+          value: sl<InstructorAdminBloc>(),
+          child: const AddInstructorAdminScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.addStudentAdminScreen,
@@ -121,7 +127,10 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.profileInstructorAdminScreen,
         name: AppRoutes.profileInstructorAdminScreen,
-        builder: (context, state) => ProfileInstructorAdminScreen(),
+        builder: (context, state) {
+          final slug = state.extra as String? ?? '';
+          return ProfileInstructorAdminScreen(slug: slug);
+        },
       ),
       GoRoute(
         path: '/student_details/:slug',

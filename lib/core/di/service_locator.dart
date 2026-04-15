@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
 import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/dio_consumer.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/data/repository/instructor_admin_repository_impl.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/repository/instructor_admin_repoditory.dart';
 import 'package:lms_admin_instructor/features/auth/data/repositories/auth_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
@@ -49,10 +51,17 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<StudentsAdminRepository>(
     () => StudentsAdminRepositoryImpl(apiConsumer: sl()),
   );
-  sl.registerLazySingleton(() => StudentAdminBloc(studentsAdminRepository: sl()));
+  sl.registerLazySingleton(
+    () => StudentAdminBloc(studentsAdminRepository: sl()),
+  );
 
   // Features - Instructor Admin
-  sl.registerLazySingleton(() => InstructorAdminBloc());
+  sl.registerLazySingleton<InstructorAdminRepoditory>(
+    () => InstructorAdminRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerLazySingleton(
+    () => InstructorAdminBloc(instructorAdminRepoditory: sl()),
+  );
 
   // Features - Instructor 
   sl.registerLazySingleton<CoursesInstructorRepository>(

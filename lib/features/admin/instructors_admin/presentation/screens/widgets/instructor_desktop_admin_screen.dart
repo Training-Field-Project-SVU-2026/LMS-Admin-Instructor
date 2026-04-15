@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_event.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_state.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_add_row/custom_add_row_widget.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/custom_card_status_info_desktop.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_nav_bar.dart';
-import 'package:lms_admin_instructor/features/widgets/custom_viewer.dart';
-import 'package:lms_admin_instructor/features/widgets/instructor.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
 
 class InstructorDesktopAdminScreen extends StatefulWidget {
   const InstructorDesktopAdminScreen({super.key});
@@ -20,10 +24,41 @@ class InstructorDesktopAdminScreen extends StatefulWidget {
 
 class _InstructorDesktopAdminScreenState
     extends State<InstructorDesktopAdminScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    context.read<InstructorAdminBloc>().add(GetInstructorAdminEvent(page: 1));
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 50) {
+      final state = context.read<InstructorAdminBloc>().state;
+      if (state is InstructorAdminLoaded && !state.isPaginationLoading) {
+        context.read<InstructorAdminBloc>().add(
+          GetInstructorAdminEvent(
+            page: state.instructorAdminUiModel.currentPage + 1,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorScheme.primary.withValues(alpha: 0.005),
+      //**************************************??AppBar??********************************************??
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: CustomNavBar(),
@@ -36,7 +71,9 @@ class _InstructorDesktopAdminScreenState
           children: [
             CustomAddRowWidget(
               title: context.tr('manage_instructors'),
-              description: context.tr('create_update_manage_instructor_profiles_assignments'),
+              description: context.tr(
+                'create_update_manage_instructor_profiles_assignments',
+              ),
               buttonText: context.tr('add_instructor'),
               icon: Icons.people_outline,
               onTap: () {
@@ -44,114 +81,110 @@ class _InstructorDesktopAdminScreenState
               },
             ),
             SizedBox(height: 32.h),
-            Row(
-              children: [
-                CustomCardStatusInfoDesktop(
-                  title: context.tr('total_instructors'),
-                  value: "120",
-                  icon: Icons.people_outline,
-                  color: Color(0xff3B82F6),
-                ),
-                SizedBox(width: 20.w),
-                CustomCardStatusInfoDesktop(
-                  title: context.tr('total_courses'),
-                  value: "48",
-                  icon: Icons.book_outlined,
-                  color: Color(0xff16A34A),
-                ),
-              ],
-            ),
-            SizedBox(height: 32.h),
+
+            //**************************************??show all instructors??********************************************??
             Expanded(
-              child: CustomViewer(
-                instructorInfo: [
-                  context.tr('instructor_name_column'),
-                  context.tr('bio_column'),
-                  context.tr('join_date_column'),
-                  context.tr('email_column'),
-                  context.tr('actions_column'),
-                ],
-                userData: [
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {
-                      context.push(AppRoutes.profileInstructorAdminScreen);
-                    },
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                  Instructor(
-                    name: "John Doe",
-                    bio: "PhD in Computer Science with 10 years of exp…",
-                    date: "2022-01-01",
-                    email: "[EMAIL_ADDRESS]",
-                    action: () {},
-                  ),
-                ],
+              child: BlocBuilder<InstructorAdminBloc, InstructorAdminState>(
+                builder: (context, state) {
+                  if (state is InstructorAdminLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is InstructorAdminError) {
+                    return Center(child: Text(state.message));
+                  } else if (state is InstructorAdminLoaded) {
+                    return Column(
+                      children: [
+                        //**************************************??Details Cards??********************************************??
+                        Row(
+                          children: [
+                            CustomCardStatusInfoDesktop(
+                              title: context.tr('total_instructors'),
+                              value:
+                                  "${state.instructorAdminUiModel.totalInstructors}",
+                              icon: Icons.people_outline,
+                              color: Color(0xff3B82F6),
+                            ),
+                            SizedBox(width: 20.w),
+                            CustomCardStatusInfoDesktop(
+                              title: context.tr('total_courses'),
+                              value: "48",
+                              icon: Icons.book_outlined,
+                              color: Color(0xff16A34A),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 32.h),
+
+                        Expanded(
+                          child: CustomDataTable(
+                            headers: [
+                              context.tr('instructor_name_column'),
+                              context.tr('bio_column'),
+                              context.tr('join_date_column'),
+                              context.tr('email_column'),
+                            ],
+                            columnFlex: [3, 4, 2, 2, 2],
+                            data: state.instructorAdminUiModel.instructors
+                                .map((instructor) {
+                                  return instructor.copyWith(
+                                    onActionPressed: () {
+                                      showAdaptiveDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog.adaptive(
+                                            title: Text(
+                                              context.tr('delete_Instructor'),
+                                            ),
+                                            content: Text(
+                                              context.tr(
+                                                'are_you_sure_delete_instructor',
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: Text(
+                                                  context.tr('cancel'),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  context.tr('delete'),
+                                                  style: TextStyle(
+                                                    color: context
+                                                        .colorScheme
+                                                        .error,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    onOptionsPressed: () {
+                                      context.push(
+                                        AppRoutes.profileInstructorAdminScreen,
+                                        extra: instructor.slug,
+                                      );
+                                    },
+                                    actionIconpressed: Icons.delete,
+                                    // optionsIconpressed: Icons.person,
+                                  );
+                                })
+                                .cast<CustomDataTableRowModel>()
+                                .toList(),
+                            scrollController: _scrollController,
+                            isPaginationLoading: state.isPaginationLoading,
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
               ),
             ),
           ],

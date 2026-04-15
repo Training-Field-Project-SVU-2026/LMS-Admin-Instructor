@@ -1,0 +1,16 @@
+import 'package:dartz/dartz.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/add_instructor_model.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_admin_respomse_model.dart';
+
+abstract class InstructorAdminRepoditory {
+  Future<Either<String, InstructorAdminResponseModel>> getInstructorAdmin(
+    int? page,
+    int? pageSize,
+  );
+  Future<Either<String, AddInstructorModel>> addInstructor(
+    String first_name,
+    String last_name,
+    String email,
+  );
+  Future<Either<String, void>> deleteInstructor(String slug);
+}

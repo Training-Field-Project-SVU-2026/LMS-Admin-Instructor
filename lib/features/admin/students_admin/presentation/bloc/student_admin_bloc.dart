@@ -35,10 +35,9 @@ class StudentAdminBloc extends Bloc<StudentAdminEvent, StudentAdminState>
           // TODO: Unified Error/Toast handling
         },
         (unit) {
-          final updatedStudents =
-              currentState.studentAdminUIModel.students
-                  .where((student) => student.slug != event.slug)
-                  .toList();
+          final updatedStudents = currentState.studentAdminUIModel.students
+              .where((student) => student.slug != event.slug)
+              .toList();
 
           emit(
             currentState.copyWith(

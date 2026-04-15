@@ -1,8 +1,19 @@
-part of 'instructor_admin_bloc.dart';
+class InstructorAdminEvent {}
 
-sealed class InstructorAdminEvent extends Equatable {
-  const InstructorAdminEvent();
+class GetInstructorAdminEvent extends InstructorAdminEvent {
+  final int? page;
+  final int? pageSize;
+  GetInstructorAdminEvent({this.page, this.pageSize});
+}
 
-  @override
-  List<Object> get props => [];
+class AddInstructorEvent extends InstructorAdminEvent {
+  final String first_name;
+  final String last_name;
+  final String email;
+
+  AddInstructorEvent({
+    required this.first_name,
+    required this.last_name,
+    required this.email,
+  });
 }
