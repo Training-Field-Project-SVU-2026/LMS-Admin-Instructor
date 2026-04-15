@@ -163,9 +163,14 @@ class _InstructorDesktopAdminScreenState
                                         },
                                       );
                                     },
-                                    onOptionsPressed: () {},
-                                    actionIconpressed: Icons
-                                        .delete, // optionsIconpressed: Icons.person,
+                                    onOptionsPressed: () {
+                                      context.push(
+                                        AppRoutes.profileInstructorAdminScreen,
+                                        extra: instructor.slug,
+                                      );
+                                    },
+                                    actionIconpressed: Icons.delete,
+                                    // optionsIconpressed: Icons.person,
                                   );
                                 })
                                 .cast<CustomDataTableRowModel>()

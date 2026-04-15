@@ -5,7 +5,8 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/stats_card_widget%20.dart';
 
 class ProfileInstructorDisctopAdminScreen extends StatefulWidget {
-  const ProfileInstructorDisctopAdminScreen({super.key});
+  final String slug;
+  const ProfileInstructorDisctopAdminScreen({super.key, required this.slug});
 
   @override
   State<ProfileInstructorDisctopAdminScreen> createState() =>

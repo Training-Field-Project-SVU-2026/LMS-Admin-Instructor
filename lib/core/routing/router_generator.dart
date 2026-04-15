@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
+import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
+import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/student_details_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/auth_layout.dart';
@@ -17,6 +19,7 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/add_student_screen/add_student_admin_screen.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/course_details_screen.dart';
 import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
@@ -93,7 +96,10 @@ class RouterGenerator {
         name: AppRoutes.navBar,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>?;
-          final role = extra?['role'] as String? ?? 'admin';
+          final role =
+              extra?['role'] as String? ??
+              sl<CacheHelper>().getDataString(key: ApiKey.role) ??
+              '';
           return MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<InstructorAdminBloc>()),
@@ -121,7 +127,10 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.profileInstructorAdminScreen,
         name: AppRoutes.profileInstructorAdminScreen,
-        builder: (context, state) => ProfileInstructorAdminScreen(),
+        builder: (context, state) {
+          final slug = state.extra as String? ?? '';
+          return ProfileInstructorAdminScreen(slug: slug);
+        },
       ),
       GoRoute(
         path: '/student_details/:slug',
@@ -129,6 +138,14 @@ class RouterGenerator {
         builder: (context, state) {
           final slug = state.pathParameters['slug'] ?? '';
           return StudentDetailsScreen(slug: slug);
+        },
+      ),
+      GoRoute(
+        path: '/course_details/:slug',
+        name: AppRoutes.courseDetails,
+        builder: (context, state) {
+          final slug = state.pathParameters['slug'] ?? '';
+          return CourseDetailsScreen(slug: slug);
         },
       ),
     ],

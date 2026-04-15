@@ -7,7 +7,8 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class ProfileInstructorMoblieAdminScreen extends StatefulWidget {
-  const ProfileInstructorMoblieAdminScreen({super.key});
+  final String slug;
+  const ProfileInstructorMoblieAdminScreen({super.key, required this.slug});
 
   @override
   State<ProfileInstructorMoblieAdminScreen> createState() =>

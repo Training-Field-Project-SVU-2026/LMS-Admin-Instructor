@@ -4,7 +4,8 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/profile_instructor_moblie_admin_screen.dart';
 
 class ProfileInstructorAdminScreen extends StatefulWidget {
-  const ProfileInstructorAdminScreen({super.key});
+  final String slug;
+  const ProfileInstructorAdminScreen({super.key, required this.slug});
 
   @override
   State<ProfileInstructorAdminScreen> createState() =>
@@ -17,8 +18,8 @@ class _ProfileInstructorAdminScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       body: context.isDesktop
-          ? const ProfileInstructorDisctopAdminScreen()
-          : const ProfileInstructorMoblieAdminScreen(),
+          ? ProfileInstructorDisctopAdminScreen(slug: widget.slug)
+          : ProfileInstructorMoblieAdminScreen(slug: widget.slug),
     );
   }
 }
