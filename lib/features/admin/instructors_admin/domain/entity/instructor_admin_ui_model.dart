@@ -30,14 +30,30 @@ class InstructorAdminUiModel {
   }
 }
 
+// ── Link entity ──────────────────────────────────────────────────────────────
+class InstructorLinkUiModel {
+  final String slug;
+  final String platformName;
+  final String url;
+
+  InstructorLinkUiModel({
+    required this.slug,
+    required this.platformName,
+    required this.url,
+  });
+}
+
+// ── Instructor row entity ─────────────────────────────────────────────────────
 class InstructoritemUiModel implements CustomDataTableRowModel {
   final String first_name;
   final String last_name;
   final String email;
   final String slug;
-  final String bio;
-  final String description;
+  final String? bio;
+  final String? description;
   final String? image;
+  final String? joindata;
+  final List<InstructorLinkUiModel>? links;
   final VoidCallback? onActionPressed;
   final VoidCallback? onOptionsPressed;
 
@@ -46,9 +62,11 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
     required this.last_name,
     required this.email,
     required this.slug,
-    required this.bio,
-    required this.description,
+    this.bio,
+    this.description,
     this.image,
+    this.joindata,
+    this.links,
     this.onActionPressed,
     this.onOptionsPressed,
   });
@@ -61,6 +79,8 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
     String? bio,
     String? description,
     String? image,
+    final String? joindata,
+    List<InstructorLinkUiModel>? links,
     VoidCallback? onActionPressed,
     VoidCallback? onOptionsPressed,
   }) {
@@ -72,6 +92,8 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
       bio: bio ?? this.bio,
       description: description ?? this.description,
       image: image ?? this.image,
+      links: links ?? this.links,
+      joindata: joindata ?? this.joindata,
       onActionPressed: onActionPressed ?? this.onActionPressed,
       onOptionsPressed: onOptionsPressed ?? this.onOptionsPressed,
     );
@@ -81,13 +103,17 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
   String? get avatarUrl => image;
 
   @override
-  // TODO: implement onAction
-  VoidCallback? get onAction => throw UnimplementedError();
+  VoidCallback? get onAction => onActionPressed;
 
   @override
-  // TODO: implement onOptions
-  VoidCallback? get onOptions => throw UnimplementedError();
+  VoidCallback? get onOptions => onOptionsPressed;
 
+  /// Columns: instructor_name | bio | join_date (N/A from API) | email
   @override
-  List<String> get rowTexts => [first_name, last_name, email, bio, description];
+  List<String> get rowTexts => [
+    '$first_name $last_name',
+    bio ?? ' ',
+    joindata ?? ' ',
+    email,
+  ];
 }

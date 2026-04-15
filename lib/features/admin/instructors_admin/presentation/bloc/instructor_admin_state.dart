@@ -8,10 +8,10 @@ class InstructorAdminLoading extends InstructorAdminState {}
 
 class InstructorAdminLoaded extends InstructorAdminState {
   final InstructorAdminUiModel instructorAdminUiModel;
-  final bool? isPaginationLoading;
+  final bool isPaginationLoading;
   InstructorAdminLoaded({
     required this.instructorAdminUiModel,
-    this.isPaginationLoading,
+    this.isPaginationLoading = false,
   });
 
   InstructorAdminLoaded copyWith({

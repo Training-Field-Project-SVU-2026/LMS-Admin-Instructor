@@ -4,6 +4,29 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/ent
 part 'instructor_admin_model.g.dart';
 
 @JsonSerializable()
+class InstructorLinkModel {
+  final String? slug;
+  @JsonKey(name: 'platformName')
+  final String? platformName;
+  final String? url;
+
+  InstructorLinkModel({this.slug, this.platformName, this.url});
+
+  factory InstructorLinkModel.fromJson(Map<String, dynamic> json) =>
+      _$InstructorLinkModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InstructorLinkModelToJson(this);
+
+  InstructorLinkUiModel toEntity() {
+    return InstructorLinkUiModel(
+      slug: slug ?? '',
+      platformName: platformName ?? '',
+      url: url ?? '',
+    );
+  }
+}
+
+@JsonSerializable()
 class InstructorAdminModel {
   @JsonKey(name: 'first_name')
   final String? first_name;
@@ -14,6 +37,9 @@ class InstructorAdminModel {
   final String? bio;
   final String? description;
   final String? image;
+  @JsonKey(name: 'created_at')
+  final String? joindata;
+  final List<InstructorLinkModel>? links;
 
   InstructorAdminModel({
     this.slug,
@@ -23,6 +49,8 @@ class InstructorAdminModel {
     this.bio,
     this.description,
     this.image,
+    this.links,
+    this.joindata,
   });
 
   factory InstructorAdminModel.fromJson(Map<String, dynamic> json) =>
@@ -32,13 +60,15 @@ class InstructorAdminModel {
 
   InstructoritemUiModel toEntity() {
     return InstructoritemUiModel(
-      slug: slug ?? "",
-      first_name: first_name ?? "",
-      last_name: last_name ?? "",
-      email: email ?? "",
-      bio: bio ?? "",
-      description: description ?? "",
-      image: image ?? "",
+      slug: slug ?? '',
+      first_name: first_name ?? '',
+      last_name: last_name ?? '',
+      email: email ?? '',
+      bio: bio ?? '',
+      description: description ?? '',
+      image: image,
+      joindata: joindata ?? '',
+      links: links?.map((e) => e.toEntity()).toList() ?? [],
     );
   }
 }
