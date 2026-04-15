@@ -9,7 +9,7 @@ class CacheHelper {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  String? getDataString({required String key}) {
+   String? getDataString({required String key}) {
     return sharedPreferences.getString(key);
   }
 

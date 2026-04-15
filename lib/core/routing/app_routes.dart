@@ -13,4 +13,5 @@ class AppRoutes {
   static const String profileInstructorAdminScreen =
       '/profile_instructor_admin_screen';
   static const String studentDetails = '/student_details';
+  static const String courseDetails = '/course_details';
 }

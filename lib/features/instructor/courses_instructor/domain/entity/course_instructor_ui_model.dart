@@ -115,4 +115,8 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
 
   @override
   IconData? get optionsIcon => null;
+  
+  @override
+  // TODO: implement rowWidgets
+  List<Widget>? get rowWidgets => throw UnimplementedError();
 }

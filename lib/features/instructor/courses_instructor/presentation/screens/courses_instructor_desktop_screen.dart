@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_event.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_state.dart';
@@ -10,6 +11,8 @@ import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/cu
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
@@ -111,7 +114,12 @@ class _CoursesInstructorDesktopScreenState
                   onTap: () {},
                   prefixIcon: const Icon(Icons.add),
                   text: context.tr('create_new_course'),
-                  width: 220.w,
+                  width: getResponsiveSize(
+                    mobileSize: 100,
+                    webSize: 220,
+                    tabletSize: 180,
+                    context: context,
+                  ),
                   height: 56.h,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: context.colorScheme.primary,
@@ -161,7 +169,14 @@ class _CoursesInstructorDesktopScreenState
                       columnFlex: const [4, 2, 2, 2],
                       centeredColumns: const [1, 2],
                       data: state.courseListUIModel.courses.map((course) {
-                        return course.copyWith(onActionPressed: () {});
+                        return course.copyWith(
+                          onActionPressed: () {
+                            context.pushNamed(
+                              AppRoutes.courseDetails,
+                              pathParameters: {'slug': course.slug},
+                            );
+                          },
+                        );
                       }).toList(),
                       scrollController: _scrollController,
                       isPaginationLoading: state.isPaginationLoading,

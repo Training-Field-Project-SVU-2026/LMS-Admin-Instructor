@@ -17,8 +17,6 @@ class _CoursesInstructorScreenState extends State<CoursesInstructorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: CoursesInstructorDesktopScreen(),
-    );
+    return const Scaffold(body: CoursesInstructorDesktopScreen());
   }
 }
