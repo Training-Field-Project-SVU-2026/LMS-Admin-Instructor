@@ -108,7 +108,10 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.addInstructorAdminScreen,
         name: AppRoutes.addInstructorAdminScreen,
-        builder: (context, state) => AddInstructorAdminScreen(),
+        builder: (context, state) => BlocProvider.value(
+          value: sl<InstructorAdminBloc>(),
+          child: const AddInstructorAdminScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.addStudentAdminScreen,

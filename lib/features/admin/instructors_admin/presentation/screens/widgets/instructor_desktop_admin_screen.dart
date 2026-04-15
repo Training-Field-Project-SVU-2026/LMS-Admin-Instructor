@@ -164,6 +164,8 @@ class _InstructorDesktopAdminScreenState
                                       );
                                     },
                                     onOptionsPressed: () {},
+                                    actionIconpressed: Icons
+                                        .delete, // optionsIconpressed: Icons.person,
                                   );
                                 })
                                 .cast<CustomDataTableRowModel>()

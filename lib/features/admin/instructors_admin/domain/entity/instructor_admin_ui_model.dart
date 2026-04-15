@@ -57,6 +57,8 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
   final List<InstructorLinkUiModel>? links;
   final VoidCallback? onActionPressed;
   final VoidCallback? onOptionsPressed;
+  final IconData? actionIconpressed;
+  final IconData? optionsIconpressed;
 
   InstructoritemUiModel({
     required this.first_name,
@@ -70,6 +72,8 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
     this.links,
     this.onActionPressed,
     this.onOptionsPressed,
+    this.actionIconpressed,
+    this.optionsIconpressed,
   });
 
   InstructoritemUiModel copyWith({
@@ -84,6 +88,8 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
     List<InstructorLinkUiModel>? links,
     VoidCallback? onActionPressed,
     VoidCallback? onOptionsPressed,
+    IconData? actionIconpressed,
+    IconData? optionsIconpressed,
   }) {
     return InstructoritemUiModel(
       first_name: first_name ?? this.first_name,
@@ -97,6 +103,8 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
       joindata: joindata ?? this.joindata,
       onActionPressed: onActionPressed ?? this.onActionPressed,
       onOptionsPressed: onOptionsPressed ?? this.onOptionsPressed,
+      actionIconpressed: actionIconpressed ?? this.actionIconpressed,
+      optionsIconpressed: optionsIconpressed ?? this.optionsIconpressed,
     );
   }
 
@@ -119,10 +127,8 @@ class InstructoritemUiModel implements CustomDataTableRowModel {
   ];
 
   @override
-  // TODO: implement actionIcon
-  IconData? get actionIcon => throw UnimplementedError();
+  IconData? get actionIcon => actionIconpressed;
 
   @override
-  // TODO: implement optionsIcon
-  IconData? get optionsIcon => throw UnimplementedError();
+  IconData? get optionsIcon => optionsIconpressed;
 }

@@ -108,5 +108,10 @@
   "course_name": "Course Name",
   "students_enrolled": "Students Enrolled",
   "created_date": "Created Date",
-  "rating": "Rating"
+  "rating": "Rating",
+  "instructor_added_successfully": "Instructor added successfully",
+  "please_fill_all_fields": "Please fill all fields",
+  "save_instructor": "Save Instructor",
+  "cancel_and_return": "Cancel and Return",
+  "add_instructors_title_mobile": "Add Instructors"
 }

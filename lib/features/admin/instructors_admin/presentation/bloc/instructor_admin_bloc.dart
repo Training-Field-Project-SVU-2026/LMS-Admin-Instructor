@@ -4,12 +4,13 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_state.dart';
 
 class InstructorAdminBloc
-    extends Bloc<GetInstructorAdminEvent, InstructorAdminState> {
+    extends Bloc<InstructorAdminEvent, InstructorAdminState> {
   final InstructorAdminRepoditory instructorAdminRepoditory;
 
   InstructorAdminBloc({required this.instructorAdminRepoditory})
-      : super(InstructorAdminInitial()) {
+    : super(InstructorAdminInitial()) {
     on<GetInstructorAdminEvent>(_onGetInstructorAdminEvent);
+    on<AddInstructorEvent>(_onAddInstructorEvent);
   }
 
   Future<void> _onGetInstructorAdminEvent(
@@ -40,28 +41,44 @@ class InstructorAdminBloc
       event.pageSize,
     );
 
-    result.fold(
-      (failure) => emit(InstructorAdminError(message: failure)),
-      (responseModel) {
-        final newEntity = responseModel.toEntity();
+    result.fold((failure) => emit(InstructorAdminError(message: failure)), (
+      responseModel,
+    ) {
+      final newEntity = responseModel.toEntity();
 
-        if (pageToFetch == 1 || currentState is! InstructorAdminLoaded) {
-          emit(InstructorAdminLoaded(instructorAdminUiModel: newEntity));
-        } else {
-          final accumulatedInstructors = [
-            ...currentState.instructorAdminUiModel.instructors,
-            ...newEntity.instructors,
-          ];
-          emit(
-            InstructorAdminLoaded(
-              instructorAdminUiModel: newEntity.copyWith(
-                instructors: accumulatedInstructors,
-              ),
-              isPaginationLoading: false,
+      if (pageToFetch == 1 || currentState is! InstructorAdminLoaded) {
+        emit(InstructorAdminLoaded(instructorAdminUiModel: newEntity));
+      } else {
+        final accumulatedInstructors = [
+          ...currentState.instructorAdminUiModel.instructors,
+          ...newEntity.instructors,
+        ];
+        emit(
+          InstructorAdminLoaded(
+            instructorAdminUiModel: newEntity.copyWith(
+              instructors: accumulatedInstructors,
             ),
-          );
-        }
-      },
+            isPaginationLoading: false,
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> _onAddInstructorEvent(
+    AddInstructorEvent event,
+    Emitter<InstructorAdminState> emit,
+  ) async {
+    emit(AddInstructorLoading());
+    final result = await instructorAdminRepoditory.addInstructor(
+      event.first_name,
+      event.last_name,
+      event.email,
+    );
+    result.fold(
+      (failure) => emit(AddInstructorError(message: failure)),
+      (responseModel) =>
+          emit(AddInstructorSuccess(addInstructorModel: responseModel)),
     );
   }
 }
