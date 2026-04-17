@@ -5,12 +5,13 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 
 class InstructorAdminBloc
     extends Bloc<InstructorAdminEvent, InstructorAdminState> {
-  final InstructorAdminRepoditory instructorAdminRepoditory;
+  final InstructorAdminRepository instructorAdminRepository;
 
-  InstructorAdminBloc({required this.instructorAdminRepoditory})
+  InstructorAdminBloc({required this.instructorAdminRepository})
     : super(InstructorAdminInitial()) {
     on<GetInstructorAdminEvent>(_onGetInstructorAdminEvent);
     on<AddInstructorEvent>(_onAddInstructorEvent);
+    on<GetInstructorBySlugEvent>(_onGetInstructorBySlugEvent);
   }
 
   Future<void> _onGetInstructorAdminEvent(
@@ -36,7 +37,7 @@ class InstructorAdminBloc
       }
     }
 
-    final result = await instructorAdminRepoditory.getInstructorAdmin(
+    final result = await instructorAdminRepository.getInstructorAdmin(
       pageToFetch,
       event.pageSize,
     );
@@ -70,7 +71,7 @@ class InstructorAdminBloc
     Emitter<InstructorAdminState> emit,
   ) async {
     emit(AddInstructorLoading());
-    final result = await instructorAdminRepoditory.addInstructor(
+    final result = await instructorAdminRepository.addInstructor(
       event.first_name,
       event.last_name,
       event.email,
@@ -79,6 +80,24 @@ class InstructorAdminBloc
       (failure) => emit(AddInstructorError(message: failure)),
       (responseModel) =>
           emit(AddInstructorSuccess(addInstructorModel: responseModel)),
+    );
+  }
+
+  Future<void> _onGetInstructorBySlugEvent(
+    GetInstructorBySlugEvent event,
+    Emitter<InstructorAdminState> emit,
+  ) async {
+    emit(InstructorDetailsLoading());
+    final result = await instructorAdminRepository.getInstructorBySlug(
+      event.slug,
+    );
+    result.fold(
+      (failure) => emit(InstructorDetailsError(message: failure)),
+      (responseModel) => emit(
+        InstructorDetailsLoaded(
+          instructorDetailsUiModel: responseModel.toEntity(),
+        ),
+      ),
     );
   }
 }

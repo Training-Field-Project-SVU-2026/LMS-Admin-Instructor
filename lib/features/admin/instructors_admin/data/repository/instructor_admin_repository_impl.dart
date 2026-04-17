@@ -4,9 +4,10 @@ import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
 import 'package:lms_admin_instructor/core/utils/api_query_params.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/add_instructor_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_admin_respomse_model.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_details_response_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/repository/instructor_admin_repoditory.dart';
 
-class InstructorAdminRepositoryImpl implements InstructorAdminRepoditory {
+class InstructorAdminRepositoryImpl implements InstructorAdminRepository {
   final ApiConsumer apiConsumer;
   InstructorAdminRepositoryImpl({required this.apiConsumer});
   @override
@@ -39,7 +40,16 @@ class InstructorAdminRepositoryImpl implements InstructorAdminRepoditory {
 
   @override
   Future<Either<String, void>> deleteInstructor(String slug) {
-    // TODO: implement deleteInstructor
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<String, InstructorDetailsResponseModel>> getInstructorBySlug(
+    String slug,
+  ) async {
+    return await apiConsumer.get<InstructorDetailsResponseModel>(
+      EndPoint.getInstructorBySlug(slug),
+      fromJson: (json) => InstructorDetailsResponseModel.fromJson(json),
+    );
   }
 }

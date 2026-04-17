@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -178,8 +180,15 @@ class _InstructorMobileAdminScreenState
                               padding: EdgeInsets.only(bottom: 10.h),
                               child: CustomCard(
                                 onTap: () {
+                                  log(
+                                    state
+                                        .instructorAdminUiModel
+                                        .instructors[index]
+                                        .slug,
+                                  );
                                   context.push(
                                     AppRoutes.profileInstructorAdminScreen,
+                                    extra: instructor[index].slug,
                                   );
                                 },
                                 bottom_action: "Manage",

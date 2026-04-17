@@ -1,5 +1,6 @@
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/add_instructor_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/entity/instructor_admin_ui_model.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/entity/instructor_details_ui_model.dart';
 
 class InstructorAdminState {}
 
@@ -42,4 +43,16 @@ class AddInstructorSuccess extends InstructorAdminState {
 class AddInstructorError extends InstructorAdminState {
   final String message;
   AddInstructorError({required this.message});
+}
+
+class InstructorDetailsLoading extends InstructorAdminState {}
+
+class InstructorDetailsLoaded extends InstructorAdminState {
+  final InstructorDetailsUiModel instructorDetailsUiModel;
+  InstructorDetailsLoaded({required this.instructorDetailsUiModel});
+}
+
+class InstructorDetailsError extends InstructorAdminState {
+  final String message;
+  InstructorDetailsError({required this.message});
 }

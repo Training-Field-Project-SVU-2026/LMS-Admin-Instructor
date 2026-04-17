@@ -102,7 +102,7 @@ class RouterGenerator {
               '';
           return MultiBlocProvider(
             providers: [
-              BlocProvider.value(value: sl<InstructorAdminBloc>()),
+              BlocProvider(create: (context) => sl<InstructorAdminBloc>()),
               BlocProvider.value(value: sl<StudentAdminBloc>()),
               BlocProvider.value(value: sl<RootBloc>()),
               BlocProvider.value(value: sl<CoursesInstructorBloc>()),
@@ -114,8 +114,8 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.addInstructorAdminScreen,
         name: AppRoutes.addInstructorAdminScreen,
-        builder: (context, state) => BlocProvider.value(
-          value: sl<InstructorAdminBloc>(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<InstructorAdminBloc>(),
           child: const AddInstructorAdminScreen(),
         ),
       ),
@@ -127,10 +127,12 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.profileInstructorAdminScreen,
         name: AppRoutes.profileInstructorAdminScreen,
-        builder: (context, state) {
-          final slug = state.extra as String? ?? '';
-          return ProfileInstructorAdminScreen(slug: slug);
-        },
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<InstructorAdminBloc>(),
+          child: ProfileInstructorAdminScreen(
+            slug: state.extra as String? ?? '',
+          ),
+        ),
       ),
       GoRoute(
         path: '/student_details/:slug',

@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_event.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_state.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_instructor_information_mobile.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_instructor_status_mobile.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_card.dart';
@@ -17,6 +23,14 @@ class ProfileInstructorMoblieAdminScreen extends StatefulWidget {
 
 class _ProfileInstructorMoblieAdminScreenState
     extends State<ProfileInstructorMoblieAdminScreen> {
+  @override
+  void initState() {
+    context.read<InstructorAdminBloc>().add(
+      GetInstructorBySlugEvent(slug: widget.slug),
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +52,29 @@ class _ProfileInstructorMoblieAdminScreenState
                 padding: EdgeInsets.zero,
                 children: [
                   //***********************************??Instructor Informations??*****************
-                  CustomInstructorInformationMobile(
-                    name: "Ahmed Mohamed",
-                    title: "Senior Software Engineering Instructor ",
-                    image:
-                        "https://i.pinimg.com/736x/cc/5b/67/cc5b67c3391fccebb5e03b0bd92c528b.jpg",
+                  BlocBuilder<InstructorAdminBloc, InstructorAdminState>(
+                    builder: (context, state) {
+                      if (state is InstructorDetailsLoading) {
+                        return SizedBox(
+                          height: 100.h,
+                          child: const Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                      if (state is InstructorDetailsError) {
+                        log(state.message);
+                        return Center(child: Text(state.message));
+                      }
+                      if (state is InstructorDetailsLoaded) {
+                        final instructor = state.instructorDetailsUiModel.data;
+                        return CustomInstructorInformationMobile(
+                          name:
+                              "${instructor.first_name} ${instructor.last_name}",
+                          title: instructor.description ?? "",
+                          image: instructor.image ?? "",
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
                   ),
                   SizedBox(height: 24.h),
 
