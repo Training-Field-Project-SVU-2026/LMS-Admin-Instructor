@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lms_admin_instructor/core/common/mixins/paginated_list_mixin.dart';
+import 'package:lms_admin_instructor/core/di/service_locator.dart';
+import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
+import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/domain/entity/course_instructor_ui_model.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/domain/repository/courses_instructor_repository.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_event.dart';
@@ -20,6 +23,7 @@ class CoursesInstructorBloc extends Bloc<CoursesInstructorEvent, CoursesInstruct
   CoursesInstructorBloc({required this.repository})
       : super(CoursesInstructorInitial()) {
     on<GetCoursesInstructorEvent>(_onGetCourses);
+    on<AddCourseInstructorEvent>(_onAddCourse);
   }
 
   Future<void> _onGetCourses(
@@ -57,6 +61,28 @@ class CoursesInstructorBloc extends Bloc<CoursesInstructorEvent, CoursesInstruct
           errorStateBuilder: (msg) => CoursesInstructorError(message: msg),
           loadingStateBuilder: () => CoursesInstructorLoading(),
         );
+      },
+    );
+  }
+
+  Future<void> _onAddCourse(
+    AddCourseInstructorEvent event,
+    Emitter<CoursesInstructorState> emit,
+  ) async {
+    final currentState = state;
+    emit(AddCourseLoading());
+    
+    final response = await repository.addCourse(
+      requestModel: event.requestModel,
+    );
+
+    response.fold(
+      (error) => emit(AddCourseError(message: error)),
+      (successMessage) {
+        emit(AddCourseSuccess(message: successMessage));
+        if (currentState is CoursesInstructorLoaded) {
+          emit(currentState);
+        }
       },
     );
   }

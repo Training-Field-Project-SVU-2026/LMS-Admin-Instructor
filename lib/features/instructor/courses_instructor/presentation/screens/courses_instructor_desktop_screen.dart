@@ -13,6 +13,7 @@ import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
+import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/widgets/add_course_dialog.dart';
 
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
@@ -79,114 +80,134 @@ class _CoursesInstructorDesktopScreenState
         ),
         toolbarHeight: 70.h,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(40.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        context.tr('all_courses'),
-                        style: context.textTheme.displaySmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: context.colorScheme.onSurface,
-                        ),
-                      ),
-                      Text(
-                        context.tr("courses_screen_subtitle"),
-                        style: context.textTheme.bodyMedium!.copyWith(
-                          color: context.colorScheme.onSurface.withValues(
-                            alpha: 0.5,
+      body: BlocListener<CoursesInstructorBloc, CoursesInstructorState>(
+        listener: (context, state) {
+          if (state is AddCourseSuccess) {
+            final instructorSlug =
+                sl<CacheHelper>().getDataString(key: ApiKey.slug) ?? '';
+            context.read<CoursesInstructorBloc>().add(
+                  GetCoursesInstructorEvent(
+                      instructorSlug: instructorSlug, page: 1),
+                );
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.all(40.r),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          context.tr('all_courses'),
+                          style: context.textTheme.displaySmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: context.colorScheme.onSurface,
                           ),
                         ),
+                        Text(
+                          context.tr("courses_screen_subtitle"),
+                          style: context.textTheme.bodyMedium!.copyWith(
+                            color: context.colorScheme.onSurface.withValues(
+                              alpha: 0.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  CustomPrimaryButton(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (dialogContext) => BlocProvider.value(
+                          value: context.read<CoursesInstructorBloc>(),
+                          child: const AddCourseDialog(),
+                        ),
+                      );
+                    },
+                    prefixIcon: const Icon(Icons.add),
+                    text: context.tr('create_new_course'),
+                    width: getResponsiveSize(
+                      mobileSize: 100,
+                      webSize: 220,
+                      tabletSize: 180,
+                      context: context,
+                    ),
+                    height: 56.h,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.colorScheme.primary,
+                      foregroundColor: context.colorScheme.onPrimary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 32.h),
+              BlocBuilder<CoursesInstructorBloc, CoursesInstructorState>(
+                buildWhen: (previous, current) =>
+                    current is CoursesInstructorLoaded,
+                builder: (context, state) {
+                  return Row(
+                    children: [
+                      CustomCardStatusInfoDesktop(
+                        title: context.tr('total_courses'),
+                        value: state is CoursesInstructorLoaded
+                            ? state.courseListUIModel.totalCourses.toString()
+                            : '??',
+                        icon: Icons.school_outlined,
+                        color: context.colorScheme.primary,
                       ),
                     ],
-                  ),
-                ),
-                CustomPrimaryButton(
-                  onTap: () {},
-                  prefixIcon: const Icon(Icons.add),
-                  text: context.tr('create_new_course'),
-                  width: getResponsiveSize(
-                    mobileSize: 100,
-                    webSize: 220,
-                    tabletSize: 180,
-                    context: context,
-                  ),
-                  height: 56.h,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.primary,
-                    foregroundColor: context.colorScheme.onPrimary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 32.h),
-            BlocBuilder<CoursesInstructorBloc, CoursesInstructorState>(
-              buildWhen: (previous, current) =>
-                  current is CoursesInstructorLoaded,
-              builder: (context, state) {
-                return Row(
-                  children: [
-                    CustomCardStatusInfoDesktop(
-                      title: context.tr('total_courses'),
-                      value: state is CoursesInstructorLoaded
-                          ? state.courseListUIModel.totalCourses.toString()
-                          : '??',
-                      icon: Icons.school_outlined,
-                      color: context.colorScheme.primary,
-                    ),
-                  ],
-                );
-              },
-            ),
-            SizedBox(height: 32.h),
-            Expanded(
-              child: BlocBuilder<CoursesInstructorBloc, CoursesInstructorState>(
-                builder: (context, state) {
-                  if (state is CoursesInstructorLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is CoursesInstructorError) {
-                    return Center(child: Text(state.message));
-                  } else if (state is CoursesInstructorLoaded) {
-                    return CustomDataTable(
-                      headers: [
-                        context.tr('course_name'),
-                        context.tr('students_enrolled'),
-                        context.tr('rating'),
-                        context.tr('created_date'),
-                      ],
-                      columnFlex: const [4, 2, 2, 2],
-                      centeredColumns: const [1, 2],
-                      data: state.courseListUIModel.courses.map((course) {
-                        return course.copyWith(
-                          onActionPressed: () {
-                            context.pushNamed(
-                              AppRoutes.courseDetails,
-                              pathParameters: {'slug': course.slug},
-                            );
-                          },
-                        );
-                      }).toList(),
-                      scrollController: _scrollController,
-                      isPaginationLoading: state.isPaginationLoading,
-                    );
-                  }
-                  return const SizedBox.shrink();
+                  );
                 },
               ),
-            ),
-          ],
+              SizedBox(height: 32.h),
+              Expanded(
+                child: BlocBuilder<CoursesInstructorBloc, CoursesInstructorState>(
+                  builder: (context, state) {
+                    if (state is CoursesInstructorLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is CoursesInstructorError) {
+                      return Center(child: Text(state.message));
+                    } else if (state is CoursesInstructorLoaded) {
+                      return CustomDataTable(
+                        headers: [
+                          context.tr('course_name'),
+                          context.tr('students_enrolled'),
+                          context.tr('rating'),
+                          context.tr('created_date'),
+                        ],
+                        columnFlex: const [4, 2, 2, 2],
+                        centeredColumns: const [1, 2],
+                        data: state.courseListUIModel.courses.map((course) {
+                          return course.copyWith(
+                            onActionPressed: () {
+                              context.pushNamed(
+                                AppRoutes.courseDetails,
+                                pathParameters: {'slug': course.slug},
+                              );
+                            },
+                          );
+                        }).toList(),
+                        scrollController: _scrollController,
+                        isPaginationLoading: state.isPaginationLoading,
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

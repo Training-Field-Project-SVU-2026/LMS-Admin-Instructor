@@ -14,6 +14,7 @@ class CustomPrimaryButton extends StatelessWidget {
   final TextStyle? textStyle;
   final ButtonStyle? style;
   final Color? color;
+  final Widget? child;
 
   const CustomPrimaryButton({
     super.key,
@@ -28,6 +29,7 @@ class CustomPrimaryButton extends StatelessWidget {
     this.textStyle,
     this.style,
     this.color,
+    this.child,
   });
 
   @override
@@ -43,38 +45,41 @@ class CustomPrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: style,
-        child: IconTheme(
-          data: IconThemeData(color: defaultColor, size: iconSize ?? 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (prefixIcon != null) ...[
-                prefixIcon!,
-                SizedBox(width: iconPadding ?? 8),
-              ],
-              Flexible(
-                child: Text(
-                  text,
-                  maxLines: 1,
-                  style: (textStyle ?? context.textTheme.labelLarge)?.copyWith(
-                    color: defaultColor,
-                    fontSize:
-                        textStyle?.fontSize ??
-                        getResponsiveSize(
-                          context: context,
-                          webSize: 16,
-                          mobileSize: 14,
-                        ),
+        child:
+            child ??
+            IconTheme(
+              data: IconThemeData(color: defaultColor, size: iconSize ?? 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (prefixIcon != null) ...[
+                    prefixIcon!,
+                    SizedBox(width: iconPadding ?? 8),
+                  ],
+                  Flexible(
+                    child: Text(
+                      text,
+                      maxLines: 1,
+                      style: (textStyle ?? context.textTheme.labelLarge)
+                          ?.copyWith(
+                            color: defaultColor,
+                            fontSize:
+                                textStyle?.fontSize ??
+                                getResponsiveSize(
+                                  context: context,
+                                  webSize: 16,
+                                  mobileSize: 14,
+                                ),
+                          ),
+                    ),
                   ),
-                ),
+                  if (suffixIcon != null) ...[
+                    SizedBox(width: iconPadding ?? 8),
+                    suffixIcon!,
+                  ],
+                ],
               ),
-              if (suffixIcon != null) ...[
-                SizedBox(width: iconPadding ?? 8),
-                suffixIcon!,
-              ],
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }
