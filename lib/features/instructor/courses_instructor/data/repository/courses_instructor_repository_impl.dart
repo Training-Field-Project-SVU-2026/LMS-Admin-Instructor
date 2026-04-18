@@ -43,7 +43,7 @@ class CoursesInstructorRepositoryImpl implements CoursesInstructorRepository {
     return await apiConsumer.post<String>(
       EndPoint.addCourse,
       data: formData,
-      isFromData: true,
+      isFormData: true,
       fromJson: (json) => json['message'],
     );
   }

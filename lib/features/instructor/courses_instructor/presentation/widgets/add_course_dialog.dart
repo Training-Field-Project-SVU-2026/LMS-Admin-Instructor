@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
@@ -56,7 +57,7 @@ class _AddCourseDialogState extends State<AddCourseDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      backgroundColor: Colors.white,
+      backgroundColor: context.colorScheme.surface,
       child: Container(
         width: 600.w,
         padding: EdgeInsets.all(32.r),
@@ -64,7 +65,7 @@ class _AddCourseDialogState extends State<AddCourseDialog> {
           child: BlocListener<CoursesInstructorBloc, CoursesInstructorState>(
             listener: (context, state) {
               if (state is AddCourseSuccess) {
-                Navigator.pop(context);
+                context.pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(state.message)),
                 );
@@ -154,7 +155,7 @@ class _AddCourseDialogState extends State<AddCourseDialog> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: _selectedLevel,
+                          initialValue: _selectedLevel,
                           decoration: InputDecoration(
                             labelText: context.tr('level'),
                             labelStyle: TextStyle(
@@ -289,7 +290,7 @@ class _AddCourseDialogState extends State<AddCourseDialog> {
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(12.r),
-                                  child: kIsWeb
+                                  child: kIsWeb // TODO: check this
                                       ? Image.network(
                                           _selectedImage!.path,
                                           width: double.infinity,
@@ -309,12 +310,12 @@ class _AddCourseDialogState extends State<AddCourseDialog> {
                                   child: IconButton(
                                     onPressed: () =>
                                         setState(() => _selectedImage = null),
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.close,
-                                      color: Colors.white,
+                                      color: context.colorScheme.onSurface,
                                     ),
                                     style: IconButton.styleFrom(
-                                      backgroundColor: Colors.black45,
+                                      backgroundColor: context.colorScheme.surface,
                                     ),
                                   ),
                                 ),
@@ -350,8 +351,8 @@ class _AddCourseDialogState extends State<AddCourseDialog> {
                                 ? SizedBox(
                                     height: 20.h,
                                     width: 20.h,
-                                    child: const CircularProgressIndicator(
-                                      color: Colors.white,
+                                    child: CircularProgressIndicator(
+                                      color: context.colorScheme.onSurface,
                                       strokeWidth: 2,
                                     ),
                                   )

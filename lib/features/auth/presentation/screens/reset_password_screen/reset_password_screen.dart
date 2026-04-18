@@ -38,10 +38,7 @@ class ResetPasswordScreen extends StatelessWidget {
       },
       child: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: 24.w,
-            vertical: 32.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 400.w),
             child: Form(
@@ -172,7 +169,8 @@ class ResetPasswordScreen extends StatelessWidget {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          context.tr('please_enter_full_otp')),
+                                        context.tr('please_enter_full_otp'),
+                                      ),
                                       backgroundColor:
                                           context.colorScheme.error,
                                     ),

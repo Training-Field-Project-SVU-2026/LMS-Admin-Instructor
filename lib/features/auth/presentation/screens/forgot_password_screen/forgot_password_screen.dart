@@ -39,10 +39,7 @@ class ForgotPasswordScreen extends StatelessWidget {
       },
       child: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: 24.w,
-            vertical: 32.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 400.w),
             child: Form(

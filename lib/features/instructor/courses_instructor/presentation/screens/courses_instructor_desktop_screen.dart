@@ -86,9 +86,11 @@ class _CoursesInstructorDesktopScreenState
             final instructorSlug =
                 sl<CacheHelper>().getDataString(key: ApiKey.slug) ?? '';
             context.read<CoursesInstructorBloc>().add(
-                  GetCoursesInstructorEvent(
-                      instructorSlug: instructorSlug, page: 1),
-                );
+              GetCoursesInstructorEvent(
+                instructorSlug: instructorSlug,
+                page: 1,
+              ),
+            );
           }
         },
         child: Padding(
@@ -172,39 +174,42 @@ class _CoursesInstructorDesktopScreenState
               ),
               SizedBox(height: 32.h),
               Expanded(
-                child: BlocBuilder<CoursesInstructorBloc, CoursesInstructorState>(
-                  builder: (context, state) {
-                    if (state is CoursesInstructorLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is CoursesInstructorError) {
-                      return Center(child: Text(state.message));
-                    } else if (state is CoursesInstructorLoaded) {
-                      return CustomDataTable(
-                        headers: [
-                          context.tr('course_name'),
-                          context.tr('students_enrolled'),
-                          context.tr('rating'),
-                          context.tr('created_date'),
-                        ],
-                        columnFlex: const [4, 2, 2, 2],
-                        centeredColumns: const [1, 2],
-                        data: state.courseListUIModel.courses.map((course) {
-                          return course.copyWith(
-                            onActionPressed: () {
-                              context.pushNamed(
-                                AppRoutes.courseDetails,
-                                pathParameters: {'slug': course.slug},
-                              );
-                            },
+                child:
+                    BlocBuilder<CoursesInstructorBloc, CoursesInstructorState>(
+                      builder: (context, state) {
+                        if (state is CoursesInstructorLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
-                        }).toList(),
-                        scrollController: _scrollController,
-                        isPaginationLoading: state.isPaginationLoading,
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
+                        } else if (state is CoursesInstructorError) {
+                          return Center(child: Text(state.message));
+                        } else if (state is CoursesInstructorLoaded) {
+                          return CustomDataTable(
+                            headers: [
+                              context.tr('course_name'),
+                              context.tr('students_enrolled'),
+                              context.tr('rating'),
+                              context.tr('created_date'),
+                            ],
+                            columnFlex: const [4, 2, 2, 2],
+                            centeredColumns: const [1, 2],
+                            data: state.courseListUIModel.courses.map((course) {
+                              return course.copyWith(
+                                onActionPressed: () {
+                                  context.pushNamed(
+                                    AppRoutes.courseDetails,
+                                    pathParameters: {'slug': course.slug},
+                                  );
+                                },
+                              );
+                            }).toList(),
+                            scrollController: _scrollController,
+                            isPaginationLoading: state.isPaginationLoading,
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
               ),
             ],
           ),

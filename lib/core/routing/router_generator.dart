@@ -141,7 +141,7 @@ class RouterGenerator {
         },
       ),
       GoRoute(
-        path: '/course_details/:slug',
+        path: '${AppRoutes.courseDetails}/:slug',
         name: AppRoutes.courseDetails,
         builder: (context, state) {
           final slug = state.pathParameters['slug'] ?? '';

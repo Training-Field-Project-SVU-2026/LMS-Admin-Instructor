@@ -18,28 +18,28 @@ abstract class ApiConsumer {
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   });
   Future<Either<String, T>> post<T>(
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   });
   Future<Either<String, T>> patch<T>(
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   });
   Future<Either<String, T>> delete<T>(
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   });
 }
