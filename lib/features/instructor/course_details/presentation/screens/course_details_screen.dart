@@ -7,7 +7,6 @@ import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_info_card.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_video_section/course_video_section.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/custom_course_sidebar.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_material_section/course_material_section.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_quiz_section/course_quiz_section.dart';
 

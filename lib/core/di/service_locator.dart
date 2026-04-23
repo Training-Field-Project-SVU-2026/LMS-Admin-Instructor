@@ -8,6 +8,9 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/rep
 import 'package:lms_admin_instructor/features/auth/data/repositories/auth_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/common/data/repository/quiz_repository_impl.dart';
+import 'package:lms_admin_instructor/features/instructor/common/domain/repository/quiz_repository.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_quiz_bloc/course_quiz_bloc.dart';
 import 'package:lms_admin_instructor/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:lms_admin_instructor/features/splash/domain/splash_repository.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
@@ -68,6 +71,12 @@ Future<void> setupServiceLocator() async {
     () => CoursesInstructorRepositoryImpl(apiConsumer: sl()),
   );
   sl.registerLazySingleton(() => CoursesInstructorBloc(repository: sl()));
+  
+  // Features - Quiz
+  sl.registerLazySingleton<QuizRepository>(
+    () => QuizRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerLazySingleton(() => CourseQuizBloc(quizRepository: sl()));
 
   // Root
   sl.registerLazySingleton(() => RootBloc());
