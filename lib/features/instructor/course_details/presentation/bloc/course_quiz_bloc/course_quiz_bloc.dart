@@ -5,5 +5,8 @@ import 'package:lms_admin_instructor/features/instructor/course_details/presenta
 
 class CourseQuizBloc extends Bloc<CourseQuizEvent, CourseQuizState> {
   final QuizRepository quizRepository;
-  CourseQuizBloc({required this.quizRepository}) : super(CourseQuizInitial());
+  CourseQuizBloc({required this.quizRepository}) : super(CourseQuizInitial()){
+    
+  }
+
 }
