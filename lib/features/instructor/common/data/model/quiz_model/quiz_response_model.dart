@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/domain/entity/quiz_ui_model.dart';
 import 'quiz_model.dart';
 
 part 'quiz_response_model.g.dart';
@@ -19,6 +20,15 @@ class QuizResponseModel {
 
   factory QuizResponseModel.fromJson(Map<String, dynamic> json) => _$QuizResponseModelFromJson(json);
   Map<String, dynamic> toJson() => _$QuizResponseModelToJson(this);
+
+  QuizListUIModel toEntity() {
+    return QuizListUIModel(
+      quizzes: data?.quizzes?.map((e) => e.toEntity()).toList() ?? [],
+      totalPages: data?.totalPages ?? 1,
+      currentPage: data?.currentPage ?? 1,
+      totalQuizzes: data?.totalQuizzes ?? 0,
+    );
+  }
 }
 
 @JsonSerializable()

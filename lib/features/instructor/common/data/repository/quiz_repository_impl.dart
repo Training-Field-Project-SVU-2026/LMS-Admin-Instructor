@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
+import 'package:lms_admin_instructor/core/utils/api_query_params.dart';
 import '../../domain/repository/quiz_repository.dart';
 import '../model/quiz_model/quiz_response_model.dart';
 import '../model/quiz_model/quiz_detail_model.dart';
@@ -12,10 +13,16 @@ class QuizRepositoryImpl implements QuizRepository {
 
   @override
   Future<Either<String, QuizResponseModel>> getQuizzesForCourse(
-    String courseSlug,
-  ) async {
+    String courseSlug, {
+    int? page,
+    int? pageSize,
+  }) async {
     return await apiConsumer.get<QuizResponseModel>(
       EndPoint.courseQuizzes(courseSlug),
+      queryParameters: ApiQueryParams.pagination(
+        page: page,
+        pageSize: pageSize,
+      ),
       fromJson: (json) => QuizResponseModel.fromJson(json),
     );
   }

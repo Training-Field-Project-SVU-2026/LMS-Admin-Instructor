@@ -4,8 +4,10 @@ import '../../data/model/quiz_model/quiz_detail_model.dart';
 
 abstract class QuizRepository {
   Future<Either<String, QuizResponseModel>> getQuizzesForCourse(
-    String courseSlug,
-  );
+    String courseSlug, {
+    int? page,
+    int? pageSize,
+  });
   Future<Either<String, QuizDetailResponseModel>> getQuizDetails(
     String quizSlug,
   );

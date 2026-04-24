@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/domain/entity/quiz_ui_model.dart';
 
 part 'quiz_model.g.dart';
 
@@ -14,9 +15,9 @@ class QuizModel {
   @JsonKey(name: 'course_name')
   final String? courseName;
   @JsonKey(name: 'attempts_used')
-  final String? attemptsUsed;
+  final num? attemptsUsed;
   @JsonKey(name: 'best_score')
-  final String? bestScore;
+  final num? bestScore;
   @JsonKey(name: 'quiz_status')
   final String? quizStatus;
   final String? description;
@@ -35,4 +36,12 @@ class QuizModel {
 
   factory QuizModel.fromJson(Map<String, dynamic> json) => _$QuizModelFromJson(json);
   Map<String, dynamic> toJson() => _$QuizModelToJson(this);
+
+  QuizItemUIModel toEntity() {
+    return QuizItemUIModel(
+      quizName: quizName ?? '',
+      totalMark: totalMark ?? 0,
+      slug: slug ?? '',
+    );
+  }
 }

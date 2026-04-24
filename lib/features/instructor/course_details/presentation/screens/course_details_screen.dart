@@ -48,7 +48,7 @@ class CourseDetailsScreen extends StatelessWidget {
                     children: [
                       const CourseMaterialSection(),
                       SizedBox(height: 32.h),
-                      const CourseQuizSection(),
+                      CourseQuizSection(courseSlug: slug),
                     ],
                   ),
                 ),

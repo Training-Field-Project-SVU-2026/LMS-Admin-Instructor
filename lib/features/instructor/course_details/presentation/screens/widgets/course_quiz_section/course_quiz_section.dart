@@ -2,24 +2,107 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_quiz_bloc/course_quiz_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_quiz_bloc/course_quiz_event.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_quiz_bloc/course_quiz_state.dart';
+import 'package:lms_admin_instructor/features/widgets/error_feedback_widget.dart';
+import 'package:lms_admin_instructor/features/widgets/loading_indicator_widget.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/custom_course_sidebar.dart';
 
-class CourseQuizSection extends StatelessWidget {
-  const CourseQuizSection({super.key});
+class CourseQuizSection extends StatefulWidget {
+  final String courseSlug;
+  const CourseQuizSection({super.key, required this.courseSlug});
+
+  @override
+  State<CourseQuizSection> createState() => _CourseQuizSectionState();
+}
+
+class _CourseQuizSectionState extends State<CourseQuizSection> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CourseQuizBloc>().add(
+          GetQuizzesForCourseEvent(courseSlug: widget.courseSlug),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CustomCourseSidebar(
-      title: context.tr('quizzes'),
-      icon: Icons.quiz,
-      color: Colors.purple,
-      onManage: () {},
-      children: [
-        _buildQuizItem(context, "Quiz 1", "10 questions"),
-        _buildQuizItem(context, "Quiz 2", "15 questions"),
-        _buildQuizItem(context, "Quiz 3", "12 questions"),
-        _buildUploadButton(context, "Add Quiz"),
-      ],
+    return BlocBuilder<CourseQuizBloc, CourseQuizState>(
+      builder: (context, state) {
+        if (state is CourseQuizLoading) {
+          return const LoadingIndicatorWidget();
+        }
+
+        if (state is CourseQuizError) {
+          return ErrorFeedbackWidget(
+            errorMessage: state.message,
+            onRetry: () {
+              context.read<CourseQuizBloc>().add(
+                    GetQuizzesForCourseEvent(courseSlug: widget.courseSlug),
+                  );
+            },
+          );
+        }
+
+        if (state is CourseQuizLoaded) {
+          final quizzes = state.uiModel?.quizzes ?? [];
+          final hasMore = (state.uiModel?.currentPage ?? 1) <
+              (state.uiModel?.totalPages ?? 1);
+
+          return CustomCourseSidebar(
+            title: context.tr('quizzes'),
+            icon: Icons.quiz,
+            color: Colors.purple,
+            onManage: () {},
+            children: [
+              ...quizzes.map((quiz) => _buildQuizItem(
+                    context,
+                    quiz.quizName,
+                    "${quiz.totalMark} ${context.tr('marks')}",
+                  )),
+              if (hasMore)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: Center(
+                    child: TextButton(
+                      onPressed: state.isPaginationLoading
+                          ? null
+                          : () {
+                              context.read<CourseQuizBloc>().add(
+                                    GetQuizzesForCourseEvent(
+                                      courseSlug: widget.courseSlug,
+                                      page: (state.uiModel?.currentPage ?? 1) + 1,
+                                    ),
+                                  );
+                            },
+                      child: state.isPaginationLoading
+                          ? SizedBox(
+                              height: 16.h,
+                              width: 16.h,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.w,
+                                color: context.colorScheme.primary,
+                              ),
+                            )
+                          : Text(
+                              context.tr("show_more"),
+                              style: context.textTheme.labelMedium?.copyWith(
+                                color: context.colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+              _buildUploadButton(context, context.tr("add_quiz")),
+            ],
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
     );
   }
 

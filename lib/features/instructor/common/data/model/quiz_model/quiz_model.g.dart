@@ -12,8 +12,8 @@ QuizModel _$QuizModelFromJson(Map<String, dynamic> json) => QuizModel(
   totalMark: json['total_mark'] as num?,
   maxAttempts: json['max_attempts'] as num?,
   courseName: json['course_name'] as String?,
-  attemptsUsed: json['attempts_used'] as String?,
-  bestScore: json['best_score'] as String?,
+  attemptsUsed: json['attempts_used'] as num?,
+  bestScore: json['best_score'] as num?,
   quizStatus: json['quiz_status'] as String?,
   description: json['description'] as String?,
 );
