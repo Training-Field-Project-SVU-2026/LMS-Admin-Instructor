@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/custom_course_sidebar.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class CourseMaterialSection extends StatelessWidget {
   const CourseMaterialSection({super.key});
@@ -15,11 +16,7 @@ class CourseMaterialSection extends StatelessWidget {
       color: context.colorScheme.primary,
       onManage: () {},
       children: [
-        _buildMaterialItem(
-          context,
-          context.tr('slides_placeholder'),
-          "2.4 MB",
-        ),
+        _buildMaterialItem(context, context.tr('slides_placeholder'), "2.4 MB"),
         SizedBox(height: 16.h),
         _buildUploadButton(context, context.tr('upload_new_material')),
       ],
@@ -84,33 +81,28 @@ class CourseMaterialSection extends StatelessWidget {
   }
 
   Widget _buildUploadButton(BuildContext context, String text) {
-    return Container(
+    return CustomPrimaryButton(
+      onTap: () {},
+      text: text,
+      prefixIcon: Icon(
+        Icons.upload_file,
+        size: 18.sp,
+        color: context.colorScheme.primary,
+      ),
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 16.h),
-      child: OutlinedButton.icon(
-        onPressed: () {},
-        icon: Icon(
-          Icons.upload_file,
-          size: 18.sp,
-          color: context.colorScheme.primary,
+      height: 45.h,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        side: BorderSide(
+          color: context.colorScheme.primary.withValues(alpha: 0.5),
         ),
-        label: Text(
-          text,
-          style: context.textTheme.labelLarge?.copyWith(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.bold,
-            color: context.colorScheme.primary,
-          ),
-        ),
-        style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
-          side: BorderSide(
-            color: context.colorScheme.primary.withValues(alpha: 0.5),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+      ),
+      textStyle: context.textTheme.labelLarge?.copyWith(
+        fontSize: 12.sp,
+        fontWeight: FontWeight.bold,
+        color: context.colorScheme.primary,
       ),
     );
   }

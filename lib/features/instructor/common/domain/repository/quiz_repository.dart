@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../../data/model/quiz_model/quiz_response_model.dart';
 import '../../data/model/quiz_model/quiz_detail_model.dart';
+import '../../data/model/quiz_model/course_quiz_create_model.dart';
 
 abstract class QuizRepository {
   Future<Either<String, QuizResponseModel>> getQuizzesForCourse(
@@ -13,12 +14,12 @@ abstract class QuizRepository {
   );
   Future<Either<String, QuizDetailResponseModel>> createQuizForCourse(
     String courseSlug,
-    Map<String, dynamic> data,
+    CourseQuizCreateModel data,
   );
   Future<Either<String, QuizDetailResponseModel>> updateQuiz(
     String courseSlug,
     String quizSlug,
-    Map<String, dynamic> data,
+    CourseQuizCreateModel data,
   );
   Future<Either<String, Unit>> deleteQuiz(String courseSlug, String quizSlug);
 

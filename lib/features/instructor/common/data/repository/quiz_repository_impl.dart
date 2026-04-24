@@ -5,6 +5,7 @@ import 'package:lms_admin_instructor/core/utils/api_query_params.dart';
 import '../../domain/repository/quiz_repository.dart';
 import '../model/quiz_model/quiz_response_model.dart';
 import '../model/quiz_model/quiz_detail_model.dart';
+import '../model/quiz_model/course_quiz_create_model.dart';
 
 class QuizRepositoryImpl implements QuizRepository {
   final ApiConsumer apiConsumer;
@@ -40,11 +41,11 @@ class QuizRepositoryImpl implements QuizRepository {
   @override
   Future<Either<String, QuizDetailResponseModel>> createQuizForCourse(
     String courseSlug,
-    Map<String, dynamic> data,
+    CourseQuizCreateModel data,
   ) async {
     return await apiConsumer.post<QuizDetailResponseModel>(
       EndPoint.courseQuizzes(courseSlug),
-      data: data,
+      data: data.toJson(),
       fromJson: (json) => QuizDetailResponseModel.fromJson(json),
     );
   }
@@ -53,11 +54,11 @@ class QuizRepositoryImpl implements QuizRepository {
   Future<Either<String, QuizDetailResponseModel>> updateQuiz(
     String courseSlug,
     String quizSlug,
-    Map<String, dynamic> data,
+    CourseQuizCreateModel data,
   ) async {
     return await apiConsumer.patch<QuizDetailResponseModel>(
       EndPoint.courseQuizzes(courseSlug),
-      data: {...data, 'slug': quizSlug},
+      data: {...data.toJson(), 'slug': quizSlug},
       fromJson: (json) => QuizDetailResponseModel.fromJson(json),
     );
   }
