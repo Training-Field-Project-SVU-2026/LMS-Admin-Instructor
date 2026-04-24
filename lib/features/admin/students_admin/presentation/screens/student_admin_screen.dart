@@ -17,7 +17,7 @@ class _StudentAdminScreenState extends State<StudentAdminScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: StudentAdminDesktopScreen(),
       // context.isDesktop
       //     ? StudentAdminDesktopScreen()

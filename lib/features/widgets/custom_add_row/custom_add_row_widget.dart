@@ -40,10 +40,10 @@ class CustomAddRowWidget extends StatelessWidget {
             ),
           ],
         ),
-        Spacer(),
+        const Spacer(),
 
         CustomPrimaryButton(
-          prefixIcon: Icon(Icons.add),
+          prefixIcon: const Icon(Icons.add),
           text: buttonText,
           onTap: onTap,
           style: ElevatedButton.styleFrom(

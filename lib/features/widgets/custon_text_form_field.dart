@@ -13,6 +13,7 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final bool isPassword;
+  final int? maxLines;
 
   const CustomTextFormField({
     super.key,
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatefulWidget {
     required this.controller,
     this.validator,
     this.isPassword = false,
+    this.maxLines,
   });
 
   @override
@@ -46,7 +48,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return SizedBox(
       width: widget.w ?? double.infinity,
       child: Padding(
-        padding: EdgeInsets.all(1.0),
+        padding: const EdgeInsets.all(1.0),
         child: TextFormField(
           controller: widget.controller,
           validator: widget.validator,
@@ -55,6 +57,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             color: context.colorScheme.onSurface,
             fontSize: 16.sp,
           ),
+          maxLines: widget.maxLines ?? 1,
           decoration: InputDecoration(
             prefixIcon: widget.prefixIcon != null
                 ? Icon(

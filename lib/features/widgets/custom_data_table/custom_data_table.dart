@@ -15,6 +15,7 @@ class CustomDataTable extends StatefulWidget {
   final ScrollController? scrollController;
   final bool showIndex;
   final List<int>? columnFlex;
+  final List<int>? centeredColumns;
 
   const CustomDataTable({
     super.key,
@@ -25,6 +26,7 @@ class CustomDataTable extends StatefulWidget {
     this.scrollController,
     this.showIndex = true,
     this.columnFlex,
+    this.centeredColumns,
   });
 
   @override
@@ -110,14 +112,21 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                 horizontalPadding: horizontalPadding,
                               ),
                             ...List.generate(widget.headers.length, (index) {
+                              final isCentered =
+                                  widget.centeredColumns?.contains(index) ??
+                                  false;
+                              final headerText = index < widget.headers.length
+                                  ? widget.headers[index]
+                                  : '';
                               return _buildHeaderCell(
-                                widget.headers[index],
+                                headerText,
                                 flex:
                                     widget.columnFlex != null &&
                                         widget.columnFlex!.length > index
                                     ? widget.columnFlex![index]
                                     : 2,
                                 horizontalPadding: horizontalPadding,
+                                isCentered: isCentered,
                               );
                             }),
                             SizedBox(width: 100.w),
@@ -144,71 +153,114 @@ class _CustomDataTableState extends State<CustomDataTable> {
                           final item = widget.data[index];
                           final isEven = index % 2 == 0;
 
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 12.h,
-                              horizontal: horizontalPadding,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isEven
-                                  ? context.colorScheme.surface
-                                  : context.colorScheme.surfaceVariant,
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: context.colorScheme.outline.withValues(
-                                    alpha: 0.2,
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: item.onAction,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12.h,
+                                  horizontal: horizontalPadding,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isEven
+                                      ? context.colorScheme.surface
+                                      : context.colorScheme.surfaceContainerHighest
+                                            .withValues(alpha: 0.5),
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: context.colorScheme.outline
+                                          .withValues(alpha: 0.1),
+                                    ),
                                   ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    if (widget.showIndex)
+                                      _buildDataCell(
+                                        "${index + 1}",
+                                        flex: 1,
+                                        horizontalPadding: horizontalPadding,
+                                      ),
+                                    ...List.generate(item.rowTexts.length, (
+                                      rowIndex,
+                                    ) {
+                                      final isCentered =
+                                          widget.centeredColumns?.contains(
+                                            rowIndex,
+                                          ) ??
+                                          false;
+                                      final rowText =
+                                          rowIndex < item.rowTexts.length
+                                          ? item.rowTexts[rowIndex]
+                                          : '';
+                                      return _buildDataCell(
+                                        rowText,
+                                        flex:
+                                            widget.columnFlex != null &&
+                                                widget.columnFlex!.length >
+                                                    rowIndex
+                                            ? widget.columnFlex![rowIndex]
+                                            : 2,
+                                        horizontalPadding: horizontalPadding,
+                                        isCentered: isCentered,
+                                      );
+                                    }),
+                                    SizedBox(
+                                      width: 100.w,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          if (item.onOptions != null) ...[
+                                            IconButton(
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                              padding: EdgeInsets.zero,
+                                              icon: Icon(
+                                                item.optionsIcon ??
+                                                    Icons.more_horiz,
+                                              ),
+                                              onPressed: item.onOptions,
+                                              splashRadius: 20.r,
+                                            ),
+                                            SizedBox(width: 8.w),
+                                          ],
+                                          if (item.onAction != null)
+                                            item.actionIcon != null
+                                                ? IconButton(
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    padding: EdgeInsets.zero,
+                                                    icon: Icon(
+                                                      item.actionIcon,
+                                                      color: context
+                                                          .colorScheme
+                                                          .primary,
+                                                      size: 20.r,
+                                                    ),
+                                                    onPressed: item.onAction,
+                                                    splashRadius: 20.r,
+                                                  )
+                                                : IconButton(
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    padding: EdgeInsets.zero,
+                                                    icon: Icon(
+                                                      Icons.delete_outline,
+                                                      color: context
+                                                          .colorScheme
+                                                          .error,
+                                                    ),
+                                                    onPressed: item.onAction,
+                                                    splashRadius: 20.r,
+                                                  ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                if (widget.showIndex)
-                                  _buildDataCell(
-                                    "${index + 1}",
-                                    flex: 1,
-                                    horizontalPadding: horizontalPadding,
-                                  ),
-                                ...List.generate(item.rowTexts.length, (
-                                  rowIndex,
-                                ) {
-                                  return _buildDataCell(
-                                    item.rowTexts[rowIndex],
-                                    flex:
-                                        widget.columnFlex != null &&
-                                            widget.columnFlex!.length > rowIndex
-                                        ? widget.columnFlex![rowIndex]
-                                        : 2,
-                                    horizontalPadding: horizontalPadding,
-                                  );
-                                }),
-                                SizedBox(
-                                  width: 100.w,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      IconButton(
-                                        visualDensity: VisualDensity.compact,
-                                        padding: EdgeInsets.zero,
-                                        icon: const Icon(Icons.more_horiz),
-                                        onPressed: item.onOptions,
-                                        splashRadius: 20.r,
-                                      ),
-                                      SizedBox(width: 8.w),
-                                      IconButton(
-                                        visualDensity: VisualDensity.compact,
-                                        padding: EdgeInsets.zero,
-                                        icon: Icon(
-                                          Icons.delete_outline,
-                                          color: context.colorScheme.error,
-                                        ),
-                                        onPressed: item.onAction,
-                                        splashRadius: 20.r,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
                             ),
                           );
                         },
@@ -225,20 +277,23 @@ class _CustomDataTableState extends State<CustomDataTable> {
   }
 
   Widget _buildHeaderCell(
-    String text, {
+    String? text, {
     int flex = 2,
     double horizontalPadding = 12,
+    bool isCentered = false,
   }) {
     return Expanded(
       flex: flex,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        alignment: flex == 1
+        alignment: isCentered
             ? Alignment.center
-            : AlignmentDirectional.centerStart,
+            : (flex == 1 ? Alignment.center : AlignmentDirectional.centerStart),
         child: Text(
-          text,
-          textAlign: flex == 1 ? TextAlign.center : TextAlign.start,
+          text ?? '',
+          textAlign: isCentered
+              ? TextAlign.center
+              : (flex == 1 ? TextAlign.center : TextAlign.start),
           style: const TextStyle(inherit: true),
         ),
       ),
@@ -246,20 +301,23 @@ class _CustomDataTableState extends State<CustomDataTable> {
   }
 
   Widget _buildDataCell(
-    String text, {
+    String? text, {
     int flex = 2,
     double horizontalPadding = 12,
+    bool isCentered = false,
   }) {
     return Expanded(
       flex: flex,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        alignment: flex == 1
+        alignment: isCentered
             ? Alignment.center
-            : AlignmentDirectional.centerStart,
+            : (flex == 1 ? Alignment.center : AlignmentDirectional.centerStart),
         child: Text(
-          text,
-          textAlign: flex == 1 ? TextAlign.center : TextAlign.start,
+          text ?? '',
+          textAlign: isCentered
+              ? TextAlign.center
+              : (flex == 1 ? TextAlign.center : TextAlign.start),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

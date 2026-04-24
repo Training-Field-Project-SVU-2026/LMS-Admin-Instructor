@@ -11,8 +11,8 @@ class _TttState extends State<Ttt> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Ttt')),
-      body: Center(child: Text('Ttt')),
+      appBar: AppBar(title: const Text('Ttt')),
+      body: const Center(child: Text('Ttt')),
     );
   }
 }
