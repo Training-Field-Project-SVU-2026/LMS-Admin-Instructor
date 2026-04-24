@@ -27,7 +27,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               prefixIcon: Icons.search,
               r: 30,
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: Icon(
                 Theme.of(context).brightness == Brightness.dark

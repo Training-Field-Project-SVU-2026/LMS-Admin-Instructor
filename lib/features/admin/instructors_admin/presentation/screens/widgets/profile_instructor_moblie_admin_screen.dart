@@ -38,7 +38,7 @@ class _ProfileInstructorMoblieAdminScreenState
                 padding: EdgeInsets.zero,
                 children: [
                   //***********************************??Instructor Informations??*****************
-                  CustomInstructorInformationMobile(
+                  const CustomInstructorInformationMobile(
                     name: "Ahmed Mohamed",
                     title: "Senior Software Engineering Instructor ",
                     image:
@@ -148,7 +148,7 @@ class _ProfileInstructorMoblieAdminScreenState
               onTap: () {},
               width: 300,
               height: 50,
-              prefixIcon: Icon(Icons.delete),
+              prefixIcon: const Icon(Icons.delete),
               style: ElevatedButton.styleFrom(
                 backgroundColor: context.colorScheme.error.withValues(
                   alpha: 0.5,

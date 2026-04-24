@@ -7,7 +7,9 @@ import 'package:lms_admin_instructor/core/common/mixins/paginated_state.dart';
 class CourseInstructorListUIModel extends PaginatedUIModel<CourseInstructorItemUIModel> {
   final List<CourseInstructorItemUIModel> courses;
   final int totalCourses;
+  @override
   final int totalPages;
+  @override
   final int currentPage;
 
   CourseInstructorListUIModel({

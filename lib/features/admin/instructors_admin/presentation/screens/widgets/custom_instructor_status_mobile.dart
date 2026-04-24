@@ -45,14 +45,14 @@ class _CustomInstructorStatusMobileState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(widget.icon, color: widget.colorIcon),
-          Spacer(),
+          const Spacer(),
           Text(
             widget.title,
             style: context.textTheme.bodyLarge?.copyWith(
               color: widget.colortitle,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Text(
             widget.num,
             style: context.textTheme.titleLarge?.copyWith(

@@ -44,7 +44,7 @@ class _CustomCardState extends State<CustomCard> {
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 5,
-            offset: Offset(2, 2),
+            offset: const Offset(2, 2),
           ),
         ],
       ),
@@ -84,7 +84,7 @@ class _CustomCardState extends State<CustomCard> {
               ),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Row(
             children: [
               if (widget.icon != null) ...[
@@ -113,7 +113,7 @@ class _CustomCardState extends State<CustomCard> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               CustomPrimaryButton(
                 text: context.tr('manage_btn'),
                 onTap: widget.onTap,

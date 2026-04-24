@@ -56,7 +56,7 @@ class StatsCardWidget extends StatelessWidget {
                     color: context.colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 if (icon != null) ...[
                   Container(
                     width: 36.w,

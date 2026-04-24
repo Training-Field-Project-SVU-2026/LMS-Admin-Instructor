@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
@@ -10,7 +9,7 @@ import 'package:lms_admin_instructor/features/widgets/instructor.dart';
 class CustomListView extends StatelessWidget {
   final ScrollController controller;
   final List<User> userData;
-  CustomListView({super.key, required this.controller, required this.userData});
+  const CustomListView({super.key, required this.controller, required this.userData});
 
   @override
   Widget build(BuildContext context) {

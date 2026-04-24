@@ -122,7 +122,7 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.addStudentAdminScreen,
         name: AppRoutes.addStudentAdminScreen,
-        builder: (context, state) => AddStudentAdminScreen(),
+        builder: (context, state) => const AddStudentAdminScreen(),
       ),
       GoRoute(
         path: AppRoutes.profileInstructorAdminScreen,

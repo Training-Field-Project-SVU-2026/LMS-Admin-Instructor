@@ -16,8 +16,8 @@ class _AddInstructorAdminScreenState extends State<AddInstructorAdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: context.isDesktop
-          ? AddInstructorDisktopAdminScreen()
-          : AddInstructorMobileAdminScreen(),
+          ? const AddInstructorDisktopAdminScreen()
+          : const AddInstructorMobileAdminScreen(),
     );
   }
 }

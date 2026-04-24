@@ -46,7 +46,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return SizedBox(
       width: widget.w ?? double.infinity,
       child: Padding(
-        padding: EdgeInsets.all(1.0),
+        padding: const EdgeInsets.all(1.0),
         child: TextFormField(
           controller: widget.controller,
           validator: widget.validator,
