@@ -7,9 +7,15 @@ import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_info_card.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_video_section/course_video_section.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/custom_course_sidebar.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_material_section/course_material_section.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_quiz_section/course_quiz_section.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_admin_instructor/core/di/service_locator.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/domain/entity/course_details_ui_model.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_event.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_state.dart';
 
 class CourseDetailsScreen extends StatelessWidget {
   final String slug;
@@ -26,18 +32,40 @@ class CourseDetailsScreen extends StatelessWidget {
         ),
         toolbarHeight: 70.h,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: context.isDesktop ? 60.w : 16.w,
-          vertical: 32.h,
+      body: BlocProvider(
+        create: (context) =>
+            sl<CourseDetailsBloc>()..add(GetCourseDetailsEvent(slug: slug)),
+        child: BlocBuilder<CourseDetailsBloc, CourseDetailsState>(
+          builder: (context, state) {
+            if (state is CourseDetailsLoading ||
+                state is CourseDetailsInitial) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is CourseDetailsError) {
+              return Center(child: Text(state.message));
+            } else if (state is CourseDetailsLoaded) {
+              return _buildBody(context, state.courseDetails);
+            }
+            return const SizedBox();
+          },
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildBreadcrumbs(context),
-            SizedBox(height: 24.h),
-            const CourseInfoCard(),
-            SizedBox(height: 32.h),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, CourseDetailsUIModel course) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(
+        horizontal: context.isDesktop ? 60.w : 16.w,
+        vertical: 32.h,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildBreadcrumbs(context, course.title),
+          SizedBox(height: 24.h),
+          CourseInfoCard(course: course),
+          SizedBox(height: 32.h),
+          if (context.isDesktop)
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -49,19 +77,28 @@ class CourseDetailsScreen extends StatelessWidget {
                     children: [
                       const CourseMaterialSection(),
                       SizedBox(height: 32.h),
-                      const CourseQuizSection(),
+                      CourseQuizSection(courseSlug: slug),
                     ],
                   ),
                 ),
               ],
+            )
+          else
+            Column(
+              children: [
+                const CourseVideoSection(),
+                SizedBox(height: 32.h),
+                const CourseMaterialSection(),
+                SizedBox(height: 32.h),
+                CourseQuizSection(courseSlug: slug),
+              ],
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
 
-  Widget _buildBreadcrumbs(BuildContext context) {
+  Widget _buildBreadcrumbs(BuildContext context, String courseTitle) {
     return Row(
       children: [
         InkWell(
@@ -79,7 +116,9 @@ class CourseDetailsScreen extends StatelessWidget {
           color: context.colorScheme.onSurface.withValues(alpha: 0.5),
         ),
         Text(
-          context.tr('course_title_placeholder'),
+          courseTitle.isNotEmpty
+              ? courseTitle
+              : context.tr('course_title_placeholder'),
           style: context.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.bold,
             color: context.colorScheme.onSurface,

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'course_details_section_model.dart';
+part of 'course_details_response_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

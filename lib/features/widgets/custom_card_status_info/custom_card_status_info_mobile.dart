@@ -50,7 +50,7 @@ class _CustomCardStatusInfoMobileState
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 1,
-            offset: Offset(3, 3),
+            offset: const Offset(3, 3),
           ),
         ],
       ),
@@ -59,7 +59,7 @@ class _CustomCardStatusInfoMobileState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(widget.icon, color: widget.colorIcon.withValues(alpha: 0.5)),
-          Spacer(),
+          const Spacer(),
           Text(
             widget.num,
             style: context.textTheme.titleLarge?.copyWith(
@@ -68,7 +68,7 @@ class _CustomCardStatusInfoMobileState
             ),
           ),
 
-          Spacer(),
+          const Spacer(),
           Text(
             widget.title,
             style: context.textTheme.titleLarge?.copyWith(

@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
       (loginResponse) async {
         if (loginResponse.user.role != 'admin' &&
             loginResponse.user.role != 'instructor') {
-          return Left('You are not authorized to login to dashboard');
+          return const Left('You are not authorized to login to dashboard');
         }
 
         await cacheHelper.saveData(

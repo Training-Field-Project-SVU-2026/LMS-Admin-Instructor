@@ -165,7 +165,7 @@ class DioConsumer extends ApiConsumer {
           return Left(message);
         }
       }
-      return Left('Unexpected response format');
+      return const Left('Unexpected response format');
     } catch (e) {
       return Left('Error parsing response: ${e.toString()}');
     }

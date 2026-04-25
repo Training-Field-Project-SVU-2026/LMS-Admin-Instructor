@@ -69,7 +69,7 @@ class _CustomViewerState extends State<CustomViewer> {
           // 949.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(width: 1, color: Color(0xff94A3B8)),
+            border: Border.all(width: 1, color: const Color(0xff94A3B8)),
           ),
           clipBehavior: Clip.antiAlias,
           child: Column(
@@ -88,7 +88,7 @@ class _CustomViewerState extends State<CustomViewer> {
                     horizontal: 20.r,
                   ),
                   decoration: BoxDecoration(
-                    color: Color(0xFFD1DDE1).withValues(alpha: 0.2),
+                    color: const Color(0xFFD1DDE1).withValues(alpha: 0.2),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(16.r),
                       topRight: Radius.circular(16.r),

@@ -18,14 +18,14 @@ class _ProfileInstructorDisctopAdminScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profile Instructor")),
+      appBar: AppBar(title: const Text("Profile Instructor")),
       body: Padding(
         padding: EdgeInsets.all(32.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //***********************************??Instructor Informations??*****************
-            CustomInstructorInformationDisktop(
+            const CustomInstructorInformationDisktop(
               name: "Eng. Taha",
               description: "Senior Data Science Instructor",
               image:

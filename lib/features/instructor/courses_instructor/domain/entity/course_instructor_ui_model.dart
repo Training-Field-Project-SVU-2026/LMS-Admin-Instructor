@@ -8,7 +8,9 @@ class CourseInstructorListUIModel
     extends PaginatedUIModel<CourseInstructorItemUIModel> {
   final List<CourseInstructorItemUIModel> courses;
   final int totalCourses;
+  @override
   final int totalPages;
+  @override
   final int currentPage;
 
   CourseInstructorListUIModel({

@@ -1,6 +1,5 @@
 // import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -111,15 +110,14 @@ class AppTheme {
   }
 
   static ThemeData get lightTheme {
-    final colorScheme = const ColorScheme.light(
+    const colorScheme = ColorScheme.light(
       primary: _primary,
       onPrimary: _onPrimary,
       secondary: _secondary,
       onSecondary: _onSecondary,
-      background: _backgroundLight,
       onSurface: _textPrimaryLight,
       surface: Colors.white,
-      surfaceVariant: _backgroundLight,
+      surfaceContainerHighest: _backgroundLight,
       onSurfaceVariant: _textSecondaryLight,
       error: _error,
       outline: _outline,
@@ -129,15 +127,14 @@ class AppTheme {
   }
 
   static ThemeData get darkTheme {
-    final colorScheme = const ColorScheme.dark(
+    const colorScheme = ColorScheme.dark(
       primary: _primary,
       onPrimary: _onPrimary,
       secondary: _secondary,
       onSecondary: _onSecondary,
-      background: _backgroundDark,
       onSurface: _textPrimaryDark,
       surface: Color(0xFF161D20),
-      surfaceVariant: Color(0xFF1C2629),
+      surfaceContainerHighest: Color(0xFF1C2629),
       onSurfaceVariant: _textSecondaryDark,
       error: _error,
       outline: Color(0xFF2C373A),
@@ -152,11 +149,11 @@ class AppTheme {
       brightness: brightness,
       colorScheme: colorScheme,
       textTheme: _buildTextTheme(colorScheme),
-      scaffoldBackgroundColor: colorScheme.background,
+      scaffoldBackgroundColor: colorScheme.surface,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: colorScheme.surface,
-        hintStyle: TextStyle(color: _textTertiary),
+        hintStyle: const TextStyle(color: _textTertiary),
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,

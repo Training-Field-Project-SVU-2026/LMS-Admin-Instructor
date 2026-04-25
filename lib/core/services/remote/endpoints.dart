@@ -36,7 +36,49 @@ class EndPoint {
   static String addInstructor = "/instructors/create/";
   static String deleteInstructor(String slug) => "/instructors/$slug/delete/";
   static String addCourse = "/courses/create/";
-  static String courseInfo(String slug) => "/courses/$slug/";
+
+  //? course details
+  static String courseDetails(String slug) => "/courses/$slug/";
+  static String totalCourseDetails(String slug) => "/totalCourseDetails/$slug/";
+  static String courseVideos(String slug) => "/courses/$slug/videos/";
+  static String courseMaterials(String slug) => "/courses/$slug/materials/";
+  static String courseQuizzes(String slug) => "/courses/$slug/quizzes/";
+
+  //? Quizzes
+  static String quizDetails(String slug) => "/quizzes/$slug/";
+
+  //? Questions
+  static String quizQuestions(String quizSlug) =>
+      "/quizzes/$quizSlug/questions/";
+  static String createQuestion(String quizSlug) =>
+      "/quizzes/$quizSlug/questions/create/";
+  static String questionDetails(String quizSlug, String questionSlug) =>
+      "/quizzes/$quizSlug/questions/$questionSlug/";
+  static String updateQuestion(String quizSlug, String questionSlug) =>
+      "/quizzes/$quizSlug/questions/$questionSlug/update/";
+  static String deleteQuestion(String quizSlug, String questionSlug) =>
+      "/quizzes/$quizSlug/questions/$questionSlug/delete/";
+
+  //? Choices
+  static String questionChoices(String quizSlug, String questionSlug) =>
+      "/quizzes/$quizSlug/questions/$questionSlug/choices/";
+  static String createChoice(String quizSlug, String questionSlug) =>
+      "/quizzes/$quizSlug/questions/$questionSlug/choices/create/";
+  static String choiceDetails(
+    String quizSlug,
+    String questionSlug,
+    String choiceSlug,
+  ) => "/quizzes/$quizSlug/questions/$questionSlug/choices/$choiceSlug/";
+  static String updateChoice(
+    String quizSlug,
+    String questionSlug,
+    String choiceSlug,
+  ) => "/quizzes/$quizSlug/questions/$questionSlug/choices/$choiceSlug/update/";
+  static String deleteChoice(
+    String quizSlug,
+    String questionSlug,
+    String choiceSlug,
+  ) => "/quizzes/$quizSlug/questions/$questionSlug/choices/$choiceSlug/delete/";
 }
 
 class ApiKey {

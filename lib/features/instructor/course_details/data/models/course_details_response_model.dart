@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entity/course_details_ui_model.dart';
-part 'course_details_section_model.g.dart';
+part 'course_details_response_model.g.dart';
 
 @JsonSerializable()
 class CourseDetailsResponseModel {

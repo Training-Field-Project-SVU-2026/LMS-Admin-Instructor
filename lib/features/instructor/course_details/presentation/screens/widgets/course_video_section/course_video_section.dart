@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 
 class CourseVideoSection extends StatelessWidget {
   const CourseVideoSection({super.key});
@@ -11,36 +13,22 @@ class CourseVideoSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              context.tr('course_structure'),
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+        context.isDesktop
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildHeaderTitle(context),
+                  _buildHeaderActions(context),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeaderTitle(context),
+                  SizedBox(height: 8.h),
+                  _buildHeaderActions(context),
+                ],
               ),
-            ),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    context.tr('expand_all'),
-                    style: TextStyle(fontSize: 12.sp),
-                  ),
-                ),
-                const Text("|"),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    context.tr('collapse_all'),
-                    style: TextStyle(fontSize: 12.sp),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
         SizedBox(height: 16.h),
         Container(
           decoration: BoxDecoration(
@@ -88,6 +76,38 @@ class CourseVideoSection extends StatelessWidget {
     );
   }
 
+  Widget _buildHeaderTitle(BuildContext context) {
+    return Text(
+      context.tr('course_structure'),
+      style: context.textTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildHeaderActions(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            context.tr('expand_all'),
+            style: TextStyle(fontSize: 12.sp),
+          ),
+        ),
+        const Text("|"),
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            context.tr('collapse_all'),
+            style: TextStyle(fontSize: 12.sp),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildSectionItem(
     BuildContext context,
     String title,
@@ -114,9 +134,15 @@ class CourseVideoSection extends StatelessWidget {
                   title,
                   style: context.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
+                    fontSize: context.isDesktop ? null : 14.sp,
                   ),
                 ),
-                Text(subtitle, style: context.textTheme.labelSmall),
+                Text(
+                  subtitle,
+                  style: context.textTheme.labelSmall?.copyWith(
+                    fontSize: context.isDesktop ? null : 10.sp,
+                  ),
+                ),
               ],
             ),
           ),
@@ -143,7 +169,10 @@ class CourseVideoSection extends StatelessWidget {
     String subtitle,
   ) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 48.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: context.isDesktop ? 48.w : 24.w,
+        vertical: 12.h,
+      ),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -198,20 +227,27 @@ class CourseVideoSection extends StatelessWidget {
   }
 
   Widget _buildAddNewButton(BuildContext context, String text, IconData icon) {
-    return Container(
+    return CustomPrimaryButton(
+      onTap: () {},
+      text: text,
+      prefixIcon: Icon(
+        icon,
+        size: 20.sp,
+        color: context.colorScheme.primary,
+      ),
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 16.h),
-      child: OutlinedButton.icon(
-        onPressed: () {},
-        icon: Icon(icon, size: 20.sp),
-        label: Text(text),
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(color: context.colorScheme.outline),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          padding: EdgeInsets.symmetric(vertical: 16.h),
+      height: 50.h,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        side: BorderSide(color: context.colorScheme.outline),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
         ),
+      ),
+      textStyle: context.textTheme.labelLarge?.copyWith(
+        color: context.colorScheme.primary,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

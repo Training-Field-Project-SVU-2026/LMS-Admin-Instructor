@@ -71,14 +71,14 @@ class _CustomInstructorInformationDisktopState
                 ],
               ),
             ),
-            Text("${widget.name}", style: context.textTheme.headlineLarge),
+            Text(widget.name, style: context.textTheme.headlineLarge),
 
             Row(
               children: [
                 SizedBox(
                   width: 300.w, // عرض محدد للنص
                   child: Text(
-                    "${widget.description}",
+                    widget.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: context.textTheme.bodyLarge?.copyWith(
