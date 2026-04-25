@@ -205,5 +205,14 @@
   "edit_course": "Edit Course",
   "save_changes": "Save Changes",
   "course_updated_success": "Course updated successfully!",
-  "is_active": "Is Active"
+  "is_active": "Is Active",
+  "analytics": "Analytics",
+  "total_materials": "Total Materials",
+  "search_students_hint": "Search students...",
+  "enrollment_date": "Enrollment Date",
+  "progress": "Progress",
+  "action": "Action",
+  "view_profile": "View Profile",
+  "previous": "Previous",
+  "next": "Next"
 }

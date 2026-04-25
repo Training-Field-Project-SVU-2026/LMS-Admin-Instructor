@@ -84,7 +84,6 @@ Future<void> setupServiceLocator() async {
   sl.registerFactory(() => CourseDetailsBloc(repository: sl()));
   sl.registerFactory(() => CourseStatsBloc(repository: sl()));
 
-
   // Features - Quiz
   sl.registerLazySingleton<QuizRepository>(
     () => QuizRepositoryImpl(apiConsumer: sl()),

@@ -204,5 +204,14 @@
   "edit_course": "تعديل الدورة",
   "save_changes": "حفظ التغييرات",
   "course_updated_success": "تم تحديث الدورة بنجاح!",
-  "is_active": "متاح"
+  "is_active": "متاح",
+  "analytics": "التحليلات",
+  "total_materials": "إجمالي المواد",
+  "search_students_hint": "البحث عن الطلاب...",
+  "enrollment_date": "تاريخ التسجيل",
+  "progress": "التقدم",
+  "action": "الإجراء",
+  "view_profile": "عرض الملف الشخصي",
+  "previous": "السابق",
+  "next": "التالي"
 }

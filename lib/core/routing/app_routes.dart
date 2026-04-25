@@ -14,5 +14,6 @@ class AppRoutes {
       '/profile_instructor_admin_screen';
   static const String studentDetails = '/student_details/:slug';
   static const String courseDetails = '/course_details/:slug';
+  static const String courseStudents = '/course_students/:slug';
   static const String manageQuizScreen = '/manage_quiz/:slug';
 }

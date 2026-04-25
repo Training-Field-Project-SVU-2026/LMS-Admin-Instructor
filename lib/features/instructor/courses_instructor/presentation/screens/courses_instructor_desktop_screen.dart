@@ -197,7 +197,7 @@ class _CoursesInstructorDesktopScreenState
                               return course.copyWith(
                                 onActionPressed: () async {
                                   final result = await context.pushNamed(
-                                    AppRoutes.courseDetails,
+                                    AppRoutes.courseStudents,
                                     pathParameters: {'slug': course.slug},
                                   );
 
