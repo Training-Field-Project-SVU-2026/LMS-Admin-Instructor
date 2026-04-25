@@ -169,5 +169,10 @@
   "edit_quiz": "تعديل الاختبار",
   "update": "تحديث",
   "required": "مطلوب",
-  "question_name": "اسم السؤال"
+  "question_name": "اسم السؤال",
+  "quiz_deleted_success": "تم حذف الاختبار بنجاح",
+  "delete_quiz": "حذف الاختبار",
+  "are_you_sure_delete_quiz": "هل أنت متأكد من أنك تريد حذف هذا الاختبار؟",
+  "delete": "حذف",
+  "cancel": "إلغاء"
 }

@@ -18,6 +18,22 @@ class CourseQuizBloc extends Bloc<CourseQuizEvent, CourseQuizState>
   final QuizRepository quizRepository;
   CourseQuizBloc({required this.quizRepository}) : super(CourseQuizInitial()) {
     on<GetQuizzesForCourseEvent>(_onGetQuizzesForCourse);
+    on<DeleteQuizEvent>(_onDeleteQuiz);
+  }
+
+  Future<void> _onDeleteQuiz(
+    DeleteQuizEvent event,
+    Emitter<CourseQuizState> emit,
+  ) async {
+    emit(DeleteQuizLoading());
+    final result = await quizRepository.deleteQuiz(
+      event.courseSlug,
+      event.quizSlug,
+    );
+    result.fold(
+      (error) => emit(DeleteQuizError(message: error)),
+      (_) => emit(DeleteQuizSuccess()),
+    );
   }
 
   Future<void> _onGetQuizzesForCourse(
