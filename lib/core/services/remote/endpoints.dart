@@ -36,6 +36,7 @@ class EndPoint {
   static String addInstructor = "/instructors/create/";
   static String deleteInstructor(String slug) => "/instructors/$slug/delete/";
   static String addCourse = "/courses/create/";
+  static String courseInfo(String slug) => "/courses/$slug/";
 }
 
 class ApiKey {

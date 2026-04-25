@@ -111,6 +111,7 @@ class RouterGenerator {
           );
         },
       ),
+    
       GoRoute(
         path: AppRoutes.addInstructorAdminScreen,
         name: AppRoutes.addInstructorAdminScreen,

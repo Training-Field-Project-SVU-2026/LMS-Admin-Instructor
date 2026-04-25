@@ -13,7 +13,7 @@ import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
-import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/widgets/add_course_dialog.dart';
+import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/screens/widgets/add_course_dialog.dart';
 
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
