@@ -36,6 +36,7 @@ class EndPoint {
   static String addInstructor = "/instructors/create/";
   static String deleteInstructor(String slug) => "/instructors/$slug/delete/";
   static String addCourse = "/courses/create/";
+  static String updateCourse(String slug) => "/courses/update/$slug/";
 
   //? course details
   static String courseDetails(String slug) => "/courses/$slug/";

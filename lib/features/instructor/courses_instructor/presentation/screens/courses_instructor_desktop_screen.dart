@@ -195,11 +195,25 @@ class _CoursesInstructorDesktopScreenState
                             centeredColumns: const [1, 2],
                             data: state.courseListUIModel.courses.map((course) {
                               return course.copyWith(
-                                onActionPressed: () {
-                                  context.pushNamed(
+                                onActionPressed: () async {
+                                  final result = await context.pushNamed(
                                     AppRoutes.courseDetails,
                                     pathParameters: {'slug': course.slug},
                                   );
+
+                                  if (result == true && context.mounted) {
+                                    final instructorSlug =
+                                        sl<CacheHelper>().getDataString(
+                                          key: ApiKey.slug,
+                                        ) ??
+                                        '';
+                                    context.read<CoursesInstructorBloc>().add(
+                                      GetCoursesInstructorEvent(
+                                        instructorSlug: instructorSlug,
+                                        page: 1,
+                                      ),
+                                    );
+                                  }
                                 },
                               );
                             }).toList(),

@@ -17,3 +17,15 @@ class CourseDetailsError extends CourseDetailsState {
 
   CourseDetailsError({required this.message});
 }
+
+class UpdateCourseLoading extends CourseDetailsState {}
+
+class UpdateCourseSuccess extends CourseDetailsState {
+  final String message;
+  UpdateCourseSuccess({required this.message});
+}
+
+class UpdateCourseError extends CourseDetailsState {
+  final String message;
+  UpdateCourseError({required this.message});
+}

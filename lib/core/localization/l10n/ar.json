@@ -196,5 +196,13 @@
   "delete_quiz": "حذف الاختبار",
   "are_you_sure_delete_quiz": "هل أنت متأكد من أنك تريد حذف هذا الاختبار؟",
   "delete": "حذف",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "ratings_count": "إجمالي التقييمات",
+  "avg_rating": "متوسط التقييم",
+  "price_label": "السعر:",
+  "egp": "ج.م",
+  "edit_course": "تعديل الدورة",
+  "save_changes": "حفظ التغييرات",
+  "course_updated_success": "تم تحديث الدورة بنجاح!",
+  "is_active": "متاح"
 }
