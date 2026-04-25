@@ -118,10 +118,12 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
       padding: EdgeInsets.only(bottom: 16.h),
       child: InkWell(
         onTap: () async {
-          // TODO: Navigate to quiz details screen
-          // await context.pushNamed(AppRoutes.quizDetails, pathParameters: {"slug": slug ?? ""});
-          // For now, refreshing on return from any navigation as requested
-          if (context.mounted) {
+          final result = await context.pushNamed(
+            AppRoutes.manageQuizScreen,
+            pathParameters: {'slug': widget.courseSlug},
+            queryParameters: {'quizSlug': slug ?? ''},
+          );
+          if (result == true && context.mounted) {
             context.read<CourseQuizBloc>().add(
                   GetQuizzesForCourseEvent(
                     courseSlug: widget.courseSlug,
@@ -160,7 +162,7 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
     return CustomPrimaryButton(
       onTap: () async {
         await context.pushNamed(
-          AppRoutes.addQuizScreen,
+          AppRoutes.manageQuizScreen,
           pathParameters: {"slug": widget.courseSlug},
         );
         if (context.mounted) {

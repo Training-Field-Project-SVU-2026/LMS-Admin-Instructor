@@ -21,8 +21,8 @@ import 'package:lms_admin_instructor/features/admin/students_admin/presentation/
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_quiz_bloc/course_quiz_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/course_details_screen.dart';
-import 'package:lms_admin_instructor/features/instructor/add_quiz_instructor/presentation/bloc/add_quiz_instructor_bloc.dart';
-import 'package:lms_admin_instructor/features/instructor/add_quiz_instructor/presentation/screens/add_quiz_instructor_screen.dart';
+import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/manage_quiz_instructor_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/screens/manage_quiz_instructor_screen.dart';
 import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 import 'package:lms_admin_instructor/root/custom_view_nav_bar.dart';
 
@@ -157,13 +157,14 @@ class RouterGenerator {
         },
       ),
       GoRoute(
-        path: AppRoutes.addQuizScreen,
-        name: AppRoutes.addQuizScreen,
+        path: AppRoutes.manageQuizScreen,
+        name: AppRoutes.manageQuizScreen,
         builder: (context, state) {
-          final slug = state.pathParameters['slug'] ?? '';
+          final courseSlug = state.pathParameters['slug'] ?? '';
+          final quizSlug = state.uri.queryParameters['quizSlug'];
           return BlocProvider(
-            create: (context) => sl<AddQuizInstructorBloc>(),
-            child: AddQuizScreen(slug: slug),
+            create: (context) => sl<ManageQuizInstructorBloc>(),
+            child: ManageQuizScreen(courseSlug: courseSlug, quizSlug: quizSlug),
           );
         },
       ),

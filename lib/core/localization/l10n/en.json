@@ -166,6 +166,9 @@
   "choice": "Choice",
   "submit": "Submit",
   "quiz_created_success": "Quiz created successfully",
+  "quiz_updated_success": "Quiz updated successfully",
+  "edit_quiz": "Edit Quiz",
+  "update": "Update",
   "required": "Required",
   "question_name": "Question Name"
 }
