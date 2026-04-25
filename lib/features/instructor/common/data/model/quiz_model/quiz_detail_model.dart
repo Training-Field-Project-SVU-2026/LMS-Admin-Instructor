@@ -2,25 +2,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'quiz_detail_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class QuizDetailResponseModel {
   final bool? success;
   final int? status;
   final String? message;
   final QuizDetailModel? data;
 
-  QuizDetailResponseModel({
-    this.success,
-    this.status,
-    this.message,
-    this.data,
-  });
+  QuizDetailResponseModel({this.success, this.status, this.message, this.data});
 
-  factory QuizDetailResponseModel.fromJson(Map<String, dynamic> json) => _$QuizDetailResponseModelFromJson(json);
+  factory QuizDetailResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$QuizDetailResponseModelFromJson(json);
   Map<String, dynamic> toJson() => _$QuizDetailResponseModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class QuizDetailModel {
   @JsonKey(name: 'quiz_name')
   final String? quizName;
@@ -44,11 +40,12 @@ class QuizDetailModel {
     this.questions,
   });
 
-  factory QuizDetailModel.fromJson(Map<String, dynamic> json) => _$QuizDetailModelFromJson(json);
+  factory QuizDetailModel.fromJson(Map<String, dynamic> json) =>
+      _$QuizDetailModelFromJson(json);
   Map<String, dynamic> toJson() => _$QuizDetailModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class QuestionModel {
   @JsonKey(name: 'question_name')
   final String? questionName;
@@ -66,7 +63,8 @@ class QuestionModel {
     this.choices,
   });
 
-  factory QuestionModel.fromJson(Map<String, dynamic> json) => _$QuestionModelFromJson(json);
+  factory QuestionModel.fromJson(Map<String, dynamic> json) =>
+      _$QuestionModelFromJson(json);
   Map<String, dynamic> toJson() => _$QuestionModelToJson(this);
 }
 
@@ -78,12 +76,9 @@ class ChoiceModel {
   @JsonKey(name: 'is_correct')
   final bool? isCorrect;
 
-  ChoiceModel({
-    this.choiceName,
-    this.slug,
-    this.isCorrect,
-  });
+  ChoiceModel({this.choiceName, this.slug, this.isCorrect});
 
-  factory ChoiceModel.fromJson(Map<String, dynamic> json) => _$ChoiceModelFromJson(json);
+  factory ChoiceModel.fromJson(Map<String, dynamic> json) =>
+      _$ChoiceModelFromJson(json);
   Map<String, dynamic> toJson() => _$ChoiceModelToJson(this);
 }

@@ -34,3 +34,12 @@ class CourseQuizError extends CourseQuizState {
   final String message;
   CourseQuizError({required this.message});
 }
+
+class DeleteQuizLoading extends CourseQuizState {}
+
+class DeleteQuizSuccess extends CourseQuizState {}
+
+class DeleteQuizError extends CourseQuizState {
+  final String message;
+  DeleteQuizError({required this.message});
+}

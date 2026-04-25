@@ -12,6 +12,7 @@ import 'package:lms_admin_instructor/features/widgets/error_feedback_widget.dart
 import 'package:lms_admin_instructor/features/widgets/loading_indicator_widget.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/custom_course_sidebar.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
+import 'package:lms_admin_instructor/features/widgets/delete_confirmation_dialog.dart';
 
 class CourseQuizSection extends StatefulWidget {
   final String courseSlug;
@@ -26,7 +27,7 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
   void initState() {
     super.initState();
     context.read<CourseQuizBloc>().add(
-      GetQuizzesForCourseEvent(courseSlug: widget.courseSlug),
+      GetQuizzesForCourseEvent(courseSlug: widget.courseSlug, pageSize: 4),
     );
   }
 
@@ -65,6 +66,7 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
                   context,
                   quiz.quizName,
                   "${quiz.totalMark} ${context.tr('marks')}",
+                  quiz.slug,
                 ),
               ),
               if (hasMore)
@@ -79,6 +81,7 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
                                 GetQuizzesForCourseEvent(
                                   courseSlug: widget.courseSlug,
                                   page: (state.uiModel?.currentPage ?? 1) + 1,
+                                  pageSize: 4,
                                 ),
                               );
                             },
@@ -111,28 +114,113 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
     );
   }
 
-  Widget _buildQuizItem(BuildContext context, String title, String subtitle) {
+  void _showDeleteDialog(BuildContext context, String? slug) {
+    if (slug == null) return;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return BlocProvider.value(
+          value: context.read<CourseQuizBloc>(),
+          child: BlocConsumer<CourseQuizBloc, CourseQuizState>(
+            listener: (context, state) {
+              if (state is DeleteQuizSuccess) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(context.tr('quiz_deleted_success'))),
+                );
+                // Refresh the list
+                context.read<CourseQuizBloc>().add(
+                  GetQuizzesForCourseEvent(
+                    courseSlug: widget.courseSlug,
+                    pageSize: 4,
+                  ),
+                );
+              } else if (state is DeleteQuizError) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message)));
+              }
+            },
+            builder: (context, state) {
+              return DeleteConfirmationDialog(
+                title: context.tr('delete_quiz'),
+                message: context.tr('are_you_sure_delete_quiz'),
+                isLoading: state is DeleteQuizLoading,
+                onConfirm: () {
+                  context.read<CourseQuizBloc>().add(
+                    DeleteQuizEvent(
+                      courseSlug: widget.courseSlug,
+                      quizSlug: slug,
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildQuizItem(
+    BuildContext context,
+    String title,
+    String subtitle,
+    String? slug,
+  ) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            title,
-            style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: InkWell(
+              onTap: () async {
+                final result = await context.pushNamed(
+                  AppRoutes.manageQuizScreen,
+                  pathParameters: {'slug': widget.courseSlug},
+                  queryParameters: {'quizSlug': slug ?? ''},
+                );
+                if (result == true && context.mounted) {
+                  context.read<CourseQuizBloc>().add(
+                    GetQuizzesForCourseEvent(
+                      courseSlug: widget.courseSlug,
+                      pageSize: 4,
+                    ),
+                  );
+                }
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.list_alt,
+                        size: 12.sp,
+                        color: context.colorScheme.outline,
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(subtitle, style: context.textTheme.labelSmall),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          Row(
-            children: [
-              Icon(
-                Icons.list_alt,
-                size: 12.sp,
-                color: context.colorScheme.outline,
-              ),
-              SizedBox(width: 4.w),
-              Text(subtitle, style: context.textTheme.labelSmall),
-            ],
+          IconButton(
+            onPressed: () => _showDeleteDialog(context, slug),
+            icon: Icon(
+              Icons.delete_outline,
+              color: context.colorScheme.error,
+              size: 20.sp,
+            ),
           ),
         ],
       ),
@@ -141,11 +229,19 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
 
   Widget _buildUploadButton(BuildContext context, String text) {
     return CustomPrimaryButton(
-      onTap: () {
-        context.pushNamed(
-          AppRoutes.addQuizScreen,
+      onTap: () async {
+        await context.pushNamed(
+          AppRoutes.manageQuizScreen,
           pathParameters: {"slug": widget.courseSlug},
         );
+        if (context.mounted) {
+          context.read<CourseQuizBloc>().add(
+            GetQuizzesForCourseEvent(
+              courseSlug: widget.courseSlug,
+              pageSize: 4,
+            ),
+          );
+        }
       },
       text: text,
       prefixIcon: Icon(

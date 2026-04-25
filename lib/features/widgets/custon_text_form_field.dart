@@ -14,6 +14,7 @@ class CustomTextFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final bool isPassword;
   final int? maxLines;
+  final void Function(String)? onChanged;
 
   const CustomTextFormField({
     super.key,
@@ -28,6 +29,7 @@ class CustomTextFormField extends StatefulWidget {
     this.validator,
     this.isPassword = false,
     this.maxLines,
+    this.onChanged,
   });
 
   @override
@@ -51,6 +53,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         padding: const EdgeInsets.all(1.0),
         child: TextFormField(
           controller: widget.controller,
+          onChanged: widget.onChanged,
           validator: widget.validator,
           obscureText: _obscureText,
           style: context.textTheme.labelMedium?.copyWith(

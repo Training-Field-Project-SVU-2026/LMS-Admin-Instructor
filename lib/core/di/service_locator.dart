@@ -21,7 +21,7 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/data/repository/courses_instructor_repository_impl.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/domain/repository/courses_instructor_repository.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
-import 'package:lms_admin_instructor/features/instructor/add_quiz_instructor/presentation/bloc/add_quiz_instructor_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/manage_quiz_instructor_bloc.dart';
 import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 
 final sl = GetIt.instance;
@@ -79,7 +79,7 @@ Future<void> setupServiceLocator() async {
   );
   
   sl.registerLazySingleton(() => CourseQuizBloc(quizRepository: sl()));
-  sl.registerFactory(() => AddQuizInstructorBloc(quizRepository: sl()));
+  sl.registerFactory(() => ManageQuizInstructorBloc(quizRepository: sl()));
 
   // Root
   sl.registerLazySingleton(() => RootBloc());

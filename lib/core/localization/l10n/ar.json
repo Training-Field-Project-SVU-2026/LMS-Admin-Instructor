@@ -165,5 +165,14 @@
   "choice": "خيار",
   "submit": "إرسال",
   "quiz_created_success": "تم إنشاء الاختبار بنجاح",
-  "required": "مطلوب"
+  "quiz_updated_success": "تم تحديث الاختبار بنجاح",
+  "edit_quiz": "تعديل الاختبار",
+  "update": "تحديث",
+  "required": "مطلوب",
+  "question_name": "اسم السؤال",
+  "quiz_deleted_success": "تم حذف الاختبار بنجاح",
+  "delete_quiz": "حذف الاختبار",
+  "are_you_sure_delete_quiz": "هل أنت متأكد من أنك تريد حذف هذا الاختبار؟",
+  "delete": "حذف",
+  "cancel": "إلغاء"
 }

@@ -11,3 +11,10 @@ class GetQuizzesForCourseEvent extends CourseQuizEvent {
     this.pageSize,
   });
 }
+
+class DeleteQuizEvent extends CourseQuizEvent {
+  final String courseSlug;
+  final String quizSlug;
+
+  DeleteQuizEvent({required this.courseSlug, required this.quizSlug});
+}
