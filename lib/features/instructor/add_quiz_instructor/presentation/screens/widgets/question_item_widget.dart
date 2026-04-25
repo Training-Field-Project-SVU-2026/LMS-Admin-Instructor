@@ -33,18 +33,6 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
     super.initState();
     _nameController = TextEditingController(text: widget.question.questionName);
     _markController = TextEditingController(text: widget.question.mark?.toString() ?? '1');
-    
-    _nameController.addListener(_updateQuestion);
-    _markController.addListener(_updateQuestion);
-  }
-
-  void _updateQuestion() {
-    widget.onUpdate(QuestionCreateModel(
-      questionName: _nameController.text,
-      mark: int.tryParse(_markController.text) ?? 1,
-      questionType: widget.question.questionType,
-      choices: widget.question.choices,
-    ));
   }
 
   @override
@@ -110,6 +98,7 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
               txt: context.tr('question_name'),
               hint: context.tr('question_name'),
               controller: _nameController,
+              onChanged: (val) => _updateQuestion(name: val),
               validator: (value) =>
                   value == null || value.isEmpty ? context.tr('required') : null,
             ),
@@ -121,6 +110,7 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
                     txt: context.tr('mark'),
                     hint: context.tr('mark'),
                     controller: _markController,
+                    onChanged: (val) => _updateQuestion(mark: int.tryParse(val)),
                     validator: (value) =>
                         value == null || value.isEmpty ? context.tr('required') : null,
                   ),
@@ -140,12 +130,27 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
                       DropdownMenuItem(value: 'multiple', child: Text(context.tr('multiple_choice'))),
                     ],
                     onChanged: (val) {
-                      widget.onUpdate(QuestionCreateModel(
-                        questionName: widget.question.questionName,
-                        mark: widget.question.mark,
-                        questionType: val,
-                        choices: widget.question.choices,
-                      ));
+                      final updatedChoices = List<ChoiceCreateModel>.from(widget.question.choices ?? []);
+                      if (val == 'single') {
+                        bool foundCorrect = false;
+                        for (int i = 0; i < updatedChoices.length; i++) {
+                          if (updatedChoices[i].isCorrect == true && !foundCorrect) {
+                            foundCorrect = true;
+                          } else {
+                            updatedChoices[i] = ChoiceCreateModel(
+                              choiceName: updatedChoices[i].choiceName,
+                              isCorrect: false,
+                            );
+                          }
+                        }
+                        if (!foundCorrect && updatedChoices.isNotEmpty) {
+                          updatedChoices[0] = ChoiceCreateModel(
+                            choiceName: updatedChoices[0].choiceName,
+                            isCorrect: true,
+                          );
+                        }
+                      }
+                      _updateQuestion(type: val, choices: updatedChoices);
                     },
                   ),
                 ),
@@ -165,12 +170,7 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
                   onPressed: () {
                     final updatedChoices = List<ChoiceCreateModel>.from(widget.question.choices ?? []);
                     updatedChoices.add(ChoiceCreateModel(choiceName: '', isCorrect: false));
-                    widget.onUpdate(QuestionCreateModel(
-                      questionName: widget.question.questionName,
-                      mark: widget.question.mark,
-                      questionType: widget.question.questionType,
-                      choices: updatedChoices,
-                    ));
+                    _updateQuestion(choices: updatedChoices);
                   },
                   icon: const Icon(Icons.add, size: 16),
                   label: Text(context.tr('add_choice'), style: TextStyle(fontSize: 12.sp)),
@@ -181,40 +181,38 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
             ...widget.question.choices?.asMap().entries.map((entry) {
               final choiceIndex = entry.key;
               return ChoiceItemWidget(
+                key: ValueKey('choice_${widget.index}_$choiceIndex'),
                 index: choiceIndex,
                 choice: entry.value,
                 onRemove: () {
                   final updatedChoices = List<ChoiceCreateModel>.from(widget.question.choices ?? []);
                   if (updatedChoices.length > 2) {
                     updatedChoices.removeAt(choiceIndex);
-                    widget.onUpdate(QuestionCreateModel(
-                      questionName: widget.question.questionName,
-                      mark: widget.question.mark,
-                      questionType: widget.question.questionType,
-                      choices: updatedChoices,
-                    ));
+                    _updateQuestion(choices: updatedChoices);
                   }
                 },
                 onUpdate: (updatedChoice) {
                   final updatedChoices = List<ChoiceCreateModel>.from(widget.question.choices ?? []);
                   
-                  if (widget.question.questionType == 'single' && updatedChoice.isCorrect == true) {
-                    for (var i = 0; i < updatedChoices.length; i++) {
-                      updatedChoices[i] = ChoiceCreateModel(
-                        choiceName: updatedChoices[i].choiceName,
-                        isCorrect: i == choiceIndex,
-                      );
+                  if (widget.question.questionType == 'single') {
+                    if (updatedChoice.isCorrect == true) {
+                      for (var i = 0; i < updatedChoices.length; i++) {
+                        updatedChoices[i] = ChoiceCreateModel(
+                          choiceName: i == choiceIndex ? updatedChoice.choiceName : (updatedChoices[i].choiceName ?? ''),
+                          isCorrect: i == choiceIndex,
+                        );
+                      }
+                    } else {
+                      if (widget.question.choices?[choiceIndex].isCorrect == true) {
+                        return;
+                      }
+                      updatedChoices[choiceIndex] = updatedChoice;
                     }
                   } else {
                     updatedChoices[choiceIndex] = updatedChoice;
                   }
 
-                  widget.onUpdate(QuestionCreateModel(
-                    questionName: widget.question.questionName,
-                    mark: widget.question.mark,
-                    questionType: widget.question.questionType,
-                    choices: updatedChoices,
-                  ));
+                  _updateQuestion(choices: updatedChoices);
                 },
               );
             }) ?? [],
@@ -222,5 +220,14 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
         ),
       ),
     );
+  }
+
+  void _updateQuestion({String? name, int? mark, String? type, List<ChoiceCreateModel>? choices}) {
+    widget.onUpdate(QuestionCreateModel(
+      questionName: name ?? _nameController.text,
+      mark: mark ?? int.tryParse(_markController.text) ?? 1,
+      questionType: type ?? widget.question.questionType,
+      choices: choices ?? widget.question.choices,
+    ));
   }
 }

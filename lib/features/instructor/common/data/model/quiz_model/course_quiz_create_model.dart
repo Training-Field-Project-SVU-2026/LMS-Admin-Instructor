@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'course_quiz_create_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class CourseQuizCreateModel {
   final String? slug;
   @JsonKey(name: 'quiz_name')
@@ -23,7 +23,7 @@ class CourseQuizCreateModel {
   Map<String, dynamic> toJson() => _$CourseQuizCreateModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class QuestionCreateModel {
   @JsonKey(name: 'question_name')
   final String? questionName;

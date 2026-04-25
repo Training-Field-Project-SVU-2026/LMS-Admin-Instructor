@@ -29,9 +29,7 @@ class CourseQuizBloc extends Bloc<CourseQuizEvent, CourseQuizState>
     if (!shouldHandlePagination(pageToFetch, state)) return;
 
     if (pageToFetch == 1) {
-      if (state is! CourseQuizLoaded) {
-        emit(CourseQuizLoading());
-      }
+      emit(CourseQuizLoading());
     } else {
       emit((state as CourseQuizLoaded).copyWith(isPaginationLoading: true));
     }

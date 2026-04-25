@@ -165,5 +165,6 @@
   "choice": "خيار",
   "submit": "إرسال",
   "quiz_created_success": "تم إنشاء الاختبار بنجاح",
-  "required": "مطلوب"
+  "required": "مطلوب",
+  "question_name": "اسم السؤال"
 }

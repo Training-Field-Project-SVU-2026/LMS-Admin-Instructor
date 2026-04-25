@@ -26,7 +26,7 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
   void initState() {
     super.initState();
     context.read<CourseQuizBloc>().add(
-      GetQuizzesForCourseEvent(courseSlug: widget.courseSlug),
+      GetQuizzesForCourseEvent(courseSlug: widget.courseSlug, pageSize: 4),
     );
   }
 
@@ -65,6 +65,7 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
                   context,
                   quiz.quizName,
                   "${quiz.totalMark} ${context.tr('marks')}",
+                  quiz.slug,
                 ),
               ),
               if (hasMore)
@@ -75,12 +76,13 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
                       onPressed: state.isPaginationLoading
                           ? null
                           : () {
-                              context.read<CourseQuizBloc>().add(
-                                GetQuizzesForCourseEvent(
-                                  courseSlug: widget.courseSlug,
-                                  page: (state.uiModel?.currentPage ?? 1) + 1,
-                                ),
-                              );
+                                context.read<CourseQuizBloc>().add(
+                                  GetQuizzesForCourseEvent(
+                                    courseSlug: widget.courseSlug,
+                                    page: (state.uiModel?.currentPage ?? 1) + 1,
+                                    pageSize: 4,
+                                  ),
+                                );
                             },
                       child: state.isPaginationLoading
                           ? SizedBox(
@@ -111,41 +113,61 @@ class _CourseQuizSectionState extends State<CourseQuizSection> {
     );
   }
 
-  Widget _buildQuizItem(BuildContext context, String title, String subtitle) {
+  Widget _buildQuizItem(BuildContext context, String title, String subtitle, String? slug) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: context.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Row(
-            children: [
-              Icon(
-                Icons.list_alt,
-                size: 12.sp,
-                color: context.colorScheme.outline,
+      child: InkWell(
+        onTap: () async {
+          // TODO: Navigate to quiz details screen
+          // await context.pushNamed(AppRoutes.quizDetails, pathParameters: {"slug": slug ?? ""});
+          // For now, refreshing on return from any navigation as requested
+          if (context.mounted) {
+            context.read<CourseQuizBloc>().add(
+                  GetQuizzesForCourseEvent(
+                    courseSlug: widget.courseSlug,
+                    pageSize: 4,
+                  ),
+                );
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: context.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(width: 4.w),
-              Text(subtitle, style: context.textTheme.labelSmall),
-            ],
-          ),
-        ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.list_alt,
+                  size: 12.sp,
+                  color: context.colorScheme.outline,
+                ),
+                SizedBox(width: 4.w),
+                Text(subtitle, style: context.textTheme.labelSmall),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildUploadButton(BuildContext context, String text) {
     return CustomPrimaryButton(
-      onTap: () {
-        context.pushNamed(
+      onTap: () async {
+        await context.pushNamed(
           AppRoutes.addQuizScreen,
           pathParameters: {"slug": widget.courseSlug},
         );
+        if (context.mounted) {
+          context.read<CourseQuizBloc>().add(
+            GetQuizzesForCourseEvent(courseSlug: widget.courseSlug, pageSize: 4),
+          );
+        }
       },
       text: text,
       prefixIcon: Icon(

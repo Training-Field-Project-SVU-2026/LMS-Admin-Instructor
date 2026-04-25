@@ -23,7 +23,7 @@ Map<String, dynamic> _$QuizDetailResponseModelToJson(
   'success': instance.success,
   'status': instance.status,
   'message': instance.message,
-  'data': instance.data,
+  'data': instance.data?.toJson(),
 };
 
 QuizDetailModel _$QuizDetailModelFromJson(Map<String, dynamic> json) =>
@@ -47,7 +47,7 @@ Map<String, dynamic> _$QuizDetailModelToJson(QuizDetailModel instance) =>
       'total_mark': instance.totalMark,
       'max_attempts': instance.maxAttempts,
       'course_name': instance.courseName,
-      'questions': instance.questions,
+      'questions': instance.questions?.map((e) => e.toJson()).toList(),
     };
 
 QuestionModel _$QuestionModelFromJson(Map<String, dynamic> json) =>
@@ -67,7 +67,7 @@ Map<String, dynamic> _$QuestionModelToJson(QuestionModel instance) =>
       'slug': instance.slug,
       'mark': instance.mark,
       'question_type': instance.questionType,
-      'choices': instance.choices,
+      'choices': instance.choices?.map((e) => e.toJson()).toList(),
     };
 
 ChoiceModel _$ChoiceModelFromJson(Map<String, dynamic> json) => ChoiceModel(

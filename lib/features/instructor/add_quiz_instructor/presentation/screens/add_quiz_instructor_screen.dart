@@ -31,7 +31,6 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
   @override
   void initState() {
     super.initState();
-    // Add one initial question
     _addQuestion();
   }
 
@@ -65,6 +64,7 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
         quizName: _quizNameController.text,
         description: _descriptionController.text,
         questions: _questions,
+        slug: widget.slug,
       );
 
       context.read<AddQuizInstructorBloc>().add(
@@ -83,7 +83,7 @@ class _AddQuizScreenState extends State<AddQuizScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(context.tr('quiz_created_success'))),
             );
-            context.pop();
+            context.pop(true);
           } else if (state is AddQuizInstructorError) {
             ScaffoldMessenger.of(
               context,

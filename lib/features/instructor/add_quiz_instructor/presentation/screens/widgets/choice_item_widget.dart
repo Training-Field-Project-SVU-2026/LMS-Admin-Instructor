@@ -29,12 +29,6 @@ class _ChoiceItemWidgetState extends State<ChoiceItemWidget> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.choice.choiceName);
-    _controller.addListener(() {
-      widget.onUpdate(ChoiceCreateModel(
-        choiceName: _controller.text,
-        isCorrect: widget.choice.isCorrect,
-      ));
-    });
   }
 
   @override
@@ -58,24 +52,30 @@ class _ChoiceItemWidgetState extends State<ChoiceItemWidget> {
       padding: EdgeInsets.only(bottom: 8.h),
       child: Row(
         children: [
-          Checkbox(
-            value: widget.choice.isCorrect ?? false,
-            onChanged: (val) {
-              widget.onUpdate(ChoiceCreateModel(
-                choiceName: widget.choice.choiceName,
-                isCorrect: val,
-              ));
-            },
-          ),
-          Expanded(
-            child: CustomTextFormField(
-              txt: '${context.tr('choice')} ${widget.index + 1}',
-              hint: '${context.tr('choice')} ${widget.index + 1}',
-              controller: _controller,
-              validator: (value) =>
-                  value == null || value.isEmpty ? context.tr('required') : null,
+            Checkbox(
+              value: widget.choice.isCorrect ?? false,
+              onChanged: (val) {
+                widget.onUpdate(ChoiceCreateModel(
+                  choiceName: widget.choice.choiceName,
+                  isCorrect: val,
+                ));
+              },
             ),
-          ),
+            Expanded(
+              child: CustomTextFormField(
+                txt: '${context.tr('choice')} ${widget.index + 1}',
+                hint: '${context.tr('choice')} ${widget.index + 1}',
+                controller: _controller,
+                onChanged: (val) {
+                  widget.onUpdate(ChoiceCreateModel(
+                    choiceName: val,
+                    isCorrect: widget.choice.isCorrect,
+                  ));
+                },
+                validator: (value) =>
+                    value == null || value.isEmpty ? context.tr('required') : null,
+              ),
+            ),
           IconButton(
             onPressed: widget.onRemove,
             icon: const Icon(Icons.close, size: 20, color: Colors.grey),

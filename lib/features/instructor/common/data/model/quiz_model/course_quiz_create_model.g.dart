@@ -23,7 +23,7 @@ Map<String, dynamic> _$CourseQuizCreateModelToJson(
   'slug': instance.slug,
   'quiz_name': instance.quizName,
   'description': instance.description,
-  'questions': instance.questions,
+  'questions': instance.questions?.map((e) => e.toJson()).toList(),
 };
 
 QuestionCreateModel _$QuestionCreateModelFromJson(Map<String, dynamic> json) =>
@@ -42,7 +42,7 @@ Map<String, dynamic> _$QuestionCreateModelToJson(
   'question_name': instance.questionName,
   'mark': instance.mark,
   'question_type': instance.questionType,
-  'choices': instance.choices,
+  'choices': instance.choices?.map((e) => e.toJson()).toList(),
 };
 
 ChoiceCreateModel _$ChoiceCreateModelFromJson(Map<String, dynamic> json) =>
