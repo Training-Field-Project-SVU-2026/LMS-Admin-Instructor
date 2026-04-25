@@ -5,6 +5,7 @@ import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/dio_consumer.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/repository/instructor_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/repository/instructor_admin_repoditory.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_details_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/data/repositories/auth_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
@@ -68,6 +69,12 @@ Future<void> setupServiceLocator() async {
     () => CoursesInstructorRepositoryImpl(apiConsumer: sl()),
   );
   sl.registerLazySingleton(() => CoursesInstructorBloc(repository: sl()));
+
+  // Features - Instructor Admin Details
+
+  sl.registerLazySingleton(
+    () => InstructorDetailsBloc(instructorAdminRepository: sl()),
+  );
 
   // Root
   sl.registerLazySingleton(() => RootBloc());

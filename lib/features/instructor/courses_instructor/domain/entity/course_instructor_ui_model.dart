@@ -4,7 +4,8 @@ import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_d
 
 import 'package:lms_admin_instructor/core/common/mixins/paginated_state.dart';
 
-class CourseInstructorListUIModel extends PaginatedUIModel<CourseInstructorItemUIModel> {
+class CourseInstructorListUIModel
+    extends PaginatedUIModel<CourseInstructorItemUIModel> {
   final List<CourseInstructorItemUIModel> courses;
   final int totalCourses;
   final int totalPages;
@@ -15,11 +16,7 @@ class CourseInstructorListUIModel extends PaginatedUIModel<CourseInstructorItemU
     required this.totalCourses,
     required this.totalPages,
     required this.currentPage,
-  }) : super(
-          items: courses,
-          totalPages: totalPages,
-          currentPage: currentPage,
-        );
+  }) : super(items: courses, totalPages: totalPages, currentPage: currentPage);
 
   @override
   CourseInstructorListUIModel copyWithItems(
@@ -60,6 +57,9 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
   final VoidCallback? onActionPressed;
   final VoidCallback? onOptionsPressed;
 
+  final IconData? actionIconpressed;
+  final IconData? optionsIconpressed;
+
   CourseInstructorItemUIModel({
     required this.slug,
     required this.title,
@@ -69,6 +69,8 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
     this.image,
     this.onActionPressed,
     this.onOptionsPressed,
+    this.actionIconpressed,
+    this.optionsIconpressed,
   });
 
   CourseInstructorItemUIModel copyWith({
@@ -80,6 +82,8 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
     String? image,
     VoidCallback? onActionPressed,
     VoidCallback? onOptionsPressed,
+    IconData? actionIconpressed,
+    IconData? optionsIconpressed,
   }) {
     return CourseInstructorItemUIModel(
       slug: slug ?? this.slug,
@@ -90,6 +94,8 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
       image: image ?? this.image,
       onActionPressed: onActionPressed ?? this.onActionPressed,
       onOptionsPressed: onOptionsPressed ?? this.onOptionsPressed,
+      actionIconpressed: actionIconpressed ?? this.actionIconpressed,
+      optionsIconpressed: optionsIconpressed ?? this.optionsIconpressed,
     );
   }
 
@@ -108,15 +114,11 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
   VoidCallback? get onAction => onActionPressed;
 
   @override
-  IconData? get actionIcon => Icons.arrow_forward_ios_rounded;
+  IconData? get actionIcon => actionIconpressed ?? Icons.arrow_forward_ios_rounded;
 
   @override
   VoidCallback? get onOptions => onOptionsPressed;
 
   @override
-  IconData? get optionsIcon => null;
-  
-  @override
-  // TODO: implement rowWidgets
-  List<Widget>? get rowWidgets => throw UnimplementedError();
+  IconData? get optionsIcon => optionsIconpressed;
 }

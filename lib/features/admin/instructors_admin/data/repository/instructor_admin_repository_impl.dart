@@ -4,6 +4,7 @@ import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
 import 'package:lms_admin_instructor/core/utils/api_query_params.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/add_instructor_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_admin_respomse_model.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_course_admin_responce_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_details_response_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/repository/instructor_admin_repoditory.dart';
 
@@ -50,6 +51,19 @@ class InstructorAdminRepositoryImpl implements InstructorAdminRepository {
     return await apiConsumer.get<InstructorDetailsResponseModel>(
       EndPoint.getInstructorBySlug(slug),
       fromJson: (json) => InstructorDetailsResponseModel.fromJson(json),
+    );
+  }
+
+  @override
+  Future<Either<String, InstructorCourseAdminResponceModel>>
+  getInstructorCoursesBySslug(int? page, int? pageSize, String slug) async {
+    return await apiConsumer.get<InstructorCourseAdminResponceModel>(
+      EndPoint.getInstructorCoursesBySslug(slug),
+      queryParameters: ApiQueryParams.pagination(
+        page: page,
+        pageSize: pageSize,
+      ),
+      fromJson: (json) => InstructorCourseAdminResponceModel.fromJson(json),
     );
   }
 }

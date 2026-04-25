@@ -14,11 +14,7 @@ class StudentAdminUIModel extends PaginatedUIModel<StudentItemUIModel> {
     required this.totalEnrollments,
     required this.totalPages,
     required this.currentPage,
-  }) : super(
-          items: students,
-          totalPages: totalPages,
-          currentPage: currentPage,
-        );
+  }) : super(items: students, totalPages: totalPages, currentPage: currentPage);
 
   @override
   StudentAdminUIModel copyWithItems(
@@ -118,8 +114,4 @@ class StudentItemUIModel implements CustomDataTableRowModel {
 
   @override
   IconData? get optionsIcon => null;
-  
-  @override
-  // TODO: implement rowWidgets
-  List<Widget>? get rowWidgets => throw UnimplementedError();
 }

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/add_instructor_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_admin_respomse_model.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_course_admin_responce_model.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/model/instructor_details_response_model.dart';
 
 abstract class InstructorAdminRepository {
@@ -17,4 +18,6 @@ abstract class InstructorAdminRepository {
     String email,
   );
   Future<Either<String, void>> deleteInstructor(String slug);
+  Future<Either<String, InstructorCourseAdminResponceModel>>
+  getInstructorCoursesBySslug(int? page, int? pageSize, String slug);
 }

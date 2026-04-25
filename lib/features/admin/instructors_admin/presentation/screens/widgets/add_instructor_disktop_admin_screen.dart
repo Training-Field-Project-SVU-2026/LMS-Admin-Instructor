@@ -236,7 +236,7 @@ class _AddInstructorDisktopAdminScreenState
                                   );
                                 }
                               },
-                              width: 171.w,
+                              width: 120.w,
                               height: 50.h,
                             );
                           },
