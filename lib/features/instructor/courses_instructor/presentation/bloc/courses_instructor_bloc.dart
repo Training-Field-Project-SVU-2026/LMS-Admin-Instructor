@@ -20,6 +20,7 @@ class CoursesInstructorBloc extends Bloc<CoursesInstructorEvent, CoursesInstruct
   CoursesInstructorBloc({required this.repository})
       : super(CoursesInstructorInitial()) {
     on<GetCoursesInstructorEvent>(_onGetCourses);
+    on<AddCourseInstructorEvent>(_onAddCourse);
   }
 
   Future<void> _onGetCourses(
@@ -57,6 +58,28 @@ class CoursesInstructorBloc extends Bloc<CoursesInstructorEvent, CoursesInstruct
           errorStateBuilder: (msg) => CoursesInstructorError(message: msg),
           loadingStateBuilder: () => CoursesInstructorLoading(),
         );
+      },
+    );
+  }
+
+  Future<void> _onAddCourse(
+    AddCourseInstructorEvent event,
+    Emitter<CoursesInstructorState> emit,
+  ) async {
+    final currentState = state;
+    emit(AddCourseLoading());
+    
+    final response = await repository.addCourse(
+      requestModel: event.requestModel,
+    );
+
+    response.fold(
+      (error) => emit(AddCourseError(message: error)),
+      (successMessage) {
+        emit(AddCourseSuccess(message: successMessage));
+        if (currentState is CoursesInstructorLoaded) {
+          emit(currentState);
+        }
       },
     );
   }

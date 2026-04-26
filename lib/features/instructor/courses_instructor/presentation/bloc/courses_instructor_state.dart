@@ -36,3 +36,15 @@ class CoursesInstructorError extends CoursesInstructorState {
   final String message;
   CoursesInstructorError({required this.message});
 }
+
+class AddCourseLoading extends CoursesInstructorState {}
+
+class AddCourseSuccess extends CoursesInstructorState {
+  final String message;
+  AddCourseSuccess({required this.message});
+}
+
+class AddCourseError extends CoursesInstructorState {
+  final String message;
+  AddCourseError({required this.message});
+}

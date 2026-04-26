@@ -22,6 +22,10 @@ import 'package:lms_admin_instructor/features/instructor/courses_instructor/data
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/domain/repository/courses_instructor_repository.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/manage_quiz_instructor_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/domain/repositories/course_details_repository.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/data/repositories/course_details_repository_impl.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
 import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 
 final sl = GetIt.instance;
@@ -67,17 +71,24 @@ Future<void> setupServiceLocator() async {
     () => InstructorAdminBloc(instructorAdminRepoditory: sl()),
   );
 
-  // Features - Instructor 
+  // Features - Instructor
   sl.registerLazySingleton<CoursesInstructorRepository>(
     () => CoursesInstructorRepositoryImpl(apiConsumer: sl()),
   );
   sl.registerLazySingleton(() => CoursesInstructorBloc(repository: sl()));
-  
+
+  // Course Details
+  sl.registerLazySingleton<CourseDetailsRepository>(
+    () => CourseDetailsRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerFactory(() => CourseDetailsBloc(repository: sl()));
+  sl.registerFactory(() => CourseStatsBloc(repository: sl()));
+
   // Features - Quiz
   sl.registerLazySingleton<QuizRepository>(
     () => QuizRepositoryImpl(apiConsumer: sl()),
   );
-  
+
   sl.registerLazySingleton(() => CourseQuizBloc(quizRepository: sl()));
   sl.registerFactory(() => ManageQuizInstructorBloc(quizRepository: sl()));
 

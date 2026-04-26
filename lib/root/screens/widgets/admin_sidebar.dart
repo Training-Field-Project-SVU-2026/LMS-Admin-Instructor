@@ -147,7 +147,9 @@ class ResponsiveNavItem extends StatelessWidget {
                           : context.colorScheme.onSurface.withValues(
                               alpha: 0.7,
                             ),
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -200,7 +202,9 @@ class AdminProfileWidget extends StatelessWidget {
                   Text(
                     'admin@lms.com',
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.5,
+                      ),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),

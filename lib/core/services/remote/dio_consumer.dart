@@ -30,13 +30,13 @@ class DioConsumer extends ApiConsumer {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.delete(
         path,
-        data: isFromData ? FormData.fromMap(data) : data,
+        data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
       return _handleResponse(response, fromJson);
@@ -88,13 +88,13 @@ class DioConsumer extends ApiConsumer {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.patch(
         path,
-        data: isFromData ? FormData.fromMap(data) : data,
+        data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
       return _handleResponse(response, fromJson);
@@ -108,13 +108,13 @@ class DioConsumer extends ApiConsumer {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.put(
         path,
-        data: isFromData ? FormData.fromMap(data) : data,
+        data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
       return _handleResponse(response, fromJson);
@@ -128,13 +128,13 @@ class DioConsumer extends ApiConsumer {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
-    bool isFromData = false,
+    bool isFormData = false,
     T Function(Map<String, dynamic>)? fromJson,
   }) async {
     try {
       final response = await dio.post(
         path,
-        data: isFromData ? FormData.fromMap(data) : data,
+        data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
       );
       return _handleResponse(response, fromJson);
@@ -186,7 +186,9 @@ class DioConsumer extends ApiConsumer {
           try {
             return Right(responseData as T);
           } catch (e) {
-            return Left('Type mismatch: expected $T, got ${responseData.runtimeType}');
+            return Left(
+              'Type mismatch: expected $T, got ${responseData.runtimeType}',
+            );
           }
         }
       } else {

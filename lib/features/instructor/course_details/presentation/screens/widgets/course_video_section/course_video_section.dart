@@ -33,9 +33,16 @@ class CourseVideoSection extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: context.colorScheme.surface,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [
+              BoxShadow(
+                color: context.colorScheme.onSurface.withValues(alpha: 0.03),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+            ],
             border: Border.all(
-              color: context.colorScheme.outline.withValues(alpha: 0.5),
+              color: context.colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
           child: Column(

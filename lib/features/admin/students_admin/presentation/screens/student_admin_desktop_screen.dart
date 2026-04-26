@@ -117,51 +117,59 @@ class _StudentAdminDesktopScreenState extends State<StudentAdminDesktopScreen> {
                         context.tr('verified'),
                       ],
                       columnFlex: const [3, 4, 2, 2],
-                      data: state.studentAdminUIModel.students.map((student) {
-                        return student.copyWith(
-                          onActionPressed: () {
-                            showAdaptiveDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog.adaptive(
-                                  title: Text(context.tr('delete_student')),
-                                  content: Text(
-                                    context.tr('are_you_sure_delete_student'),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text(context.tr('cancel')),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        context.read<StudentAdminBloc>().add(
-                                          DeleteStudentAdminEvent(
-                                            slug: student.slug,
-                                          ),
-                                        );
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        context.tr('delete'),
-                                        style: TextStyle(
-                                          color: context.colorScheme.error,
+                      data: state.studentAdminUIModel.students
+                          .map((student) {
+                            return student.copyWith(
+                              onActionPressed: () {
+                                showAdaptiveDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog.adaptive(
+                                      title: Text(context.tr('delete_student')),
+                                      content: Text(
+                                        context.tr(
+                                          'are_you_sure_delete_student',
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text(context.tr('cancel')),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            context
+                                                .read<StudentAdminBloc>()
+                                                .add(
+                                                  DeleteStudentAdminEvent(
+                                                    slug: student.slug,
+                                                  ),
+                                                );
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            context.tr('delete'),
+                                            style: TextStyle(
+                                              color: context.colorScheme.error,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              onOptionsPressed: () {
+                                context.pushNamed(
+                                  AppRoutes.studentDetails,
+                                  pathParameters: {'slug': student.slug},
                                 );
                               },
                             );
-                          },
-                          onOptionsPressed: () {
-                            context.pushNamed(
-                              AppRoutes.studentDetails,
-                              pathParameters: {'slug': student.slug},
-                            );
-                          },
-                        );
-                      }).cast<CustomDataTableRowModel>().toList(),
+                          })
+                          .cast<CustomDataTableRowModel>()
+                          .toList(),
                       scrollController: _scrollController,
                       isPaginationLoading: state.isPaginationLoading,
                     );

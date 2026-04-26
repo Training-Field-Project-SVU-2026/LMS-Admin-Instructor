@@ -3,10 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_bloc.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/domain/entity/course_details_ui_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_state.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/edit_course_dialog.dart';
 
 class CourseInfoCard extends StatelessWidget {
-  const CourseInfoCard({super.key});
+  final CourseDetailsUIModel course;
+
+  const CourseInfoCard({super.key, required this.course});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +34,16 @@ class CourseInfoCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(context.isDesktop ? 24.r : 16.r),
+            padding: EdgeInsets.symmetric(
+              horizontal: context.isDesktop ? 38.r : 16.r,
+              vertical: context.isDesktop ? 30.r : 16.r,
+            ),
             child: context.isDesktop
                 ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildThumbnail(context),
-                      SizedBox(width: 24.w),
+                      _buildThumbnail(context, height: 220.h),
+                      SizedBox(width: 32.w),
                       Expanded(child: _buildMainInfo(context)),
                     ],
                   )
@@ -53,17 +65,21 @@ class CourseInfoCard extends StatelessWidget {
             color: context.colorScheme.outline.withValues(alpha: 0.1),
           ),
           Padding(
-            padding: EdgeInsets.all(context.isDesktop ? 24.r : 16.r),
-            child: context.isDesktop
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: _buildStats(context),
-                  )
-                : Wrap(
-                    spacing: 16.w,
-                    runSpacing: 16.h,
-                    children: _buildStats(context),
-                  ),
+            padding: EdgeInsets.symmetric(
+              horizontal: context.isDesktop ? 32.r : 16.r,
+              vertical: context.isDesktop ? 20.r : 16.r,
+            ),
+            child: BlocBuilder<CourseStatsBloc, CourseStatsState>(
+              builder: (context, state) {
+                final stats = _buildStats(context, state);
+                return context.isDesktop
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: stats,
+                      )
+                    : Wrap(spacing: 16.w, runSpacing: 16.h, children: stats);
+              },
+            ),
           ),
         ],
       ),
@@ -76,35 +92,49 @@ class CourseInfoCard extends StatelessWidget {
     double? height,
   }) {
     return Container(
-      width: width ?? 200.w,
-      height: height ?? 120.h,
+      width: width ?? 240.w,
+      height: height ?? 140.h,
       decoration: BoxDecoration(
         color: context.colorScheme.onSecondary,
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: Stack(
-        children: [
-          Center(
-            child: Text(
-              context.tr('level_3_placeholder'),
-              style: TextStyle(
-                color: context.colorScheme.surface,
-                fontSize: 10.sp,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 8.h,
-            right: 8.w,
-            child: Text(
-              context.tr('level_3_placeholder'),
-              style: context.textTheme.labelSmall?.copyWith(
-                color: context.colorScheme.surface,
-              ),
-            ),
-          ),
-        ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.r),
+        child: course.image.isNotEmpty
+            ? CachedNetworkImage(
+                imageUrl: course.image,
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) =>
+                    _buildImagePlaceholder(context),
+              )
+            : _buildImagePlaceholder(context),
       ),
+    );
+  }
+
+  Widget _buildImagePlaceholder(BuildContext context) {
+    return Stack(
+      children: [
+        Center(
+          child: Text(
+            context.tr(course.level.toLowerCase()),
+            style: TextStyle(
+              color: context.colorScheme.surface,
+              fontSize: 10.sp,
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 8.h,
+          right: 8.w,
+          child: Text(
+            context.tr(course.level.toLowerCase()),
+            style: context.textTheme.labelSmall?.copyWith(
+              color: context.colorScheme.surface,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -115,6 +145,7 @@ class CourseInfoCard extends StatelessWidget {
         if (context.isDesktop)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(child: _buildTitle(context)),
               _buildActionButtons(context),
@@ -122,29 +153,43 @@ class CourseInfoCard extends StatelessWidget {
           )
         else ...[
           _buildTitle(context),
-          SizedBox(height: 12.h),
+          SizedBox(height: 16.h),
           _buildActionButtons(context),
         ],
-        SizedBox(height: 8.h),
-        Text(
-          context.tr('course_desc_placeholder'),
-          style: context.textTheme.bodyMedium?.copyWith(
-            color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+        SizedBox(height: 16.h),
+        Padding(
+          padding: EdgeInsets.only(right: context.isDesktop ? 120.w : 0),
+          child: Text(
+            course.description.isNotEmpty
+                ? course.description
+                : context.tr('course_desc_placeholder'),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: context.colorScheme.onSurface.withValues(alpha: 0.6),
+              height: 1.5,
+            ),
           ),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 20.h),
         Row(
           children: [
             _buildInfoBadge(
               context,
               Icons.category_outlined,
-              "${context.tr('category_label')}${context.tr('category_web_dev')}",
+              "${context.tr('category_label')} ${context.tr(course.category)}",
             ),
             SizedBox(width: 24.w),
             _buildInfoBadge(
               context,
               Icons.signal_cellular_alt,
-              "${context.tr('level_label')}${context.tr('level_advanced')}",
+              "${context.tr('level_label')} ${context.tr(course.level.toLowerCase())}",
+            ),
+            SizedBox(width: 24.w),
+            _buildInfoBadge(
+              context,
+              Icons.payments_outlined,
+              "${context.tr('price_label')}: ${course.price} ${context.tr('EGP')}",
             ),
           ],
         ),
@@ -154,7 +199,9 @@ class CourseInfoCard extends StatelessWidget {
 
   Widget _buildTitle(BuildContext context) {
     return Text(
-      context.tr('course_title_placeholder'),
+      course.title.isNotEmpty
+          ? course.title
+          : context.tr('course_title_placeholder'),
       style: context.textTheme.headlineMedium?.copyWith(
         fontWeight: FontWeight.bold,
         fontSize: context.isDesktop ? null : 20.sp,
@@ -166,46 +213,79 @@ class CourseInfoCard extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildHeaderButton(context, context.tr('edit_details'), false, () {}),
-        SizedBox(width: 12.w),
-        _buildHeaderButton(
-          context,
-          context.tr('add_content'),
-          true,
-          () {},
-          icon: Icons.add,
-        ),
+        _buildHeaderButton(context, context.tr('edit_details'), false, () {
+          final courseDetailsBloc = context.read<CourseDetailsBloc>();
+          showDialog(
+            context: context,
+            builder: (context) => BlocProvider.value(
+              value: courseDetailsBloc,
+              child: EditCourseDialog(course: course),
+            ),
+          );
+        }),
       ],
     );
   }
 
-  List<Widget> _buildStats(BuildContext context) {
+  List<Widget> _buildStats(BuildContext context, CourseStatsState state) {
+    if (state is CourseStatsLoaded) {
+      return [
+        _StatItem(
+          icon: Icons.star,
+          label: context.tr('ratings_count'),
+          value: course.ratingsCount.toString(),
+          color: Colors.amber.shade50,
+          iconColor: Colors.amber,
+        ),
+        _StatItem(
+          icon: Icons.assignment,
+          label: context.tr('avg_rating'),
+          value: course.avgRating.toString(),
+          color: Colors.purple.shade50,
+          iconColor: Colors.purple,
+        ),
+        _StatItem(
+          icon: Icons.folder,
+          label: context.tr('materials'),
+          value: state.courseStats.totalMaterials.toString(),
+          color: Colors.orange.shade50,
+          iconColor: Colors.orange,
+        ),
+        _StatItem(
+          icon: Icons.people,
+          label: context.tr('students_enrolled'),
+          value: state.courseStats.totalStudents.toString(),
+          color: Colors.green.shade50,
+          iconColor: Colors.green,
+        ),
+      ];
+    }
     return [
       _StatItem(
-        icon: Icons.play_circle_filled,
-        label: context.tr('total_videos'),
-        value: "24",
-        color: Colors.blue.shade50,
-        iconColor: Colors.blue,
+        icon: Icons.star,
+        label: context.tr('ratings_count'),
+        value: course.ratingsCount.toString(),
+        color: Colors.amber.shade50,
+        iconColor: Colors.amber,
       ),
       _StatItem(
         icon: Icons.assignment,
-        label: context.tr('total_quizzes'),
-        value: "5",
+        label: context.tr('avg_rating'),
+        value: course.avgRating.toString(),
         color: Colors.purple.shade50,
         iconColor: Colors.purple,
       ),
       _StatItem(
         icon: Icons.folder,
         label: context.tr('materials'),
-        value: "12",
+        value: "0",
         color: Colors.orange.shade50,
         iconColor: Colors.orange,
       ),
       _StatItem(
         icon: Icons.people,
         label: context.tr('students_enrolled'),
-        value: "1,240",
+        value: "0",
         color: Colors.green.shade50,
         iconColor: Colors.green,
       ),
@@ -220,7 +300,7 @@ class CourseInfoCard extends StatelessWidget {
     IconData? icon,
   }) {
     return SizedBox(
-      height: 40.h,
+      height: 48.h,
       child: isPrimary
           ? CustomPrimaryButton(
               onTap: onTap,
@@ -234,20 +314,28 @@ class CourseInfoCard extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
               ),
             )
-          : OutlinedButton(
+          : ElevatedButton.icon(
               onPressed: onTap,
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: context.colorScheme.outline),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+              icon: Icon(
+                Icons.edit_outlined,
+                size: 18.sp,
+                color: context.colorScheme.onSurface,
               ),
-              child: Text(
+              label: Text(
                 text,
                 style: context.textTheme.labelLarge?.copyWith(
                   color: context.colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: context.colorScheme.secondary,
+                foregroundColor: context.colorScheme.onSecondary,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
               ),
             ),
     );

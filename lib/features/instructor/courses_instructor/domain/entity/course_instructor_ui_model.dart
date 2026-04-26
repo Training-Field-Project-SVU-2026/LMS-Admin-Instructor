@@ -4,7 +4,8 @@ import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_d
 
 import 'package:lms_admin_instructor/core/common/mixins/paginated_state.dart';
 
-class CourseInstructorListUIModel extends PaginatedUIModel<CourseInstructorItemUIModel> {
+class CourseInstructorListUIModel
+    extends PaginatedUIModel<CourseInstructorItemUIModel> {
   final List<CourseInstructorItemUIModel> courses;
   final int totalCourses;
   @override
@@ -17,11 +18,7 @@ class CourseInstructorListUIModel extends PaginatedUIModel<CourseInstructorItemU
     required this.totalCourses,
     required this.totalPages,
     required this.currentPage,
-  }) : super(
-          items: courses,
-          totalPages: totalPages,
-          currentPage: currentPage,
-        );
+  }) : super(items: courses, totalPages: totalPages, currentPage: currentPage);
 
   @override
   CourseInstructorListUIModel copyWithItems(
@@ -117,8 +114,5 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
 
   @override
   IconData? get optionsIcon => null;
-  
-  @override
-  // TODO: implement rowWidgets
-  List<Widget>? get rowWidgets => throw UnimplementedError();
+
 }
