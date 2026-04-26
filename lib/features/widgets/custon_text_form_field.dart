@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 
@@ -15,6 +16,8 @@ class CustomTextFormField extends StatefulWidget {
   final bool isPassword;
   final int? maxLines;
   final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFormField({
     super.key,
@@ -30,6 +33,8 @@ class CustomTextFormField extends StatefulWidget {
     this.isPassword = false,
     this.maxLines,
     this.onChanged,
+    this.keyboardType,
+    this.inputFormatters,
   });
 
   @override
@@ -56,6 +61,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           onChanged: widget.onChanged,
           validator: widget.validator,
           obscureText: _obscureText,
+          keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
           style: context.textTheme.labelMedium?.copyWith(
             color: context.colorScheme.onSurface,
             fontSize: 16.sp,
