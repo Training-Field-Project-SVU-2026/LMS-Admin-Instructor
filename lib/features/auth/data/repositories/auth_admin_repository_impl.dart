@@ -55,6 +55,11 @@ class AuthRepositoryImpl implements AuthRepository {
           value: loginResponse.user.slug,
         );
 
+        await cacheHelper.saveData(
+          key: ApiKey.role,
+          value: loginResponse.user.role,
+        );
+
         return Right(loginResponse);
       },
     );

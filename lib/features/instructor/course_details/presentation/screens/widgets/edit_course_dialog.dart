@@ -10,7 +10,6 @@ import 'package:lms_admin_instructor/features/instructor/course_details/presenta
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_state.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
-
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/edit_course_controller_mixin.dart';
 
 class EditCourseDialog extends StatefulWidget {
@@ -107,6 +106,7 @@ class _EditCourseDialogState extends State<EditCourseDialog>
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
+                          isExpanded: true,
                           initialValue: selectedLevel,
                           decoration: InputDecoration(
                             labelText: context.tr('level'),
@@ -137,7 +137,32 @@ class _EditCourseDialogState extends State<EditCourseDialog>
                       ),
                     ],
                   ),
-                  SizedBox(height: 64.h),
+                  SizedBox(height: 40.h),
+                  Row(
+                    children: [
+                      Icon(
+                        isActive ? Icons.check_circle : Icons.cancel,
+                        color: isActive
+                            ? context.colorScheme.secondary
+                            : context.colorScheme.error,
+                        size: 22.sp,
+                      ),
+                      SizedBox(width: 12.w),
+                      Text(
+                        context.tr('is_active'),
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Spacer(),
+                      Switch(
+                        value: isActive,
+                        onChanged: (v) => setState(() => isActive = v),
+                        activeThumbColor: context.colorScheme.secondary,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 48.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -178,7 +203,7 @@ class _EditCourseDialogState extends State<EditCourseDialog>
     );
   }
 
-  void _submit() {
+  void _submit() async {
     if (formKey.currentState!.validate()) {
       final requestModel = getUpdateRequest();
 

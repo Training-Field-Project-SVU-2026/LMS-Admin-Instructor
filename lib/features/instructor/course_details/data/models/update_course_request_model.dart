@@ -11,6 +11,8 @@ class UpdateCourseRequestModel {
   final String level;
   @JsonKey(name: 'is_active')
   final bool isActive;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final dynamic image;
 
   UpdateCourseRequestModel({
     required this.title,
@@ -19,6 +21,7 @@ class UpdateCourseRequestModel {
     required this.category,
     required this.level,
     required this.isActive,
+    this.image,
   });
 
   factory UpdateCourseRequestModel.fromJson(Map<String, dynamic> json) =>
