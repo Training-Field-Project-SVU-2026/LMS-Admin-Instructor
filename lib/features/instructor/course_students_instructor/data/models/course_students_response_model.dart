@@ -5,16 +5,23 @@ part 'course_students_response_model.g.dart';
 
 @JsonSerializable()
 class CourseStudentsResponseModel {
-  final int count;
-  final String? next;
-  final String? previous;
-  final List<CourseStudentModel> results;
+  @JsonKey(name: 'total_students')
+  final int totalStudents;
+
+  @JsonKey(name: 'total_pages')
+  final int totalPages;
+
+  @JsonKey(name: 'current_page')
+  final int currentPage;
+
+  @JsonKey(name: 'students')
+  final List<CourseStudentModel> students;
 
   CourseStudentsResponseModel({
-    required this.count,
-    this.next,
-    this.previous,
-    required this.results,
+    required this.totalStudents,
+    required this.totalPages,
+    required this.currentPage,
+    required this.students,
   });
 
   factory CourseStudentsResponseModel.fromJson(Map<String, dynamic> json) =>
@@ -22,12 +29,15 @@ class CourseStudentsResponseModel {
 
   Map<String, dynamic> toJson() => _$CourseStudentsResponseModelToJson(this);
 
-  CourseStudentsListUIModel toEntity({required int currentPage, int pageSize = 10}) {
+  CourseStudentsListUIModel toEntity({
+    required int currentPage,
+    int pageSize = 10,
+  }) {
     return CourseStudentsListUIModel(
-      students: results.map((e) => e.toEntity()).toList(),
-      totalStudents: count,
-      totalPages: (count / pageSize).ceil(),
-      currentPage: currentPage,
+      students: students.map((e) => e.toEntity()).toList(),
+      totalStudents: totalStudents,
+      totalPages: totalPages,
+      currentPage: this.currentPage,
     );
   }
 }
@@ -42,7 +52,8 @@ class CourseStudentModel {
   final String? studentEmail;
   @JsonKey(name: 'enrollment_date')
   final String? enrollmentDate;
-  final String? progress;
+  @JsonKey(name: 'progress')
+  final num? progress;
 
   CourseStudentModel({
     this.studentSlug,
@@ -63,7 +74,7 @@ class CourseStudentModel {
       email: studentEmail ?? '',
       avatar: "",
       enrollmentDate: enrollmentDate ?? '',
-      progress: (double.tryParse(progress?.replaceAll('%', '') ?? '0') ?? 0.0) / 100.0,
+      progress: (progress ?? 0).toDouble() / 100.0,
       slug: studentSlug ?? '',
     );
   }

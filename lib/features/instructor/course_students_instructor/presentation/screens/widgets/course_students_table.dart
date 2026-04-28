@@ -3,17 +3,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/instructor/course_students_instructor/domain/entity/course_student_ui_model.dart';
 import 'package:lms_admin_instructor/features/instructor/course_students_instructor/presentation/bloc/course_students_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_students_instructor/presentation/bloc/course_students_state.dart';
+import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
 
-class CourseStudentsTable extends StatelessWidget {
+class CourseStudentsTable extends StatefulWidget {
   const CourseStudentsTable({super.key});
+
+  @override
+  State<CourseStudentsTable> createState() => _CourseStudentsTableState();
+}
+
+class _CourseStudentsTableState extends State<CourseStudentsTable> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(32.r),
+      padding: EdgeInsets.all(context.isMobile ? 20.r : 32.r),
       decoration: BoxDecoration(
         color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(16.r),
@@ -29,47 +44,70 @@ class CourseStudentsTable extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSearchAndFilterHeader(context),
-          SizedBox(height: 32.h),
-          _buildTableHeader(context),
-          const Divider(height: 1),
-          BlocBuilder<CourseStudentsBloc, CourseStudentsState>(
-            builder: (context, state) {
-              if (state is CourseStudentsLoading) {
-                return const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 48),
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else if (state is CourseStudentsError) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 48),
-                    child: Text(state.message),
-                  ),
-                );
-              } else if (state is CourseStudentsLoaded) {
-                final students = state.studentsListUIModel.students;
-                if (students.isEmpty) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 48),
-                      child: Text("No students enrolled yet"),
-                    ),
-                  );
-                }
-                return Column(
-                  children: [
-                    ...students.map((s) => _buildStudentRow(context, s)),
-                    if (state.isPaginationLoading)
-                      const Padding(
-                        padding: EdgeInsets.all(24.0),
-                        child: Center(child: CircularProgressIndicator()),
+          SizedBox(height: context.isMobile ? 16.h : 32.h),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final tableWidth = constraints.maxWidth > 800.w
+                  ? constraints.maxWidth
+                  : 800.w;
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: tableWidth,
+                  child: Column(
+                    children: [
+                      _buildTableHeader(context),
+                      const Divider(height: 1),
+                      BlocBuilder<CourseStudentsBloc, CourseStudentsState>(
+                        builder: (context, state) {
+                          if (state is CourseStudentsLoading) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 48),
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else if (state is CourseStudentsError) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 48,
+                                ),
+                                child: Text(state.message),
+                              ),
+                            );
+                          } else if (state is CourseStudentsLoaded) {
+                            final students = state.studentsListUIModel.students;
+                            if (students.isEmpty) {
+                              return const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 48),
+                                  child: Text("No students enrolled yet"),
+                                ),
+                              );
+                            }
+                            return Column(
+                              children: [
+                                ...students.map(
+                                  (s) => _buildStudentRow(context, s),
+                                ),
+                                if (state.isPaginationLoading)
+                                  const Padding(
+                                    padding: EdgeInsets.all(24.0),
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          }
+                          return const SizedBox();
+                        },
                       ),
-                  ],
-                );
-              }
-              return const SizedBox();
+                    ],
+                  ),
+                ),
+              );
             },
           ),
         ],
@@ -78,69 +116,38 @@ class CourseStudentsTable extends StatelessWidget {
   }
 
   Widget _buildSearchAndFilterHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          context.tr('students_enrolled'),
-          style: context.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+    return SizedBox(
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 16.w,
+        runSpacing: 16.h,
+        children: [
+          Text(
+            context.tr('students_enrolled'),
+            style: context.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        Row(
-          children: [
-            Container(
-              width: 300.w,
-              height: 48.h,
-              decoration: BoxDecoration(
-                color: context.colorScheme.surfaceContainerHighest.withValues(
-                  alpha: 0.3,
-                ),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.search,
-                    size: 20.sp,
-                    color: context.colorScheme.onSurface.withValues(alpha: 0.5),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: context.tr('search_students_hint'),
-                        border: InputBorder.none,
-                        hintStyle: context.textTheme.bodyMedium?.copyWith(
-                          color: context.colorScheme.onSurface.withValues(
-                            alpha: 0.5,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 16.w),
-            Container(
-              padding: EdgeInsets.all(12.r),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: context.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Icon(
-                Icons.tune,
-                size: 20.sp,
-                color: context.colorScheme.onSurface,
-              ),
-            ),
-          ],
-        ),
-      ],
+          CustomTextFormField(
+            w: context.isMobile ? double.infinity : 300.w,
+            txt: '',
+            hint: context.tr('search_students_hint'),
+            prefixIcon: Icons.search,
+            controller: _searchController,
+            suffixIcon: _searchController.text.isNotEmpty ? Icons.clear : null,
+            onSuffixIcon: () {
+              _searchController.clear();
+              setState(() {});
+              // TODO: Trigger search refresh
+            },
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -150,7 +157,7 @@ class CourseStudentsTable extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Text(
               context.tr('student_name'),
               style: _headerStyle(context),
@@ -161,18 +168,23 @@ class CourseStudentsTable extends StatelessWidget {
             child: Text(
               context.tr('enrollment_date'),
               style: _headerStyle(context),
+              textAlign: TextAlign.center,
             ),
           ),
           Expanded(
             flex: 2,
-            child: Text(context.tr('progress'), style: _headerStyle(context)),
+            child: Text(
+              context.tr('progress'),
+              style: _headerStyle(context),
+              textAlign: TextAlign.center,
+            ),
           ),
           Expanded(
             flex: 1,
             child: Text(
               context.tr('action'),
               style: _headerStyle(context),
-              textAlign: TextAlign.end,
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -202,7 +214,7 @@ class CourseStudentsTable extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Row(
               children: [
                 CircleAvatar(
@@ -216,24 +228,30 @@ class CourseStudentsTable extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 12.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      student.name,
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      student.email,
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.colorScheme.onSurface.withValues(
-                          alpha: 0.5,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        student.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                  ],
+                      Text(
+                        student.email,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onSurface.withValues(
+                            alpha: 0.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -243,6 +261,7 @@ class CourseStudentsTable extends StatelessWidget {
             child: Text(
               student.enrollmentDate,
               style: context.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
             ),
           ),
           Expanded(
@@ -271,9 +290,16 @@ class CourseStudentsTable extends StatelessWidget {
           ),
           Expanded(
             flex: 1,
-            child: TextButton(
-              onPressed: () {},
-              child: Text(context.tr('view_profile'), textAlign: TextAlign.end),
+            child: Center(
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.visibility_outlined,
+                  color: context.colorScheme.primary,
+                  size: 20.sp,
+                ),
+                tooltip: context.tr('view_profile'),
+              ),
             ),
           ),
         ],
@@ -282,7 +308,7 @@ class CourseStudentsTable extends StatelessWidget {
   }
 
   Color _getProgressColor(BuildContext context, double progress) {
-    if (progress > 0.8) return Colors.green;
+    if (progress > 0.8) return context.colorScheme.secondary;
     if (progress > 0.4) return context.colorScheme.primary;
     return Colors.orange;
   }

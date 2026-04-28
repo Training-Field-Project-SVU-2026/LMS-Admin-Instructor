@@ -9,10 +9,10 @@ part of 'course_students_response_model.dart';
 CourseStudentsResponseModel _$CourseStudentsResponseModelFromJson(
   Map<String, dynamic> json,
 ) => CourseStudentsResponseModel(
-  count: (json['count'] as num).toInt(),
-  next: json['next'] as String?,
-  previous: json['previous'] as String?,
-  results: (json['results'] as List<dynamic>)
+  totalStudents: (json['total_students'] as num).toInt(),
+  totalPages: (json['total_pages'] as num).toInt(),
+  currentPage: (json['current_page'] as num).toInt(),
+  students: (json['students'] as List<dynamic>)
       .map((e) => CourseStudentModel.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
@@ -20,10 +20,10 @@ CourseStudentsResponseModel _$CourseStudentsResponseModelFromJson(
 Map<String, dynamic> _$CourseStudentsResponseModelToJson(
   CourseStudentsResponseModel instance,
 ) => <String, dynamic>{
-  'count': instance.count,
-  'next': instance.next,
-  'previous': instance.previous,
-  'results': instance.results,
+  'total_students': instance.totalStudents,
+  'total_pages': instance.totalPages,
+  'current_page': instance.currentPage,
+  'students': instance.students,
 };
 
 CourseStudentModel _$CourseStudentModelFromJson(Map<String, dynamic> json) =>
@@ -32,7 +32,7 @@ CourseStudentModel _$CourseStudentModelFromJson(Map<String, dynamic> json) =>
       studentName: json['student_name'] as String?,
       studentEmail: json['student_email'] as String?,
       enrollmentDate: json['enrollment_date'] as String?,
-      progress: json['progress'] as String?,
+      progress: json['progress'] as num?,
     );
 
 Map<String, dynamic> _$CourseStudentModelToJson(CourseStudentModel instance) =>

@@ -22,7 +22,7 @@ class CourseStudentsRepositoryImpl implements CourseStudentsRepository {
         page: page,
         pageSize: pageSize,
       ),
-      fromJson: (json) => CourseStudentsResponseModel.fromJson(json),
+      fromJson: (json) => CourseStudentsResponseModel.fromJson(json['data']),
     );
   }
 }

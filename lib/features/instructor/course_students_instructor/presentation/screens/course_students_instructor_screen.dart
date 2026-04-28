@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_event.dart';
 import 'package:lms_admin_instructor/features/instructor/course_students_instructor/presentation/screens/widgets/course_students_header.dart';
 import 'package:lms_admin_instructor/features/instructor/course_students_instructor/presentation/screens/widgets/course_students_stats.dart';
 import 'package:lms_admin_instructor/features/instructor/course_students_instructor/presentation/screens/widgets/course_students_table.dart';
@@ -59,35 +56,23 @@ class _CourseStudentsInstructorScreenState
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) =>
-              sl<CourseStatsBloc>()..add(GetCourseStatsEvent(slug: widget.slug)),
+    return Scaffold(
+      backgroundColor: context.colorScheme.surfaceContainerHighest,
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        padding: EdgeInsets.symmetric(
+          horizontal: context.isDesktop ? 60.w : 20.w,
+          vertical: 40.h,
         ),
-        BlocProvider(
-          create: (context) => sl<CourseStudentsBloc>()
-            ..add(GetCourseStudentsEvent(slug: widget.slug, page: 1)),
-        ),
-      ],
-      child: Scaffold(
-        backgroundColor: context.colorScheme.surfaceContainerHighest,
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          padding: EdgeInsets.symmetric(
-            horizontal: context.isDesktop ? 60.w : 20.w,
-            vertical: 40.h,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CourseStudentsHeader(slug: widget.slug),
-              SizedBox(height: 40.h),
-              const CourseStudentsStats(),
-              SizedBox(height: 48.h),
-              const CourseStudentsTable(),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CourseStudentsHeader(slug: widget.slug),
+            SizedBox(height: context.isMobile ? 24.h : 40.h),
+            const CourseStudentsStats(),
+            SizedBox(height: context.isMobile ? 24.h : 48.h),
+            const CourseStudentsTable(),
+          ],
         ),
       ),
     );

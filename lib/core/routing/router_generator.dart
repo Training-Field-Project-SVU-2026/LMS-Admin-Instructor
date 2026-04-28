@@ -11,6 +11,10 @@ import 'package:lms_admin_instructor/features/auth/presentation/screens/auth_lay
 import 'package:lms_admin_instructor/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_event.dart';
+import 'package:lms_admin_instructor/features/instructor/course_students_instructor/presentation/bloc/course_students_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_students_instructor/presentation/bloc/course_students_event.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_bloc.dart';
@@ -163,7 +167,19 @@ class RouterGenerator {
         name: AppRoutes.courseStudents,
         builder: (context, state) {
           final slug = state.pathParameters['slug'] ?? '';
-          return CourseStudentsInstructorScreen(slug: slug);
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => sl<CourseStatsBloc>()
+                  ..add(GetCourseStatsEvent(slug: slug)),
+              ),
+              BlocProvider(
+                create: (context) => sl<CourseStudentsBloc>()
+                  ..add(GetCourseStudentsEvent(slug: slug, page: 1)),
+              ),
+            ],
+            child: CourseStudentsInstructorScreen(slug: slug),
+          );
         },
       ),
       GoRoute(

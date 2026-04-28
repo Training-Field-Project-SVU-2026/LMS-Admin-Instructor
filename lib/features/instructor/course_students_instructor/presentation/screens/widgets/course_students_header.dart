@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_state.dart';
@@ -48,8 +49,8 @@ class CourseStudentsHeader extends StatelessWidget {
             AppRoutes.courseDetails,
             pathParameters: {'slug': slug},
           ),
-          width: 180.w,
-          height: 50.h,
+          width: context.isMobile ? 140.w : 180.w,
+          height: context.isMobile ? 40.h : 50.h,
         ),
       ],
     );

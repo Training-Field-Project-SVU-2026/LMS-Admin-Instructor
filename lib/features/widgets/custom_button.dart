@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
@@ -15,6 +16,7 @@ class CustomPrimaryButton extends StatelessWidget {
   final ButtonStyle? style;
   final Color? color;
   final Widget? child;
+  final EdgeInsetsGeometry? padding;
 
   const CustomPrimaryButton({
     super.key,
@@ -30,6 +32,7 @@ class CustomPrimaryButton extends StatelessWidget {
     this.style,
     this.color,
     this.child,
+    this.padding,
   });
 
   @override
@@ -44,7 +47,24 @@ class CustomPrimaryButton extends StatelessWidget {
       height: height ?? 50,
       child: ElevatedButton(
         onPressed: onTap,
-        style: style,
+        style:
+            style?.copyWith(
+              padding: WidgetStatePropertyAll(
+                padding ??
+                    EdgeInsets.symmetric(
+                      horizontal: context.isMobile ? 16.w : 32.w,
+                      vertical: context.isMobile ? 8.h : 16.h,
+                    ),
+              ),
+            ) ??
+            ElevatedButton.styleFrom(
+              padding:
+                  padding ??
+                  EdgeInsets.symmetric(
+                    horizontal: context.isMobile ? 16.w : 32.w,
+                    vertical: context.isMobile ? 8.h : 16.h,
+                  ),
+            ),
         child:
             child ??
             IconTheme(

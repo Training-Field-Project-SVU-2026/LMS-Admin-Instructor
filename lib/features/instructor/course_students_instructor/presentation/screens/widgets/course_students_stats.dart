@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_state.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/custom_card_status_info_desktop.dart';
@@ -19,7 +20,10 @@ class CourseStudentsStats extends StatelessWidget {
         }
         if (state is CourseStatsLoaded) {
           final s = state.courseStats;
-          return Row(
+          return Wrap(
+            spacing: context.responsiveValue(mobile: 16.w, desktop: 30.w),
+            runSpacing: context.responsiveValue(mobile: 16.h, desktop: 30.h),
+            alignment: WrapAlignment.center,
             children: [
               CustomCardStatusInfoDesktop(
                 title: context.tr('total_videos'),
@@ -27,14 +31,12 @@ class CourseStudentsStats extends StatelessWidget {
                 icon: Icons.video_collection_outlined,
                 color: context.colorScheme.primary,
               ),
-              SizedBox(width: 24.w),
               CustomCardStatusInfoDesktop(
                 title: context.tr('total_materials'),
                 value: s.totalMaterials.toString(),
                 icon: Icons.description_outlined,
                 color: context.colorScheme.secondary,
               ),
-              SizedBox(width: 24.w),
               CustomCardStatusInfoDesktop(
                 title: context.tr('total_students'),
                 value: s.totalStudents.toString(),
