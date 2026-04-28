@@ -6,7 +6,9 @@ import 'package:lms_admin_instructor/core/common/mixins/paginated_state.dart';
 class StudentAdminUIModel extends PaginatedUIModel<StudentItemUIModel> {
   final List<StudentItemUIModel> students;
   final int totalEnrollments;
+  @override
   final int totalPages;
+  @override
   final int currentPage;
 
   StudentAdminUIModel({

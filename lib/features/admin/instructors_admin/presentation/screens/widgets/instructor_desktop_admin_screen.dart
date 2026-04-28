@@ -62,7 +62,7 @@ class _InstructorDesktopAdminScreenState
       //**************************************??AppBar??********************************************??
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        flexibleSpace: CustomNavBar(),
+        flexibleSpace: const CustomNavBar(),
         toolbarHeight: 70.h,
       ),
       body: Padding(
@@ -94,7 +94,7 @@ class _InstructorDesktopAdminScreenState
               child: BlocBuilder<InstructorAdminBloc, InstructorAdminState>(
                 builder: (context, state) {
                   if (state is InstructorAdminLoading) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (state is InstructorAdminError) {
                     return Center(child: Text(state.message));
                   } else if (state is InstructorAdminLoaded) {
@@ -108,14 +108,14 @@ class _InstructorDesktopAdminScreenState
                               value:
                                   "${state.instructorAdminUiModel.totalInstructors}",
                               icon: Icons.people_outline,
-                              color: Color(0xff3B82F6),
+                              color: const Color(0xff3B82F6),
                             ),
                             SizedBox(width: 20.w),
                             CustomCardStatusInfoDesktop(
                               title: context.tr('total_courses'),
                               value: "48",
                               icon: Icons.book_outlined,
-                              color: Color(0xff16A34A),
+                              color: const Color(0xff16A34A),
                             ),
                           ],
                         ),
@@ -129,7 +129,7 @@ class _InstructorDesktopAdminScreenState
                               context.tr('join_date_column'),
                               context.tr('email_column'),
                             ],
-                            columnFlex: [3, 4, 2, 2, 2],
+                            columnFlex: const [3, 4, 2, 2, 2],
                             data: state.instructorAdminUiModel.instructors
                                 .map((instructor) {
                                   return instructor.copyWith(
@@ -189,7 +189,7 @@ class _InstructorDesktopAdminScreenState
                       ],
                     );
                   } else {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }
                 },
               ),

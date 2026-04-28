@@ -31,7 +31,7 @@ class CustomImage extends StatelessWidget {
         height: height?.h,
         fit: BoxFit.cover,
         placeholder: (context, url) => Container(
-          color: context.colorScheme.surfaceVariant,
+          color: context.colorScheme.surfaceContainerHighest,
           child: const Center(child: CircularProgressIndicator()),
         ),
         errorWidget: (context, url, error) {

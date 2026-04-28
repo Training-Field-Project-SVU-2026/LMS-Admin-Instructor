@@ -35,7 +35,7 @@ class _CustomCardStatusInfoDesktopState
           BoxShadow(
             color: context.colorScheme.onSecondary.withValues(alpha: 0.3),
             blurRadius: 1,
-            offset: Offset(3, 3),
+            offset: const Offset(3, 3),
           ),
         ],
       ),

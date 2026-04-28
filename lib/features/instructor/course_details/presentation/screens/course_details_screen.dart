@@ -16,6 +16,7 @@ class CourseDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('CourseDetailsScreen: Receiving slug -> $slug');
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -37,23 +38,34 @@ class CourseDetailsScreen extends StatelessWidget {
             SizedBox(height: 24.h),
             const CourseInfoCard(),
             SizedBox(height: 32.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Expanded(flex: 2, child: CourseVideoSection()),
-                SizedBox(width: 32.w),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      const CourseMaterialSection(),
-                      SizedBox(height: 32.h),
-                      const CourseQuizSection(),
-                    ],
+            if (context.isDesktop)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(flex: 2, child: CourseVideoSection(slug: slug)),
+                  SizedBox(width: 32.w),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        const CourseMaterialSection(),
+                        SizedBox(height: 32.h),
+                        CourseQuizSection(courseSlug: slug),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              )
+            else
+              Column(
+                children: [
+                  CourseVideoSection(slug: slug),
+                  SizedBox(height: 32.h),
+                  const CourseMaterialSection(),
+                  SizedBox(height: 32.h),
+                  CourseQuizSection(courseSlug: slug),
+                ],
+              ),
           ],
         ),
       ),

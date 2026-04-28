@@ -13,7 +13,7 @@ class CustomSearchBarr extends StatefulWidget {
   final IconData? suffixIcon;
   final TextEditingController controller;
   const CustomSearchBarr({
-    Key? key,
+    super.key,
     required this.hint,
     this.w,
     this.h,
@@ -22,7 +22,7 @@ class CustomSearchBarr extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomSearchBarr> createState() => _SearchBar();

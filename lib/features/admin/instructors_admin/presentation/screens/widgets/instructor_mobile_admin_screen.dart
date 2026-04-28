@@ -97,7 +97,7 @@ class _InstructorMobileAdminScreenState
         child: BlocBuilder<InstructorAdminBloc, InstructorAdminState>(
           builder: (context, state) {
             if (state is InstructorAdminLoading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             if (state is InstructorAdminError) {
               return Center(child: Text(state.message));
@@ -145,7 +145,7 @@ class _InstructorMobileAdminScreenState
                             num:
                                 "${state.instructorAdminUiModel.totalInstructors}",
                             color1: context.colorScheme.primary,
-                            color2: Color(0xFF117A8B),
+                            color2: const Color(0xFF117A8B),
                             color3: context.colorScheme.primary.withValues(
                               alpha: 0.6,
                             ),
@@ -173,7 +173,7 @@ class _InstructorMobileAdminScreenState
                       SizedBox(
                         width: 342.w,
                         child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Padding(
@@ -206,14 +206,14 @@ class _InstructorMobileAdminScreenState
                       if (state.isPaginationLoading)
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.h),
-                          child: Center(child: CircularProgressIndicator()),
+                          child: const Center(child: CircularProgressIndicator()),
                         ),
                     ],
                   ),
                 ],
               );
             }
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           },
         ),
       ),

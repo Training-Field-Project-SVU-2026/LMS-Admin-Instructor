@@ -170,7 +170,7 @@ class AdminProfileWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 12.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: context.colorScheme.surfaceVariant.withValues(alpha: 0.3),
+        color: context.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Row(

@@ -7,14 +7,14 @@ class CustomCourseSidebar extends StatelessWidget {
   final String title;
   final IconData icon;
   final Color color;
-  final VoidCallback onManage;
+  final VoidCallback? onManage;
   final List<Widget> children;
   const CustomCourseSidebar({
     super.key,
     required this.title,
     required this.icon,
     required this.color,
-    required this.onManage,
+    this.onManage,
     required this.children,
   });
 
@@ -45,13 +45,15 @@ class CustomCourseSidebar extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: onManage,
-                  child: Text(
-                    context.tr('manage'),
-                    style: TextStyle(fontSize: 12.sp),
+                if (onManage != null) ...[
+                  TextButton(
+                    onPressed: onManage,
+                    child: Text(
+                      context.tr('manage'),
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -61,9 +63,7 @@ class CustomCourseSidebar extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(16.r),
-            child: Column(
-              children: children,
-            ),
+            child: Column(children: children),
           ),
         ],
       ),

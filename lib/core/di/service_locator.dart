@@ -9,6 +9,9 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/auth/data/repositories/auth_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/common/data/repository/quiz_repository_impl.dart';
+import 'package:lms_admin_instructor/features/instructor/common/domain/repository/quiz_repository.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_quiz_bloc/course_quiz_bloc.dart';
 import 'package:lms_admin_instructor/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:lms_admin_instructor/features/splash/domain/splash_repository.dart';
 import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bloc.dart';
@@ -19,6 +22,11 @@ import 'package:lms_admin_instructor/features/admin/instructors_admin/presentati
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/data/repository/courses_instructor_repository_impl.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/domain/repository/courses_instructor_repository.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/add_new_video/presentation/bloc/add_new_video_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/add_quiz_instructor/presentation/bloc/add_quiz_instructor_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/common/data/repository/video_repository_impl.dart';
+import 'package:lms_admin_instructor/features/instructor/common/domain/repository/video_repository.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_video_bloc/course_video_bloc.dart';
 import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 
 final sl = GetIt.instance;
@@ -69,6 +77,21 @@ Future<void> setupServiceLocator() async {
     () => CoursesInstructorRepositoryImpl(apiConsumer: sl()),
   );
   sl.registerLazySingleton(() => CoursesInstructorBloc(repository: sl()));
+  
+  // Features - Quiz
+  sl.registerLazySingleton<QuizRepository>(
+    () => QuizRepositoryImpl(apiConsumer: sl()),
+  );
+  
+  sl.registerLazySingleton(() => CourseQuizBloc(quizRepository: sl()));
+  sl.registerFactory(() => AddQuizInstructorBloc(quizRepository: sl()));
+
+  // Features - Video
+  sl.registerLazySingleton<VideoRepository>(
+    () => VideoRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerFactory(() => CourseVideoBloc(videoRepository: sl()));
+  sl.registerFactory(() => AddNewVideoBloc(videoRepository: sl()));
 
   // Features - Instructor Admin Details
 

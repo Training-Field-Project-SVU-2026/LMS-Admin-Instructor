@@ -165,7 +165,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
                                 decoration: BoxDecoration(
                                   color: isEven
                                       ? context.colorScheme.surface
-                                      : context.colorScheme.surfaceVariant
+                                      : context.colorScheme.surfaceContainerHighest
                                             .withValues(alpha: 0.5),
                                   border: Border(
                                     bottom: BorderSide(
