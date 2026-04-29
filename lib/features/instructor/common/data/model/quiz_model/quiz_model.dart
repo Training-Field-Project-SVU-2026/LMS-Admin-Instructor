@@ -21,6 +21,8 @@ class QuizModel {
   @JsonKey(name: 'quiz_status')
   final String? quizStatus;
   final String? description;
+  @JsonKey(name: 'passing_percentage')
+  final num? passingPercentage;
 
   QuizModel({
     this.quizName,
@@ -32,6 +34,7 @@ class QuizModel {
     this.bestScore,
     this.quizStatus,
     this.description,
+    this.passingPercentage,
   });
 
   factory QuizModel.fromJson(Map<String, dynamic> json) => _$QuizModelFromJson(json);

@@ -28,6 +28,8 @@ class QuizDetailModel {
   final num? maxAttempts;
   @JsonKey(name: 'course_name')
   final String? courseName;
+  @JsonKey(name: 'passing_percentage')
+  final num? passingPercentage;
   final List<QuestionModel>? questions;
 
   QuizDetailModel({
@@ -37,6 +39,7 @@ class QuizDetailModel {
     this.totalMark,
     this.maxAttempts,
     this.courseName,
+    this.passingPercentage,
     this.questions,
   });
 

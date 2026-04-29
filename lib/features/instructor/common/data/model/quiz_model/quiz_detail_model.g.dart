@@ -34,6 +34,7 @@ QuizDetailModel _$QuizDetailModelFromJson(Map<String, dynamic> json) =>
       totalMark: json['total_mark'] as num?,
       maxAttempts: json['max_attempts'] as num?,
       courseName: json['course_name'] as String?,
+      passingPercentage: json['passing_percentage'] as num?,
       questions: (json['questions'] as List<dynamic>?)
           ?.map((e) => QuestionModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -47,6 +48,7 @@ Map<String, dynamic> _$QuizDetailModelToJson(QuizDetailModel instance) =>
       'total_mark': instance.totalMark,
       'max_attempts': instance.maxAttempts,
       'course_name': instance.courseName,
+      'passing_percentage': instance.passingPercentage,
       'questions': instance.questions?.map((e) => e.toJson()).toList(),
     };
 
