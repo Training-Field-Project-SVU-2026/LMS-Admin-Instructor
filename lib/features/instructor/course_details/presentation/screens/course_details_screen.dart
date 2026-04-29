@@ -4,12 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
-import 'package:lms_admin_instructor/features/widgets/custom_search_app_bar.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_info_card.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_video_section/course_video_section.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_material_section/course_material_section.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_quiz_section/course_quiz_section.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/domain/entity/course_details_ui_model.dart';
@@ -55,17 +53,46 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           listener: (context, state) {
             if (state is UpdateCourseSuccess) {
               _wasUpdated = true;
+              context.read<CourseDetailsBloc>().add(
+                GetCourseDetailsEvent(slug: widget.slug),
+              );
             }
           },
           child: Scaffold(
             backgroundColor: context.colorScheme.surfaceContainerHighest,
             appBar: AppBar(
               automaticallyImplyLeading: false,
-              flexibleSpace: CustomSearchAppBar(
-                hint: context.tr('search_courses_hint'),
-                controller: TextEditingController(),
+              title: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.isDesktop ? 64.w : 8.w,
+                ),
+                child: InkWell(
+                  onTap: () => context.pop(_wasUpdated),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.arrow_back_ios_new,
+                        size: 16.sp,
+                        color: context.colorScheme.onSurface.withValues(
+                          alpha: 0.6,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        context.tr('back'),
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.colorScheme.onSurface.withValues(
+                            alpha: 0.6,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              toolbarHeight: 70.h,
+              toolbarHeight: context.isDesktop ? 80.h : 60.h,
             ),
             body: BlocBuilder<CourseDetailsBloc, CourseDetailsState>(
               buildWhen: (previous, current) =>
@@ -96,19 +123,18 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
       padding: EdgeInsets.symmetric(
         horizontal: context.isDesktop ? 80.w : 20.w,
         vertical: 40.h,
-      ),
+      ).copyWith(top: context.isDesktop ? 60.h : 40.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildBreadcrumbs(context, course.title),
-          SizedBox(height: 32.h),
           CourseInfoCard(course: course),
           SizedBox(height: 40.h),
+
           if (context.isDesktop)
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(flex: 2, child: CourseVideoSection()),
+                Expanded(flex: 2, child: CourseVideoSection(slug: widget.slug)),
                 SizedBox(width: 40.w),
                 Expanded(
                   flex: 1,
@@ -125,7 +151,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           else
             Column(
               children: [
-                const CourseVideoSection(),
+                CourseVideoSection(slug: widget.slug),
                 SizedBox(height: 32.h),
                 const CourseMaterialSection(),
                 SizedBox(height: 32.h),
@@ -134,36 +160,6 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
             ),
         ],
       ),
-    );
-  }
-
-  Widget _buildBreadcrumbs(BuildContext context, String courseTitle) {
-    return Row(
-      children: [
-        InkWell(
-          onTap: () => context.pop(_wasUpdated),
-          child: Text(
-            context.tr('courses'),
-            style: context.textTheme.bodyMedium?.copyWith(
-              color: context.colorScheme.onSurface.withValues(alpha: 0.5),
-            ),
-          ),
-        ),
-        Icon(
-          Icons.chevron_right,
-          size: 16.sp,
-          color: context.colorScheme.onSurface.withValues(alpha: 0.5),
-        ),
-        Text(
-          courseTitle.isNotEmpty
-              ? courseTitle
-              : context.tr('course_title_placeholder'),
-          style: context.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: context.colorScheme.onSurface,
-          ),
-        ),
-      ],
     );
   }
 }

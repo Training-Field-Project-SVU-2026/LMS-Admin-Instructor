@@ -114,7 +114,7 @@ class CourseDetailsDataModel {
       level: level ?? '',
       image: image ?? '',
       createdAt: createdAt?.toIso8601String() ?? '',
-      isActive: isActive ?? false,
+      isActive: isActive ?? true,
       instructorName: instructorName ?? '',
       instructorImage: instructorImage ?? '',
       instructorBio: instructorBio ?? '',

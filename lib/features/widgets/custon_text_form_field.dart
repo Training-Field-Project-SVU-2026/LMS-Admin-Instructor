@@ -16,6 +16,7 @@ class CustomTextFormField extends StatefulWidget {
   final bool isPassword;
   final int? maxLines;
   final void Function(String)? onChanged;
+  final void Function()? onSuffixIcon;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
 
@@ -33,6 +34,7 @@ class CustomTextFormField extends StatefulWidget {
     this.isPassword = false,
     this.maxLines,
     this.onChanged,
+    this.onSuffixIcon,
     this.keyboardType,
     this.inputFormatters,
   });
@@ -94,17 +96,26 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                     ),
                   )
                 : widget.suffixIcon != null
-                ? Icon(
-                    widget.suffixIcon,
-                    size: 18.sp,
-                    color: context.colorScheme.onSecondary,
-                  )
+                ? (widget.onSuffixIcon != null
+                      ? IconButton(
+                          onPressed: widget.onSuffixIcon,
+                          icon: Icon(
+                            widget.suffixIcon,
+                            size: 18.sp,
+                            color: context.colorScheme.onSecondary,
+                          ),
+                        )
+                      : Icon(
+                          widget.suffixIcon,
+                          size: 18.sp,
+                          color: context.colorScheme.onSecondary,
+                        ))
                 : null,
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
               vertical: 14.h,
             ),
-            labelText: widget.txt,
+            labelText: widget.txt.isEmpty ? null : widget.txt,
             labelStyle: TextStyle(
               color: widget.color ?? context.colorScheme.onSurfaceVariant,
               fontSize: 14.sp,

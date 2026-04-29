@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:image_picker/image_picker.dart';
 import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/data/models/course_details_response_model.dart';
@@ -37,9 +39,24 @@ class CourseDetailsRepositoryImpl implements CourseDetailsRepository {
     String slug,
     UpdateCourseRequestModel requestModel,
   ) async {
+    final Map<String, dynamic> data = requestModel.toJson();
+    if (requestModel.image != null) {
+      if (requestModel.image is XFile) {
+        final XFile file = requestModel.image;
+        final bytes = await file.readAsBytes();
+        data[ApiKey.image] = dio.MultipartFile.fromBytes(
+          bytes,
+          filename: file.name,
+        );
+      } else {
+        data[ApiKey.image] = requestModel.image;
+      }
+    }
+
     return await apiConsumer.patch<UpdateCourseResponseModel>(
       EndPoint.updateCourse(slug),
-      data: requestModel.toJson(),
+      data: data,
+      isFormData: requestModel.image != null,
       fromJson: (json) => UpdateCourseResponseModel.fromJson(json),
     );
   }

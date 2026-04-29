@@ -3,23 +3,23 @@ import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/profile_instructor_disctop_admin_screen.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/profile_instructor_moblie_admin_screen.dart';
 
-class ProfileInstructorAdminScreen extends StatefulWidget {
+class InstructorDetailsAdminScreen extends StatefulWidget {
   final String slug;
-  const ProfileInstructorAdminScreen({super.key, required this.slug});
+  const InstructorDetailsAdminScreen({super.key, required this.slug});
 
   @override
-  State<ProfileInstructorAdminScreen> createState() =>
-      _ProfileInstructorAdminScreenState();
+  State<InstructorDetailsAdminScreen> createState() =>
+      _InstructorDetailsAdminScreenState();
 }
 
-class _ProfileInstructorAdminScreenState
-    extends State<ProfileInstructorAdminScreen> {
+class _InstructorDetailsAdminScreenState
+    extends State<InstructorDetailsAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: context.isDesktop
-          ? ProfileInstructorDisctopAdminScreen(slug: widget.slug)
-          : ProfileInstructorMoblieAdminScreen(slug: widget.slug),
+          ? InstructorDetailsDisktopAdminScreen(slug: widget.slug)
+          : InstructorDetailsMobileAdminScreen(slug: widget.slug),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
+import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
 
 class CustomCardStatusInfoDesktop extends StatefulWidget {
   final String title;
@@ -25,9 +26,14 @@ class _CustomCardStatusInfoDesktopState
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.r, vertical: 16.r),
+      padding: EdgeInsets.symmetric(
+        horizontal: context.responsiveValue(mobile: 16.r, desktop: 24.r),
+        vertical: context.responsiveValue(mobile: 12.r, desktop: 16.r),
+      ),
       width: 300.w,
-      constraints: BoxConstraints(minHeight: 115.h),
+      constraints: BoxConstraints(
+        minHeight: context.responsiveValue(mobile: 80.h, desktop: 115.h),
+      ),
       decoration: BoxDecoration(
         color: context.colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(12.r),

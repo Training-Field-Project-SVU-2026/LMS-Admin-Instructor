@@ -1,84 +1,143 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/instructor/common/data/model/video_model/course_video_model.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_video_bloc/course_video_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_video_bloc/course_video_event.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_video_bloc/course_video_state.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
+import 'package:lms_admin_instructor/features/instructor/add_new_video/presentation/screens/add_new_video_screen.dart';
+import 'package:lms_admin_instructor/features/widgets/error_feedback_widget.dart';
+import 'package:lms_admin_instructor/features/widgets/loading_indicator_widget.dart';
 
 class CourseVideoSection extends StatelessWidget {
-  const CourseVideoSection({super.key});
+  final String slug;
+  const CourseVideoSection({super.key, required this.slug});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        context.isDesktop
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildHeaderTitle(context),
-                  _buildHeaderActions(context),
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeaderTitle(context),
-                  SizedBox(height: 8.h),
-                  _buildHeaderActions(context),
-                ],
+    print('CourseVideoSection: Passing slug to Bloc -> $slug');
+    return BlocProvider(
+      create: (context) =>
+          sl<CourseVideoBloc>()..add(GetCourseVideosEvent(courseSlug: slug)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Builder(builder: (context) => _buildHeader(context)),
+          SizedBox(height: 16.h),
+          Builder(
+            builder: (context) => Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: context.colorScheme.surface,
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: context.colorScheme.outline.withValues(alpha: 0.5),
+                ),
               ),
-        SizedBox(height: 16.h),
-        Container(
-          decoration: BoxDecoration(
-            color: context.colorScheme.surface,
-            borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: context.colorScheme.onSurface.withValues(alpha: 0.03),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+              child: BlocBuilder<CourseVideoBloc, CourseVideoState>(
+                builder: (context, state) {
+                  if (state is CourseVideoLoading) {
+                    return Padding(
+                      padding: EdgeInsets.all(32.r),
+                      child: const Center(child: LoadingIndicatorWidget()),
+                    );
+                  } else if (state is CourseVideoError) {
+                    return _buildEmptyOrError(context, state.message);
+                  } else if (state is CourseVideoLoaded) {
+                    if (state.videos.isEmpty) {
+                      return _buildEmptyOrError(context, 'No videos found');
+                    }
+                    return _buildLoadedVideos(context, state.videos);
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
-            ],
-            border: Border.all(
-              color: context.colorScheme.outline.withValues(alpha: 0.2),
             ),
           ),
-          child: Column(
-            children: [
-              _buildSectionItem(
-                context,
-                context.tr('section_all_videos'),
-                context.tr('section_subtitle_placeholder'),
-              ),
-              _buildSubsectionItem(
-                context,
-                "1",
-                context.tr('welcome_course_placeholder'),
-                "${context.tr('video_placeholder')} • 02:15",
-              ),
-              _buildSubsectionItem(
-                context,
-                "2",
-                context.tr('why_patterns_placeholder'),
-                "${context.tr('video_placeholder')} • 05:30",
-              ),
-              _buildSubsectionItem(
-                context,
-                "3",
-                context.tr('setup_env_placeholder'),
-                "${context.tr('video_placeholder')} • 07:45",
-              ),
-            ],
+          SizedBox(height: 16.h),
+          Builder(
+            builder: (context) => _buildAddNewButton(
+              context,
+              context.tr('add_new_video'),
+              Icons.add_circle_outline,
+            ),
           ),
-        ),
-        SizedBox(height: 16.h),
-        _buildAddNewButton(
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return context.isDesktop
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildHeaderTitle(context),
+              _buildHeaderActions(context),
+            ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeaderTitle(context),
+              SizedBox(height: 8.h),
+              _buildHeaderActions(context),
+            ],
+          );
+  }
+
+  Widget _buildEmptyOrError(BuildContext context, String message) {
+    return Column(
+      children: [
+        _buildSectionItem(
           context,
-          context.tr('add_new_video'),
-          Icons.add_circle_outline,
+          context.tr('section_all_videos'),
+          '0 ${context.tr('video_placeholder')}',
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 32.h),
+          child: ErrorFeedbackWidget(errorMessage: message),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoadedVideos(
+    BuildContext context,
+    List<CourseVideoModel> videos,
+  ) {
+    return _buildCategorySection(
+      context,
+      context.tr('section_all_videos'),
+      videos,
+    );
+  }
+
+  Widget _buildCategorySection(
+    BuildContext context,
+    String categoryName,
+    List<CourseVideoModel> videos,
+  ) {
+    return Column(
+      children: [
+        _buildSectionItem(
+          context,
+          categoryName,
+          '${videos.length} ${context.tr('video_placeholder')}',
+        ),
+        ...videos.map((video) {
+          return _buildSubsectionItem(
+            context,
+            video.order.toString(),
+            video.title,
+            "${context.tr('video_placeholder')} • ${video.duration ?? '00:00'}",
+          );
+        }),
       ],
     );
   }
@@ -235,13 +294,19 @@ class CourseVideoSection extends StatelessWidget {
 
   Widget _buildAddNewButton(BuildContext context, String text, IconData icon) {
     return CustomPrimaryButton(
-      onTap: () {},
+      onTap: () async {
+        final result = await showDialog<bool>(
+          context: context,
+          builder: (context) => AddNewVideoScreen(courseSlug: slug),
+        );
+        if (result == true && context.mounted) {
+          context.read<CourseVideoBloc>().add(
+            GetCourseVideosEvent(courseSlug: slug),
+          );
+        }
+      },
       text: text,
-      prefixIcon: Icon(
-        icon,
-        size: 20.sp,
-        color: context.colorScheme.primary,
-      ),
+      prefixIcon: Icon(icon, size: 20.sp, color: context.colorScheme.primary),
       width: double.infinity,
       height: 50.h,
       style: ElevatedButton.styleFrom(

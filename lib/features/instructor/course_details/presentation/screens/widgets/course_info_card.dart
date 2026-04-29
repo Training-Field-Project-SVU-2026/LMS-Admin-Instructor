@@ -3,7 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/data/models/update_course_request_model.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_event.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_state.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/domain/entity/course_details_ui_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_state.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/edit_course_dialog.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CourseInfoCard extends StatelessWidget {
   final CourseDetailsUIModel course;
@@ -91,25 +95,78 @@ class CourseInfoCard extends StatelessWidget {
     double? width,
     double? height,
   }) {
-    return Container(
-      width: width ?? 240.w,
-      height: height ?? 140.h,
-      decoration: BoxDecoration(
-        color: context.colorScheme.onSecondary,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12.r),
-        child: course.image.isNotEmpty
-            ? CachedNetworkImage(
-                imageUrl: course.image,
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) =>
-                    _buildImagePlaceholder(context),
-              )
-            : _buildImagePlaceholder(context),
-      ),
+    return Stack(
+      children: [
+        Container(
+          width: width ?? 240.w,
+          height: height ?? 140.h,
+          decoration: BoxDecoration(
+            color: context.colorScheme.onSecondary,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.r),
+            child: course.image.isNotEmpty
+                ? CachedNetworkImage(
+                    imageUrl: course.image,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) =>
+                        _buildImagePlaceholder(context),
+                  )
+                : _buildImagePlaceholder(context),
+          ),
+        ),
+        Positioned(
+          top: 8.r,
+          right: 8.r,
+          child: BlocBuilder<CourseDetailsBloc, CourseDetailsState>(
+            builder: (context, state) {
+              return CircleAvatar(
+                backgroundColor: context.colorScheme.surface.withValues(
+                  alpha: 0.8,
+                ),
+                radius: 18.r,
+                child: state is UpdateCourseLoading
+                    ? SizedBox(
+                        height: 20.r,
+                        width: 20.r,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: context.colorScheme.primary,
+                        ),
+                      )
+                    : IconButton(
+                        icon: Icon(Icons.edit, size: 18.sp),
+                        onPressed: () => _updateImage(context),
+                        padding: EdgeInsets.zero,
+                        color: context.colorScheme.primary,
+                      ),
+              );
+            },
+          ),
+        ),
+      ],
     );
+  }
+
+  Future<void> _updateImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final requestModel = UpdateCourseRequestModel(
+        title: course.title,
+        description: course.description,
+        price: course.price,
+        category: course.category,
+        level: course.level.toLowerCase(),
+        isActive: course.isActive,
+        image: image,
+      );
+
+      context.read<CourseDetailsBloc>().add(
+        UpdateCourseDetailsEvent(slug: course.slug, requestModel: requestModel),
+      );
+    }
   }
 
   Widget _buildImagePlaceholder(BuildContext context) {
@@ -172,40 +229,78 @@ class CourseInfoCard extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20.h),
-        Row(
-          children: [
-            _buildInfoBadge(
-              context,
-              Icons.category_outlined,
-              "${context.tr('category_label')} ${context.tr(course.category)}",
-            ),
-            SizedBox(width: 24.w),
-            _buildInfoBadge(
-              context,
-              Icons.signal_cellular_alt,
-              "${context.tr('level_label')} ${context.tr(course.level.toLowerCase())}",
-            ),
-            SizedBox(width: 24.w),
-            _buildInfoBadge(
-              context,
-              Icons.payments_outlined,
-              "${context.tr('price_label')}: ${course.price} ${context.tr('EGP')}",
-            ),
-          ],
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: [
+              _buildInfoBadge(
+                context,
+                Icons.category_outlined,
+                "${context.tr('category_label')} ${context.tr(course.category)}",
+              ),
+              SizedBox(width: 24.w),
+              _buildInfoBadge(
+                context,
+                Icons.signal_cellular_alt,
+                "${context.tr('level_label')} ${context.tr(course.level.toLowerCase())}",
+              ),
+              SizedBox(width: 24.w),
+              _buildInfoBadge(
+                context,
+                Icons.payments_outlined,
+                "${context.tr('price_label')}: ${course.price} ${context.tr('EGP')}",
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusBadge(BuildContext context) {
+    final isActive = course.isActive;
+    return Row(
+      children: [
+        Icon(
+          isActive ? Icons.check_circle_outline : Icons.error_outline,
+          size: 16.sp,
+          color: isActive
+              ? context.colorScheme.secondary
+              : context.colorScheme.error,
+        ),
+        SizedBox(width: 4.w),
+        Text(
+          context.tr(isActive ? 'active' : 'inactive'),
+          style: context.textTheme.labelMedium?.copyWith(
+            color: isActive
+                ? context.colorScheme.secondary
+                : context.colorScheme.error,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );
   }
 
   Widget _buildTitle(BuildContext context) {
-    return Text(
-      course.title.isNotEmpty
-          ? course.title
-          : context.tr('course_title_placeholder'),
-      style: context.textTheme.headlineMedium?.copyWith(
-        fontWeight: FontWeight.bold,
-        fontSize: context.isDesktop ? null : 20.sp,
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: Text(
+            course.title.isNotEmpty
+                ? course.title
+                : context.tr('course_title_placeholder'),
+            style: context.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: context.isDesktop ? null : 20.sp,
+            ),
+          ),
+        ),
+        SizedBox(width: 20.w),
+        _buildStatusBadge(context),
+      ],
     );
   }
 
