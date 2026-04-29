@@ -197,7 +197,6 @@
   "are_you_sure_delete_quiz": "هل أنت متأكد من أنك تريد حذف هذا الاختبار؟",
   "delete": "حذف",
   "cancel": "إلغاء",
-<<<<<<< Updated upstream
   "ratings_count": "إجمالي التقييمات",
   "avg_rating": "متوسط التقييم",
   "price_label": "السعر:",
@@ -214,8 +213,7 @@
   "action": "الإجراء",
   "view_profile": "عرض الملف الشخصي",
   "previous": "السابق",
-  "next": "التالي"
-=======
-  "max_attempts": "الحد الأقصى للمحاولات"
->>>>>>> Stashed changes
+  "next": "التالي",
+  "max_attempts": "الحد الأقصى للمحاولات",
+  "passing_percentage": "نسبة النجاح"
 }

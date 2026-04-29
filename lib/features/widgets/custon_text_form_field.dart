@@ -19,6 +19,7 @@ class CustomTextFormField extends StatefulWidget {
   final void Function()? onSuffixIcon;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final FocusNode? focusNode;
 
   const CustomTextFormField({
     super.key,
@@ -37,6 +38,7 @@ class CustomTextFormField extends StatefulWidget {
     this.onSuffixIcon,
     this.keyboardType,
     this.inputFormatters,
+    this.focusNode,
   });
 
   @override
@@ -62,6 +64,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           controller: widget.controller,
           onChanged: widget.onChanged,
           validator: widget.validator,
+          focusNode: widget.focusNode,
           obscureText: _obscureText,
           keyboardType: widget.keyboardType,
           inputFormatters: widget.inputFormatters,

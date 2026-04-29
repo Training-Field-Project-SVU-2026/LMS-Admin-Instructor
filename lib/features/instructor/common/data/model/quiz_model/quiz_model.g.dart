@@ -16,6 +16,7 @@ QuizModel _$QuizModelFromJson(Map<String, dynamic> json) => QuizModel(
   bestScore: json['best_score'] as num?,
   quizStatus: json['quiz_status'] as String?,
   description: json['description'] as String?,
+  passingPercentage: json['passing_percentage'] as num?,
 );
 
 Map<String, dynamic> _$QuizModelToJson(QuizModel instance) => <String, dynamic>{
@@ -28,4 +29,5 @@ Map<String, dynamic> _$QuizModelToJson(QuizModel instance) => <String, dynamic>{
   'best_score': instance.bestScore,
   'quiz_status': instance.quizStatus,
   'description': instance.description,
+  'passing_percentage': instance.passingPercentage,
 };
