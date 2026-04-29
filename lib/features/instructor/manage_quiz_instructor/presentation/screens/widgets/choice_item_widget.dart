@@ -24,11 +24,25 @@ class ChoiceItemWidget extends StatefulWidget {
 
 class _ChoiceItemWidgetState extends State<ChoiceItemWidget> {
   late TextEditingController _controller;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.choice.choiceName);
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus) {
+      if (_controller.text != widget.choice.choiceName) {
+        widget.onUpdate(ChoiceCreateModel(
+          choiceName: _controller.text,
+          isCorrect: widget.choice.isCorrect,
+        ));
+      }
+    }
   }
 
   @override
@@ -42,6 +56,8 @@ class _ChoiceItemWidgetState extends State<ChoiceItemWidget> {
 
   @override
   void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -56,7 +72,7 @@ class _ChoiceItemWidgetState extends State<ChoiceItemWidget> {
               value: widget.choice.isCorrect ?? false,
               onChanged: (val) {
                 widget.onUpdate(ChoiceCreateModel(
-                  choiceName: widget.choice.choiceName,
+                  choiceName: _controller.text,
                   isCorrect: val,
                 ));
               },
@@ -66,12 +82,7 @@ class _ChoiceItemWidgetState extends State<ChoiceItemWidget> {
                 txt: '${context.tr('choice')} ${widget.index + 1}',
                 hint: '${context.tr('choice')} ${widget.index + 1}',
                 controller: _controller,
-                onChanged: (val) {
-                  widget.onUpdate(ChoiceCreateModel(
-                    choiceName: val,
-                    isCorrect: widget.choice.isCorrect,
-                  ));
-                },
+                focusNode: _focusNode,
                 validator: (value) =>
                     value == null || value.isEmpty ? context.tr('required') : null,
               ),

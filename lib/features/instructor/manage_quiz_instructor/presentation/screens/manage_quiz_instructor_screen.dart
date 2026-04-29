@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
+import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/cubit/manage_quiz_questions_cubit.dart';
 import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/manage_quiz_instructor_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/manage_quiz_instructor_event.dart';
 import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/manage_quiz_instructor_state.dart';
@@ -29,51 +30,41 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
   final _quizNameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _maxAttemptsController = TextEditingController(text: '5');
-  final List<QuestionCreateModel> _questions = [];
+  final _passingPercentageController = TextEditingController(text: '50');
+  late final ManageQuizQuestionsCubit _questionsCubit;
 
   @override
   void initState() {
     super.initState();
+    _questionsCubit = ManageQuizQuestionsCubit();
     if (widget.quizSlug != null) {
       context.read<ManageQuizInstructorBloc>().add(
         GetQuizDetailsEvent(quizSlug: widget.quizSlug!),
       );
     } else {
-      _addQuestion();
+      _questionsCubit.init([]);
     }
   }
 
-  void _addQuestion() {
-    setState(() {
-      _questions.add(
-        QuestionCreateModel(
-          questionName: '',
-          mark: 1,
-          questionType: 'single',
-          choices: [
-            ChoiceCreateModel(choiceName: '', isCorrect: true),
-            ChoiceCreateModel(choiceName: '', isCorrect: false),
-          ],
-        ),
-      );
-    });
-  }
-
-  void _removeQuestion(int index) {
-    setState(() {
-      if (_questions.length > 1) {
-        _questions.removeAt(index);
-      }
-    });
+  @override
+  void dispose() {
+    _quizNameController.dispose();
+    _descriptionController.dispose();
+    _maxAttemptsController.dispose();
+    _passingPercentageController.dispose();
+    _questionsCubit.close();
+    super.dispose();
   }
 
   void _submit() {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (_formKey.currentState!.validate()) {
       final quizData = CourseQuizCreateModel(
         quizName: _quizNameController.text,
         description: _descriptionController.text,
         maxAttempts: int.tryParse(_maxAttemptsController.text),
-        questions: _questions,
+        passingPercentage: int.tryParse(_passingPercentageController.text),
+        questions: _questionsCubit.questions,
         slug: widget.courseSlug,
       );
 
@@ -123,29 +114,32 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
           } else if (state is GetQuizDetailsSuccess) {
             _quizNameController.text = state.quiz.quizName ?? '';
             _descriptionController.text = state.quiz.description ?? '';
-            _maxAttemptsController.text = state.quiz.maxAttempts?.toString() ?? '5';
-            _questions.clear();
-            _questions.addAll(
-              state.quiz.questions?.map(
-                    (q) => QuestionCreateModel(
-                      questionName: q.questionName,
-                      mark: q.mark?.toInt(),
-                      questionType: q.questionType,
-                      choices:
-                          q.choices
-                              ?.map(
-                                (c) => ChoiceCreateModel(
-                                  choiceName: c.choiceName,
-                                  isCorrect: c.isCorrect,
-                                ),
-                              )
-                              .toList() ??
-                          [],
-                    ),
-                  ) ??
+            _maxAttemptsController.text =
+                state.quiz.maxAttempts?.toString() ?? '5';
+            _passingPercentageController.text =
+                state.quiz.passingPercentage?.toString() ?? '50';
+            _questionsCubit.init(
+              state.quiz.questions
+                      ?.map(
+                        (q) => QuestionCreateModel(
+                          questionName: q.questionName,
+                          mark: q.mark?.toInt(),
+                          questionType: q.questionType,
+                          choices:
+                              q.choices
+                                  ?.map(
+                                    (c) => ChoiceCreateModel(
+                                      choiceName: c.choiceName,
+                                      isCorrect: c.isCorrect,
+                                    ),
+                                  )
+                                  .toList() ??
+                              [],
+                        ),
+                      )
+                      .toList() ??
                   [],
             );
-            setState(() {});
           } else if (state is GetQuizDetailsError) {
             ScaffoldMessenger.of(
               context,
@@ -179,10 +173,9 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
                     txt: context.tr('quiz_name'),
                     hint: context.tr('quiz_name'),
                     controller: _quizNameController,
-                    validator:
-                        (value) => value == null || value.isEmpty
-                            ? context.tr('required')
-                            : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? context.tr('required')
+                        : null,
                   ),
                   SizedBox(height: 12.h),
                   CustomTextFormField(
@@ -198,49 +191,39 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
                     controller: _maxAttemptsController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    validator:
-                        (value) => value == null || value.isEmpty
-                            ? context.tr('required')
-                            : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? context.tr('required')
+                        : null,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomTextFormField(
+                    txt: context.tr('passing_percentage'),
+                    hint: context.tr('passing_percentage'),
+                    controller: _passingPercentageController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator: (value) => value == null || value.isEmpty
+                        ? context.tr('required')
+                        : null,
                   ),
                   SizedBox(height: 32.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context.tr('questions'),
-                        style: context.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextButton.icon(
-                        onPressed: _addQuestion,
-                        icon: const Icon(Icons.add),
-                        label: Text(context.tr('add_question')),
-                      ),
-                    ],
+                  Text(
+                    context.tr('questions'),
+                    style: context.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(height: 16.h),
-                  ..._questions.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    return QuestionItemWidget(
-                      index: index,
-                      question: entry.value,
-                      onRemove: () => _removeQuestion(index),
-                      onUpdate: (updatedQuestion) {
-                        setState(() {
-                          _questions[index] = updatedQuestion;
-                        });
-                      },
-                    );
-                  }),
+                  BlocProvider.value(
+                    value: _questionsCubit,
+                    child: const _QuestionsList(),
+                  ),
                   SizedBox(height: 32.h),
                   Center(
                     child: CustomPrimaryButton(
-                      text:
-                          widget.quizSlug != null
-                              ? context.tr('update')
-                              : context.tr('submit'),
+                      text: widget.quizSlug != null
+                          ? context.tr('update')
+                          : context.tr('submit'),
                       onTap: _submit,
                       width: context.isDesktop ? 300.w : double.infinity,
                     ),
@@ -251,6 +234,69 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
           );
         },
       ),
+    );
+  }
+}
+
+class _QuestionsList extends StatelessWidget {
+  const _QuestionsList();
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<ManageQuizQuestionsCubit>();
+    return BlocSelector<
+      ManageQuizQuestionsCubit,
+      List<QuestionCreateModel>,
+      int
+    >(
+      selector: (state) => state.length,
+      builder: (context, length) {
+        return Column(
+          children: [
+            ...List.generate(length, (index) {
+              return _QuestionEntry(
+                key: ValueKey('q_entry_$index'),
+                index: index,
+              );
+            }),
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: TextButton.icon(
+                onPressed: cubit.addQuestion,
+                icon: const Icon(Icons.add),
+                label: Text(context.tr('add_question')),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _QuestionEntry extends StatelessWidget {
+  final int index;
+  const _QuestionEntry({super.key, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<ManageQuizQuestionsCubit>();
+    return BlocSelector<
+      ManageQuizQuestionsCubit,
+      List<QuestionCreateModel>,
+      QuestionCreateModel?
+    >(
+      selector: (state) => index < state.length ? state[index] : null,
+      builder: (context, question) {
+        if (question == null) return const SizedBox.shrink();
+        return QuestionItemWidget(
+          key: ValueKey('question_$index'),
+          index: index,
+          question: question,
+          onRemove: () => cubit.removeQuestion(index),
+          onUpdate: (updated) => cubit.updateQuestion(index, updated),
+        );
+      },
     );
   }
 }

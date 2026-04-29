@@ -1,15 +1,18 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'course_quiz_create_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class CourseQuizCreateModel {
+class CourseQuizCreateModel extends Equatable {
   final String? slug;
   @JsonKey(name: 'quiz_name')
   final String? quizName;
   final String? description;
   @JsonKey(name: "max_attempts")
   final int? maxAttempts;
+  @JsonKey(name: "passing_percentage")
+  final int? passingPercentage;
   final List<QuestionCreateModel>? questions;
 
   CourseQuizCreateModel({
@@ -17,6 +20,7 @@ class CourseQuizCreateModel {
     this.quizName,
     this.description,
     this.maxAttempts,
+    this.passingPercentage,
     this.questions,
   });
 
@@ -24,10 +28,20 @@ class CourseQuizCreateModel {
       _$CourseQuizCreateModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseQuizCreateModelToJson(this);
+
+  @override
+  List<Object?> get props => [
+    slug,
+    quizName,
+    description,
+    maxAttempts,
+    passingPercentage,
+    questions,
+  ];
 }
 
 @JsonSerializable(explicitToJson: true)
-class QuestionCreateModel {
+class QuestionCreateModel extends Equatable {
   @JsonKey(name: 'question_name')
   final String? questionName;
   final int? mark;
@@ -46,10 +60,13 @@ class QuestionCreateModel {
       _$QuestionCreateModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$QuestionCreateModelToJson(this);
+
+  @override
+  List<Object?> get props => [questionName, mark, questionType, choices];
 }
 
 @JsonSerializable()
-class ChoiceCreateModel {
+class ChoiceCreateModel extends Equatable {
   @JsonKey(name: 'choice_name')
   final String? choiceName;
   @JsonKey(name: 'isCorrect')
@@ -64,4 +81,7 @@ class ChoiceCreateModel {
       _$ChoiceCreateModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChoiceCreateModelToJson(this);
+
+  @override
+  List<Object?> get props => [choiceName, isCorrect];
 }

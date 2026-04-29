@@ -13,6 +13,7 @@ CourseQuizCreateModel _$CourseQuizCreateModelFromJson(
   quizName: json['quiz_name'] as String?,
   description: json['description'] as String?,
   maxAttempts: (json['max_attempts'] as num?)?.toInt(),
+  passingPercentage: (json['passing_percentage'] as num?)?.toInt(),
   questions: (json['questions'] as List<dynamic>?)
       ?.map((e) => QuestionCreateModel.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -25,6 +26,7 @@ Map<String, dynamic> _$CourseQuizCreateModelToJson(
   'quiz_name': instance.quizName,
   'description': instance.description,
   'max_attempts': instance.maxAttempts,
+  'passing_percentage': instance.passingPercentage,
   'questions': instance.questions?.map((e) => e.toJson()).toList(),
 };
 

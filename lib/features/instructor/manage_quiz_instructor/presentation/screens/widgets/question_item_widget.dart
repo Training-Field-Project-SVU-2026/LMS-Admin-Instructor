@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/features/instructor/common/data/model/quiz_model/course_quiz_create_model.dart';
+import 'package:lms_admin_instructor/features/instructor/manage_quiz_instructor/presentation/bloc/cubit/manage_quiz_questions_cubit.dart';
 import 'package:lms_admin_instructor/features/widgets/custon_text_form_field.dart';
 import 'choice_item_widget.dart';
 
@@ -27,12 +29,26 @@ class QuestionItemWidget extends StatefulWidget {
 class _QuestionItemWidgetState extends State<QuestionItemWidget> {
   late TextEditingController _nameController;
   late TextEditingController _markController;
+  late FocusNode _nameFocusNode;
+  late FocusNode _markFocusNode;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.question.questionName);
     _markController = TextEditingController(text: widget.question.mark?.toString() ?? '1');
+    _nameFocusNode = FocusNode();
+    _markFocusNode = FocusNode();
+    _nameFocusNode.addListener(() {
+      if (!_nameFocusNode.hasFocus && _nameController.text != widget.question.questionName) {
+        _updateQuestion();
+      }
+    });
+    _markFocusNode.addListener(() {
+      if (!_markFocusNode.hasFocus && _markController.text != widget.question.mark?.toString()) {
+        _updateQuestion();
+      }
+    });
   }
 
   @override
@@ -50,6 +66,8 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
 
   @override
   void dispose() {
+    _nameFocusNode.dispose();
+    _markFocusNode.dispose();
     _nameController.dispose();
     _markController.dispose();
     super.dispose();
@@ -98,7 +116,7 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
               txt: context.tr('question_name'),
               hint: context.tr('question_name'),
               controller: _nameController,
-              onChanged: (val) => _updateQuestion(name: val),
+              focusNode: _nameFocusNode,
               validator: (value) =>
                   value == null || value.isEmpty ? context.tr('required') : null,
             ),
@@ -110,7 +128,7 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
                     txt: context.tr('mark'),
                     hint: context.tr('mark'),
                     controller: _markController,
-                    onChanged: (val) => _updateQuestion(mark: int.tryParse(val)),
+                    focusNode: _markFocusNode,
                     validator: (value) =>
                         value == null || value.isEmpty ? context.tr('required') : null,
                   ),
@@ -118,7 +136,7 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: widget.question.questionType,
+                    initialValue: widget.question.questionType,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                       border: OutlineInputBorder(
@@ -168,9 +186,9 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
                 ),
                 TextButton.icon(
                   onPressed: () {
-                    final updatedChoices = List<ChoiceCreateModel>.from(widget.question.choices ?? []);
-                    updatedChoices.add(ChoiceCreateModel(choiceName: '', isCorrect: false));
-                    _updateQuestion(choices: updatedChoices);
+                    _updateQuestion(
+                      choices: [...(widget.question.choices ?? []), ChoiceCreateModel(choiceName: '', isCorrect: false)]
+                    );
                   },
                   icon: const Icon(Icons.add, size: 16),
                   label: Text(context.tr('add_choice'), style: TextStyle(fontSize: 12.sp)),
@@ -178,56 +196,129 @@ class _QuestionItemWidgetState extends State<QuestionItemWidget> {
               ],
             ),
             SizedBox(height: 8.h),
-            ...widget.question.choices?.asMap().entries.map((entry) {
-              final choiceIndex = entry.key;
-              return ChoiceItemWidget(
-                key: ValueKey('choice_${widget.index}_$choiceIndex'),
-                index: choiceIndex,
-                choice: entry.value,
-                onRemove: () {
-                  final updatedChoices = List<ChoiceCreateModel>.from(widget.question.choices ?? []);
-                  if (updatedChoices.length > 2) {
-                    updatedChoices.removeAt(choiceIndex);
-                    _updateQuestion(choices: updatedChoices);
-                  }
-                },
-                onUpdate: (updatedChoice) {
-                  final updatedChoices = List<ChoiceCreateModel>.from(widget.question.choices ?? []);
-                  
-                  if (widget.question.questionType == 'single') {
-                    if (updatedChoice.isCorrect == true) {
-                      for (var i = 0; i < updatedChoices.length; i++) {
-                        updatedChoices[i] = ChoiceCreateModel(
-                          choiceName: i == choiceIndex ? updatedChoice.choiceName : (updatedChoices[i].choiceName ?? ''),
-                          isCorrect: i == choiceIndex,
-                        );
-                      }
-                    } else {
-                      if (widget.question.choices?[choiceIndex].isCorrect == true) {
-                        return;
-                      }
-                      updatedChoices[choiceIndex] = updatedChoice;
-                    }
-                  } else {
-                    updatedChoices[choiceIndex] = updatedChoice;
-                  }
-
-                  _updateQuestion(choices: updatedChoices);
-                },
-              );
-            }) ?? [],
+            _ChoicesList(
+              questionIndex: widget.index,
+              questionType: widget.question.questionType,
+              onUpdate: (updatedChoices) => _updateQuestion(choices: updatedChoices),
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _updateQuestion({String? name, int? mark, String? type, List<ChoiceCreateModel>? choices}) {
+  void _updateQuestion({String? type, List<ChoiceCreateModel>? choices}) {
     widget.onUpdate(QuestionCreateModel(
-      questionName: name ?? _nameController.text,
-      mark: mark ?? int.tryParse(_markController.text) ?? 1,
+      questionName: _nameController.text,
+      mark: int.tryParse(_markController.text) ?? 1,
       questionType: type ?? widget.question.questionType,
       choices: choices ?? widget.question.choices,
     ));
+  }
+}
+
+class _ChoicesList extends StatelessWidget {
+  final int questionIndex;
+  final String? questionType;
+  final Function(List<ChoiceCreateModel>) onUpdate;
+
+  const _ChoicesList({
+    required this.questionIndex,
+    required this.questionType,
+    required this.onUpdate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<
+      ManageQuizQuestionsCubit,
+      List<QuestionCreateModel>,
+      List<ChoiceCreateModel>?>(
+      selector: (state) {
+        if (questionIndex >= state.length) return null;
+        return state[questionIndex].choices;
+      },
+      builder: (context, choices) {
+        final currentChoices = choices ?? [];
+        return Column(
+          children: currentChoices.asMap().entries.map((entry) {
+            final choiceIndex = entry.key;
+            return _ChoiceEntry(
+              key: ValueKey('choice_${questionIndex}_$choiceIndex'),
+              questionIndex: questionIndex,
+              choiceIndex: choiceIndex,
+              questionType: questionType,
+              onUpdate: onUpdate,
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+}
+
+class _ChoiceEntry extends StatelessWidget {
+  final int questionIndex;
+  final int choiceIndex;
+  final String? questionType;
+  final Function(List<ChoiceCreateModel>) onUpdate;
+
+  const _ChoiceEntry({
+    super.key,
+    required this.questionIndex,
+    required this.choiceIndex,
+    required this.questionType,
+    required this.onUpdate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<
+      ManageQuizQuestionsCubit,
+      List<QuestionCreateModel>,
+      ChoiceCreateModel?>(
+      selector: (state) {
+        if (questionIndex >= state.length) return null;
+        final choices = state[questionIndex].choices;
+        if (choiceIndex >= (choices?.length ?? 0)) return null;
+        return choices?[choiceIndex];
+      },
+      builder: (context, choice) {
+        if (choice == null) return const SizedBox.shrink();
+        final currentChoices = context.read<ManageQuizQuestionsCubit>().state[questionIndex].choices ?? [];
+
+        return ChoiceItemWidget(
+          key: ValueKey('choice_${questionIndex}_$choiceIndex'),
+          index: choiceIndex,
+          choice: choice,
+          onRemove: () {
+            if (currentChoices.length > 2) {
+              final updated = List<ChoiceCreateModel>.from(currentChoices)
+                ..removeAt(choiceIndex);
+              onUpdate(updated);
+            }
+          },
+          onUpdate: (updatedChoice) {
+            final updated = List<ChoiceCreateModel>.from(currentChoices);
+            if (questionType == 'single') {
+              if (updatedChoice.isCorrect == true) {
+                for (var i = 0; i < updated.length; i++) {
+                  updated[i] = ChoiceCreateModel(
+                    choiceName: i == choiceIndex ? updatedChoice.choiceName : (updated[i].choiceName ?? ''),
+                    isCorrect: i == choiceIndex,
+                  );
+                }
+              } else {
+                if (currentChoices[choiceIndex].isCorrect == true) return;
+                updated[choiceIndex] = updatedChoice;
+              }
+            } else {
+              updated[choiceIndex] = updatedChoice;
+            }
+            onUpdate(updated);
+          },
+        );
+      },
+    );
   }
 }
