@@ -1,0 +1,19 @@
+abstract class AddNewVideoEvent {}
+
+class AddVideoEvent extends AddNewVideoEvent {
+  final String courseSlug;
+  final String title;
+  final String course;
+  final String? videoUrl;
+  final dynamic videoUpload; // File path or multipart file
+  final String duration;
+
+  AddVideoEvent({
+    required this.courseSlug,
+    required this.title,
+    required this.course,
+    this.videoUrl,
+    this.videoUpload,
+    required this.duration,
+  });
+}

@@ -17,3 +17,8 @@ class AddInstructorEvent extends InstructorAdminEvent {
     required this.email,
   });
 }
+
+class GetInstructorBySlugEvent extends InstructorAdminEvent {
+  final String slug;
+  GetInstructorBySlugEvent({required this.slug});
+}

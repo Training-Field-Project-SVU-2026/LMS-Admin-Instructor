@@ -59,6 +59,9 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
   final VoidCallback? onActionPressed;
   final VoidCallback? onOptionsPressed;
 
+  final IconData? actionIconpressed;
+  final IconData? optionsIconpressed;
+
   CourseInstructorItemUIModel({
     required this.slug,
     required this.title,
@@ -68,6 +71,8 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
     this.image,
     this.onActionPressed,
     this.onOptionsPressed,
+    this.actionIconpressed,
+    this.optionsIconpressed,
   });
 
   CourseInstructorItemUIModel copyWith({
@@ -79,6 +84,8 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
     String? image,
     VoidCallback? onActionPressed,
     VoidCallback? onOptionsPressed,
+    IconData? actionIconpressed,
+    IconData? optionsIconpressed,
   }) {
     return CourseInstructorItemUIModel(
       slug: slug ?? this.slug,
@@ -89,6 +96,8 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
       image: image ?? this.image,
       onActionPressed: onActionPressed ?? this.onActionPressed,
       onOptionsPressed: onOptionsPressed ?? this.onOptionsPressed,
+      actionIconpressed: actionIconpressed ?? this.actionIconpressed,
+      optionsIconpressed: optionsIconpressed ?? this.optionsIconpressed,
     );
   }
 
@@ -107,12 +116,11 @@ class CourseInstructorItemUIModel implements CustomDataTableRowModel {
   VoidCallback? get onAction => onActionPressed;
 
   @override
-  IconData? get actionIcon => Icons.arrow_forward_ios_rounded;
+  IconData? get actionIcon => actionIconpressed ?? Icons.arrow_forward_ios_rounded;
 
   @override
   VoidCallback? get onOptions => onOptionsPressed;
 
   @override
-  IconData? get optionsIcon => null;
-
+  IconData? get optionsIcon => optionsIconpressed;
 }

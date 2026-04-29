@@ -37,12 +37,17 @@ class EndPoint {
   static String deleteInstructor(String slug) => "/instructors/$slug/delete/";
   static String addCourse = "/courses/create/";
   static String updateCourse(String slug) => "/courses/update/$slug/";
+  static String getInstructorBySlug(String slug) => "/instructors/$slug/";
+  static String getInstructorCoursesBySslug(String slug) =>
+      "/instructor/$slug/courses/";
 
   //? course details
   static String courseDetails(String slug) => "/courses/$slug/";
   static String totalCourseDetails(String slug) => "/totalCourseDetails/$slug/";
   static String courseStudents(String slug) => "/courses/$slug/students/";
   static String courseVideos(String slug) => "/courses/$slug/videos/";
+  static String videosBySlug(String slug) => "/videos/$slug/";
+  static String createVideo = "/videos/create/";
   static String courseMaterials(String slug) => "/courses/$slug/materials/";
   static String courseQuizzes(String slug) => "/courses/$slug/quizzes/";
 

@@ -134,7 +134,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(flex: 2, child: CourseVideoSection()),
+                Expanded(flex: 2, child: CourseVideoSection(slug: widget.slug)),
                 SizedBox(width: 40.w),
                 Expanded(
                   flex: 1,
@@ -151,7 +151,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           else
             Column(
               children: [
-                const CourseVideoSection(),
+                CourseVideoSection(slug: widget.slug),
                 SizedBox(height: 32.h),
                 const CourseMaterialSection(),
                 SizedBox(height: 32.h),

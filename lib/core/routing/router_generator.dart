@@ -5,6 +5,7 @@ import 'package:lms_admin_instructor/core/di/service_locator.dart';
 import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/core/services/local/cache_helper.dart';
 import 'package:lms_admin_instructor/core/services/remote/endpoints.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_details_bloc.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/student_details_screen.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/screens/auth_layout.dart';
@@ -19,7 +20,7 @@ import 'package:lms_admin_instructor/features/splash/presentation/bloc/splash_bl
 import 'package:lms_admin_instructor/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/add_instructor_admin_screen.dart';
-import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/profile_instructor_admin_screen.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/instructor_details_admin_screen.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/bloc/student_admin_bloc.dart';
 import 'package:lms_admin_instructor/features/admin/students_admin/presentation/screens/add_student_screen/add_student_admin_screen.dart';
 import 'package:lms_admin_instructor/features/instructor/courses_instructor/presentation/bloc/courses_instructor_bloc.dart';
@@ -110,7 +111,7 @@ class RouterGenerator {
               '';
           return MultiBlocProvider(
             providers: [
-              BlocProvider.value(value: sl<InstructorAdminBloc>()),
+              BlocProvider(create: (context) => sl<InstructorAdminBloc>()),
               BlocProvider.value(value: sl<StudentAdminBloc>()),
               BlocProvider.value(value: sl<RootBloc>()),
               BlocProvider.value(value: sl<CoursesInstructorBloc>()),
@@ -123,8 +124,8 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.addInstructorAdminScreen,
         name: AppRoutes.addInstructorAdminScreen,
-        builder: (context, state) => BlocProvider.value(
-          value: sl<InstructorAdminBloc>(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<InstructorAdminBloc>(),
           child: const AddInstructorAdminScreen(),
         ),
       ),
@@ -136,10 +137,15 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.profileInstructorAdminScreen,
         name: AppRoutes.profileInstructorAdminScreen,
-        builder: (context, state) {
-          final slug = state.extra as String? ?? '';
-          return ProfileInstructorAdminScreen(slug: slug);
-        },
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => sl<InstructorAdminBloc>()),
+            BlocProvider.value(value: sl<InstructorDetailsBloc>()),
+          ],
+          child: InstructorDetailsAdminScreen(
+            slug: state.extra as String? ?? '',
+          ),
+        ),
       ),
       GoRoute(
         path: AppRoutes.studentDetails,

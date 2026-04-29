@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
+import 'package:lms_admin_instructor/core/routing/app_routes.dart';
 import 'package:lms_admin_instructor/features/widgets/search_bar.dart';
 
 class CustomNavBar extends StatefulWidget {
@@ -22,7 +24,6 @@ class _CustomNavBarState extends State<CustomNavBar> {
               w: 383,
               h: 40,
               hint: context.tr('search_instructors_hint'),
-
               controller: TextEditingController(),
               prefixIcon: Icons.search,
               r: 30,
@@ -36,6 +37,23 @@ class _CustomNavBarState extends State<CustomNavBar> {
               ),
               onPressed: () {
                 // هنا هحط منطق تغيير الثيم
+              },
+            ),
+            SizedBox(width: 8.w),
+            IconButton(
+              icon: const Icon(Icons.person_outline),
+              onPressed: () {},
+            ),
+            SizedBox(width: 8.w),
+            IconButton(
+              icon: const Icon(Icons.settings_outlined),
+              onPressed: () {},
+            ),
+            SizedBox(width: 8.w),
+            IconButton(
+              icon: const Icon(Icons.logout_outlined),
+              onPressed: () {
+                context.go(AppRoutes.loginScreen);
               },
             ),
           ],

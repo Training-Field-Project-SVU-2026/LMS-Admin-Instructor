@@ -13,6 +13,7 @@ import 'package:lms_admin_instructor/features/widgets/custom_card_status_info/cu
 import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/custom_nav_bar.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_data_table/custom_data_table_model.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/screens/widgets/add_instructor_disktop_admin_screen.dart';
 
 class InstructorDesktopAdminScreen extends StatefulWidget {
   const InstructorDesktopAdminScreen({super.key});
@@ -77,7 +78,13 @@ class _InstructorDesktopAdminScreenState
               buttonText: context.tr('add_instructor'),
               icon: Icons.people_outline,
               onTap: () {
-                context.push(AppRoutes.addInstructorAdminScreen);
+                showDialog(
+                  context: context,
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<InstructorAdminBloc>(),
+                    child: const AddInstructorDisktopAdminScreen(),
+                  ),
+                );
               },
             ),
             SizedBox(height: 32.h),

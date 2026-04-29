@@ -8,6 +8,7 @@ import 'package:lms_admin_instructor/core/services/remote/api_consumer.dart';
 import 'package:lms_admin_instructor/core/services/remote/dio_consumer.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/data/repository/instructor_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/admin/instructors_admin/domain/repository/instructor_admin_repoditory.dart';
+import 'package:lms_admin_instructor/features/admin/instructors_admin/presentation/bloc/instructor_details_bloc.dart';
 import 'package:lms_admin_instructor/features/auth/data/repositories/auth_admin_repository_impl.dart';
 import 'package:lms_admin_instructor/features/auth/domain/repositories/auth_admin_repository.dart';
 import 'package:lms_admin_instructor/features/auth/presentation/bloc/auth_admin_bloc.dart';
@@ -29,6 +30,10 @@ import 'package:lms_admin_instructor/features/instructor/course_details/domain/r
 import 'package:lms_admin_instructor/features/instructor/course_details/data/repositories/course_details_repository_impl.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_details_bloc/course_details_bloc.dart';
 import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_stats_bloc/course_stats_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/add_new_video/presentation/bloc/add_new_video_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/common/data/repository/video_repository_impl.dart';
+import 'package:lms_admin_instructor/features/instructor/common/domain/repository/video_repository.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_video_bloc/course_video_bloc.dart';
 import 'package:lms_admin_instructor/root/bloc/root_bloc.dart';
 
 final sl = GetIt.instance;
@@ -67,11 +72,11 @@ Future<void> setupServiceLocator() async {
   );
 
   // Features - Instructor Admin
-  sl.registerLazySingleton<InstructorAdminRepoditory>(
+  sl.registerFactory<InstructorAdminRepository>(
     () => InstructorAdminRepositoryImpl(apiConsumer: sl()),
   );
-  sl.registerLazySingleton(
-    () => InstructorAdminBloc(instructorAdminRepoditory: sl()),
+  sl.registerFactory(
+    () => InstructorAdminBloc(instructorAdminRepository: sl()),
   );
 
   // Features - Instructor
@@ -94,6 +99,19 @@ Future<void> setupServiceLocator() async {
 
   sl.registerLazySingleton(() => CourseQuizBloc(quizRepository: sl()));
   sl.registerFactory(() => ManageQuizInstructorBloc(quizRepository: sl()));
+
+  // Features - Video
+  sl.registerLazySingleton<VideoRepository>(
+    () => VideoRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerFactory(() => CourseVideoBloc(videoRepository: sl()));
+  sl.registerFactory(() => AddNewVideoBloc(videoRepository: sl()));
+
+  // Features - Instructor Admin Details
+
+  sl.registerLazySingleton(
+    () => InstructorDetailsBloc(instructorAdminRepository: sl()),
+  );
 
   // Root
   sl.registerLazySingleton(() => RootBloc());

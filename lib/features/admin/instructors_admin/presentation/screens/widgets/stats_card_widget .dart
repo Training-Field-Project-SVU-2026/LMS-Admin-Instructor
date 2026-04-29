@@ -32,7 +32,7 @@ class StatsCardWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 530.w,
-        height: 170,
+        height: 180.h,
         padding: EdgeInsets.all(25.r),
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
