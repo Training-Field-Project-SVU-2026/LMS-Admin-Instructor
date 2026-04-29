@@ -12,6 +12,7 @@ CourseQuizCreateModel _$CourseQuizCreateModelFromJson(
   slug: json['slug'] as String?,
   quizName: json['quiz_name'] as String?,
   description: json['description'] as String?,
+  maxAttempts: (json['max_attempts'] as num?)?.toInt(),
   questions: (json['questions'] as List<dynamic>?)
       ?.map((e) => QuestionCreateModel.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -23,6 +24,7 @@ Map<String, dynamic> _$CourseQuizCreateModelToJson(
   'slug': instance.slug,
   'quiz_name': instance.quizName,
   'description': instance.description,
+  'max_attempts': instance.maxAttempts,
   'questions': instance.questions?.map((e) => e.toJson()).toList(),
 };
 

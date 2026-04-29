@@ -8,12 +8,15 @@ class CourseQuizCreateModel {
   @JsonKey(name: 'quiz_name')
   final String? quizName;
   final String? description;
+  @JsonKey(name: "max_attempts")
+  final int? maxAttempts;
   final List<QuestionCreateModel>? questions;
 
   CourseQuizCreateModel({
     this.slug,
     this.quizName,
     this.description,
+    this.maxAttempts,
     this.questions,
   });
 

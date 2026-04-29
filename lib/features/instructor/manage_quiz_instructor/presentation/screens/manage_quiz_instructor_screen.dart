@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +28,7 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
   final _formKey = GlobalKey<FormState>();
   final _quizNameController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _maxAttemptsController = TextEditingController(text: '5');
   final List<QuestionCreateModel> _questions = [];
 
   @override
@@ -70,6 +72,7 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
       final quizData = CourseQuizCreateModel(
         quizName: _quizNameController.text,
         description: _descriptionController.text,
+        maxAttempts: int.tryParse(_maxAttemptsController.text),
         questions: _questions,
         slug: widget.courseSlug,
       );
@@ -120,6 +123,7 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
           } else if (state is GetQuizDetailsSuccess) {
             _quizNameController.text = state.quiz.quizName ?? '';
             _descriptionController.text = state.quiz.description ?? '';
+            _maxAttemptsController.text = state.quiz.maxAttempts?.toString() ?? '5';
             _questions.clear();
             _questions.addAll(
               state.quiz.questions?.map(
@@ -186,6 +190,18 @@ class _ManageQuizScreenState extends State<ManageQuizScreen> {
                     hint: context.tr('description'),
                     controller: _descriptionController,
                     maxLines: 3,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomTextFormField(
+                    txt: context.tr('max_attempts'),
+                    hint: context.tr('max_attempts'),
+                    controller: _maxAttemptsController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator:
+                        (value) => value == null || value.isEmpty
+                            ? context.tr('required')
+                            : null,
                   ),
                   SizedBox(height: 32.h),
                   Row(

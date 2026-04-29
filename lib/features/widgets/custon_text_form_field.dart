@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 
@@ -16,6 +17,8 @@ class CustomTextFormField extends StatefulWidget {
   final int? maxLines;
   final void Function(String)? onChanged;
   final void Function()? onSuffixIcon;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFormField({
     super.key,
@@ -32,6 +35,8 @@ class CustomTextFormField extends StatefulWidget {
     this.maxLines,
     this.onChanged,
     this.onSuffixIcon,
+    this.keyboardType,
+    this.inputFormatters,
   });
 
   @override
@@ -58,6 +63,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           onChanged: widget.onChanged,
           validator: widget.validator,
           obscureText: _obscureText,
+          keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
           style: context.textTheme.labelMedium?.copyWith(
             color: context.colorScheme.onSurface,
             fontSize: 16.sp,
@@ -90,19 +97,19 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   )
                 : widget.suffixIcon != null
                 ? (widget.onSuffixIcon != null
-                    ? IconButton(
-                        onPressed: widget.onSuffixIcon,
-                        icon: Icon(
+                      ? IconButton(
+                          onPressed: widget.onSuffixIcon,
+                          icon: Icon(
+                            widget.suffixIcon,
+                            size: 18.sp,
+                            color: context.colorScheme.onSecondary,
+                          ),
+                        )
+                      : Icon(
                           widget.suffixIcon,
                           size: 18.sp,
                           color: context.colorScheme.onSecondary,
-                        ),
-                      )
-                    : Icon(
-                        widget.suffixIcon,
-                        size: 18.sp,
-                        color: context.colorScheme.onSecondary,
-                      ))
+                        ))
                 : null,
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.w,
