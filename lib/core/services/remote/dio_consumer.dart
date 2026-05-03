@@ -147,15 +147,22 @@ class DioConsumer extends ApiConsumer {
     Response response,
     T Function(Map<String, dynamic>)? fromJson,
   ) {
-    log("The Response: $response");
+    log("The Response: ${response.data}");
     try {
       final responseData = response.data;
+      final int statusCode = response.statusCode ?? 0;
+
+      // Handle successful status codes with no content (like 204)
+      if (statusCode >= 200 && statusCode < 300 && responseData == null) {
+        return Right(null as T);
+      }
+
       if (responseData is Map<String, dynamic>) {
-        final bool success = responseData['success'] ?? false;
-        final int status = responseData['status'] ?? response.statusCode ?? 0;
+        final bool success = responseData['success'] ?? true; // Default to true if not present
+        final int status = responseData['status'] ?? statusCode;
         final String message = responseData['message'] ?? 'Unknown error';
 
-        if (success && (status == 200 || status == 201)) {
+        if (success && (status >= 200 && status < 300)) {
           if (fromJson != null) {
             return Right(fromJson(responseData));
           } else {
@@ -165,6 +172,12 @@ class DioConsumer extends ApiConsumer {
           return Left(message);
         }
       }
+      
+      // If it's a success status code but not a Map, still consider it success if T is void/null
+      if (statusCode >= 200 && statusCode < 300) {
+        return Right(responseData as T);
+      }
+
       return const Left('Unexpected response format');
     } catch (e) {
       return Left('Error parsing response: ${e.toString()}');
