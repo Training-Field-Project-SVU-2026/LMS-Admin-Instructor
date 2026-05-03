@@ -53,4 +53,17 @@ class MaterialsRepositoryImpl implements MaterialsRepository {
       fromJson: (json) => CourseMaterialModel.fromJson(json['data']),
     );
   }
+
+  @override
+  Future<Either<String, String>> deleteMaterial({
+    required String courseSlug,
+    required String materialSlug,
+  }) async {
+    return await apiConsumer.delete<String>(
+      EndPoint.courseMaterials(courseSlug),
+      data: {'slug': materialSlug},
+      isFormData: true,
+      fromJson: (json) => json['message'] as String? ?? 'Deleted Successfully',
+    );
+  }
 }

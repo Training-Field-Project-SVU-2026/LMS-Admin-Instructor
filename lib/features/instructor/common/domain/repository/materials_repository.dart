@@ -13,4 +13,9 @@ abstract class MaterialsRepository {
   Future<Either<String, CourseMaterialModel>> uploadMaterial({
     required UploadMaterialRequestModel requestModel,
   });
+
+  Future<Either<String, String>> deleteMaterial({
+    required String courseSlug,
+    required String materialSlug,
+  });
 }

@@ -19,3 +19,13 @@ class UploadMaterialEvent extends CourseMaterialsEvent {
 
   UploadMaterialEvent({required this.requestModel});
 }
+
+class DeleteMaterialEvent extends CourseMaterialsEvent {
+  final String courseSlug;
+  final String materialSlug;
+
+  DeleteMaterialEvent({
+    required this.courseSlug,
+    required this.materialSlug,
+  });
+}

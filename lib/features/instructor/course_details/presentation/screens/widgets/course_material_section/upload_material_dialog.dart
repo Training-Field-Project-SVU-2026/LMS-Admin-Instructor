@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
 import 'package:lms_admin_instructor/core/utils/get_responsive_size.dart';
@@ -34,19 +35,7 @@ class _UploadMaterialDialogState extends State<UploadMaterialDialog> {
   Future<void> _pickFile() async {
     final result = await FilePicker.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'pdf',
-        'doc',
-        'docx',
-        'ppt',
-        'pptx',
-        'xls',
-        'xlsx',
-        'txt',
-        'zip',
-        'rar',
-        '7z',
-      ],
+      allowedExtensions: ['pdf'],
       allowMultiple: false,
       withData: true,
     );
@@ -69,7 +58,7 @@ class _UploadMaterialDialogState extends State<UploadMaterialDialog> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
-          Navigator.of(context).pop(true);
+          context.pop(true);
         } else if (state is UploadMaterialError) {
           ScaffoldMessenger.of(
             context,
@@ -99,10 +88,10 @@ class _UploadMaterialDialogState extends State<UploadMaterialDialog> {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'Upload course slides, documents or other resources.',
+                    'Only PDF files are allowed',
                     style: context.textTheme.bodySmall?.copyWith(
                       color: context.colorScheme.onSurfaceVariant.withValues(
-                        alpha: 0.6,
+                        alpha: 0.5,
                       ),
                     ),
                   ),
@@ -238,7 +227,7 @@ class _UploadMaterialDialogState extends State<UploadMaterialDialog> {
             Text(
               _selectedFile != null
                   ? '${(_selectedFile!.size / 1024 / 1024).toStringAsFixed(2)} MB'
-                  : 'PDF, DOCX, ZIP or any other file',
+                  : 'Only PDF files are allowed',
               style: context.textTheme.labelSmall?.copyWith(
                 color: context.colorScheme.onSurfaceVariant,
               ),

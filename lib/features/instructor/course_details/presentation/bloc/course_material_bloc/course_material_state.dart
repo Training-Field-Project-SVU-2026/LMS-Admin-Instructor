@@ -49,3 +49,15 @@ class UploadMaterialError extends CourseMaterialsState {
   final String message;
   UploadMaterialError({required this.message});
 }
+
+class DeleteMaterialLoading extends CourseMaterialsState {}
+
+class DeleteMaterialSuccess extends CourseMaterialsState {
+  final String message;
+  DeleteMaterialSuccess({required this.message});
+}
+
+class DeleteMaterialError extends CourseMaterialsState {
+  final String message;
+  DeleteMaterialError({required this.message});
+}
