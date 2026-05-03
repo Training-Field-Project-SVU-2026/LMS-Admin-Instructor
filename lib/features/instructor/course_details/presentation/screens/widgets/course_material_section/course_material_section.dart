@@ -1,32 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_admin_instructor/core/extensions/context_extensions.dart';
 import 'package:lms_admin_instructor/core/localization/app_localizations.dart';
-import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/custom_course_sidebar.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/domain/entity/course_materials_ui_model.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_material_bloc/course_material_bloc.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_material_bloc/course_material_event.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/bloc/course_material_bloc/course_material_state.dart';
+import 'package:lms_admin_instructor/features/instructor/course_details/presentation/screens/widgets/course_material_section/custom_course_sidebar.dart';
 import 'package:lms_admin_instructor/features/widgets/custom_button.dart';
+import 'upload_material_dialog.dart';
 
 class CourseMaterialSection extends StatelessWidget {
-  const CourseMaterialSection({super.key});
+  final String slug;
+  const CourseMaterialSection({super.key, required this.slug});
 
   @override
   Widget build(BuildContext context) {
-    return CustomCourseSidebar(
-      title: context.tr('course_materials'),
-      icon: Icons.folder_outlined,
-      color: context.colorScheme.primary,
-      onManage: () {},
-      children: [
-        _buildMaterialItem(context, context.tr('slides_placeholder'), "2.4 MB"),
-        SizedBox(height: 16.h),
-        _buildUploadButton(context, context.tr('upload_new_material')),
-      ],
+    return BlocBuilder<CourseMaterialsBloc, CourseMaterialsState>(
+      builder: (context, state) {
+        return CustomCourseSidebar(
+          title: context.tr('course_materials'),
+          icon: Icons.folder_outlined,
+          color: context.colorScheme.primary,
+          onManage: () {},
+          children: [
+            if (state is CourseMaterialsLoading)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else if (state is CourseMaterialsError)
+              Center(child: Text(state.message))
+            else if (state is CourseMaterialsLoaded) ...[
+              if (state.materialsListUIModel.materials.isEmpty)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24.h),
+                  child: Center(
+                    child: Text(
+                      context.tr('no_materials_found'),
+                      style: context.textTheme.labelMedium,
+                    ),
+                  ),
+                )
+              else
+                ...state.materialsListUIModel.materials.map(
+                  (material) => _buildMaterialItem(context, material),
+                ),
+              SizedBox(height: 16.h),
+              _buildUploadButton(context, context.tr('upload_new_material')),
+            ] else
+              const SizedBox(),
+          ],
+        );
+      },
     );
   }
 
   Widget _buildMaterialItem(
     BuildContext context,
-    String title,
-    String subtitle,
+    CourseMaterialItemUIModel material,
   ) {
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -50,13 +85,13 @@ class CourseMaterialSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  material.materialName,
                   style: context.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  subtitle,
+                  material.fileSize ?? '',
                   style: context.textTheme.labelSmall?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),
@@ -82,7 +117,21 @@ class CourseMaterialSection extends StatelessWidget {
 
   Widget _buildUploadButton(BuildContext context, String text) {
     return CustomPrimaryButton(
-      onTap: () {},
+      onTap: () async {
+        final result = await showDialog<bool>(
+          context: context,
+          builder: (dialogContext) => BlocProvider.value(
+            value: context.read<CourseMaterialsBloc>(),
+            child: UploadMaterialDialog(courseSlug: slug),
+          ),
+        );
+
+        if (result == true && context.mounted) {
+          context.read<CourseMaterialsBloc>().add(
+            GetCourseMaterialsEvent(slug: slug),
+          );
+        }
+      },
       text: text,
       prefixIcon: Icon(
         Icons.upload_file,

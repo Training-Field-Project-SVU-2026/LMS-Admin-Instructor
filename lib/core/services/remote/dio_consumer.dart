@@ -198,4 +198,14 @@ class DioConsumer extends ApiConsumer {
       return Left('Error parsing raw response: ${e.toString()}');
     }
   }
+
+  @override
+  Future<dynamic> multipartFileFromPath(String path, {String? filename}) async {
+    return await MultipartFile.fromFile(path, filename: filename);
+  }
+
+  @override
+  dynamic multipartFileFromBytes(List<int> bytes, {String? filename}) {
+    return MultipartFile.fromBytes(bytes, filename: filename);
+  }
 }
